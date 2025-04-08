@@ -15,10 +15,16 @@
 \usepackage[top=1in, bottom=1in, left=0.75in, right=0.75in]{geometry}
 \usepackage{mdframed}
 \usepackage{sectsty}
+\usepackage{pifont}
 \usepackage{pgfplots}
 \usepackage{titlesec} % For customizing section and chapter titles
 \usepackage{tikz}
+\usepackage{xcolor}
 
+
+
+\newcommand{\cmark}{{\color{green!60!black}\ding{51}}} % checkmark
+\newcommand{\xmark}{{\color{red!80!black}\ding{55}}}   % cross
 
 \captionsetup[table]{position=above}
 \captionsetup[figure]{position=below}
@@ -2753,51 +2759,55 @@ Supervised learning models are trained on labeled data, mapping inputs to known 
 \begin{table}[H]
     \centering
     \small
-    \renewcommand{\arraystretch}{1.3}
-    \begin{tabular}{|l|p{12cm}|}
+    \caption{Supervised learning models that treat features independently (no interaction modeling). Data type support (structured or unstructured) and training speed are indicated.}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|p{2.2cm}|c|c|p{2.5cm}|p{3cm}|p{3cm}|p{1.8cm}|}
         \hline
-        \textbf{Model Type} & \textbf{When to Use} \\
+        \textbf{Model Type} & \textbf{Struct.} & \textbf{Unstruct.} & \textbf{When to Use} & \textbf{Advantages} & \textbf{Disadvantages} & \textbf{Training Speed} \\
         \hline
-        Linear Regression & When the relationship between variables is linear and interpretability is important. Assumes no interaction unless you add them manually. \\
+        Linear Regression & \cmark & \xmark & Structured data with linear relationships & Fast, interpretable, low variance & Assumes linearity, no interaction modeling unless manually added & \textbf{Very Fast} \\
         \hline
-        Logistic Regression & When performing binary classification and interpretability is key. Assumes feature independence unless interactions are explicitly added. \\
+        Logistic Regression & \cmark & \xmark & Binary classification with simple features & Probabilistic output, interpretable coefficients & Linear decision boundaries only, no implicit interactions & \textbf{Fast} \\
         \hline
-        K-Nearest Neighbors (KNN) & For small to medium size datasets with local patterns, particularly in cases where model interpretability is a priority.\\
+        K-Nearest Neighbors (KNN) & \cmark & \xmark & Small to medium datasets with local structure & No training time, easy to understand & Poor in high dimensions, sensitive to feature scale & \textbf{Slow (at inference)} \\
         \hline
-        Naïve Bayes & When working with text classification (e.g., spam detection, sentiment analysis) or datasets where features are mostly independent. Assumes conditional independence between features. \\
+        Naïve Bayes & \cmark & \xmark & Text classification or independent features & Extremely fast, works well on sparse data & Strong independence assumption, poor for correlated features & \textbf{Very Fast} \\
         \hline
     \end{tabular}
-    \caption{Supervised learning models that treat features independently (no interaction modeling).}
+    }
 \end{table}
-
 
 
 \begin{table}[H]
     \centering
     \small
-    \renewcommand{\arraystretch}{1.3}
-    \begin{tabular}{|l|p{12cm}|}
+    \caption{Supervised learning models that model interactions between features. Data type support (structured or unstructured) and training speed are indicated.}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|p{2.2cm}|c|c|p{2.5cm}|p{3cm}|p{3cm}|p{1.8cm}|}
         \hline
-        \textbf{Model Type} & \textbf{When to Use} \\
+        \textbf{Model Type} & \textbf{Struct.} & \textbf{Unstruct.} & \textbf{When to Use} & \textbf{Advantages} & \textbf{Disadvantages} & \textbf{Training Speed} \\
         \hline
-        Decision Tree & When you need an interpretable model that can handle non-linear relationships and structured data. Captures interactions via hierarchical splits. \\
+        Decision Tree & \cmark & \xmark & Simple structured data with non-linear rules & Interpretable, handles non-linearities & Unstable, prone to overfitting & \textbf{Fast} \\
         \hline
-        Random Forest & When you need better accuracy than a single decision tree while reducing overfitting. Models feature interactions implicitly across many trees. \\
+        Random Forest & \cmark & \xmark & Structured data with moderate complexity & Reduces overfitting, handles interactions well & Less interpretable, slower than single tree & \textbf{Moderate} \\
         \hline
-        Support Vector Machine (SVM) & When working with small datasets that have complex, high-dimensional decision boundaries. Kernels capture non-linear feature interactions. \\
+        SVM & \cmark & \xmark & Small, high-dimensional datasets & Captures complex decision boundaries with kernels & Sensitive to scaling, hard to tune & \textbf{Slow} \\
         \hline
-        XGBoost & When working with structured tabular data where predictive accuracy is top priority. Models complex feature interactions automatically. \textbf{Top performer for structured data.} \\
+        XGBoost & \cmark & \xmark & Structured data with high accuracy demand & Top performance, regularization built-in & Slower to train, harder to tune & \textbf{Moderate} \\
         \hline
-        CatBoost & When dealing with structured data that contains many categorical variables. Captures interactions and reduces manual preprocessing. \\
+        CatBoost & \cmark & \xmark & Categorical-heavy structured data & Handles categoricals natively, minimal tuning & Slower training, less interpretable & \textbf{Moderate} \\
         \hline
-        LightGBM & When training speed is critical, especially for large datasets. Captures feature interactions like XGBoost but optimized for speed. \\
+        LightGBM & \cmark & \xmark & Large structured datasets where speed matters & Fastest boosting, good accuracy & Sensitive to tuning, less robust for small data & \textbf{Fast} \\
         \hline
-        Neural Networks & When dealing with unstructured data (e.g., images, text, audio) and highly complex relationships. \textbf{Neural networks are by far the best algorithm for unstructured data!} Captures deep interactions automatically. \\
+        AdaBoost & \cmark & \xmark & Simple data with low noise & Easy to implement, interpretable base learners & Sensitive to noise, less powerful than XGBoost & \textbf{Fast} \\
+        \hline
+        NGBoost & \cmark & \xmark & When uncertainty estimates are needed & Predictive distributions, interpretable outputs & Slower training, less known & \textbf{Slow} \\
+        \hline
+        Neural Networks & \cmark & \cmark & Unstructured or high-dimensional data & Models complex patterns, automatic feature learning & Black box, high compute cost, need for large datasets & \textbf{Slow} \\
         \hline
     \end{tabular}
-    \caption{Supervised learning models that model interactions between features.}
+    }
 \end{table}
-
 
 
 \subsection{Self-Supervised Learning}
