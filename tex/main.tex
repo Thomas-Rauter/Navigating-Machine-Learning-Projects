@@ -2,6 +2,7 @@
 
 % Packages
 \usepackage{amsmath} % For advanced math formatting (e.g., \max, \min, and align environments)
+\usepackage{amssymb}  % math symbols
 \usepackage{array}   % For advanced table formatting
 \usepackage{booktabs} % For professional-looking tables
 \usepackage{caption}  % For positioning table and figure descriptions.
@@ -14,7 +15,7 @@
 \usepackage{hyperref} % For clickable table of contents
 \usepackage[top=1in, bottom=1in, left=0.75in, right=0.75in]{geometry}
 \usepackage{mdframed}
-\usepackage{sectsty}
+% \usepackage{sectsty}
 \usepackage{pifont}
 \usepackage{pgfplots}
 \usepackage{titlesec} % For customizing section and chapter titles
@@ -22,9 +23,12 @@
 \usepackage{xcolor}
 
 
+\pgfplotsset{compat=1.18}  
 
 \newcommand{\cmark}{{\color{green!60!black}\ding{51}}} % checkmark
 \newcommand{\xmark}{{\color{red!80!black}\ding{55}}}   % cross
+
+
 
 \captionsetup[table]{position=above}
 \captionsetup[figure]{position=below}
@@ -191,6 +195,10 @@
 % - Make gen set more clear --> take his example, indluce it, and say this would not be a good gen
 % set, because its another task, it would be unfair. Better would be another dialect of English.
 
+\setlength\emergencystretch{5em}  % allow TeX to fix bad lines
+\hfuzz=1.5pt                      % ignore small overflows outside paragraphs
+\hbadness=10000                  % suppress low-severity badness messages
+\AtBeginDocument{\sloppy}       % global sloppy mode
 
 
 \begin{document}
@@ -1814,9 +1822,11 @@ Outliers can distort model predictions, leading to inaccurate conclusions. Commo
     \item \textbf{Isolation Forests:} A machine learning approach that isolates anomalies using decision trees.
 \end{itemize}
 
+\noindent\begin{minipage}{\textwidth}
 \begin{examplebox}
 A real estate dataset contains house prices, with most values ranging between \$100,000 and \$500,000. However, a few properties are listed at \$50 million. These extreme values may be outliers resulting from data entry errors or genuinely expensive properties. Before removing them, one should analyze whether these values are meaningful in the given context.
 \end{examplebox}
+\end{minipage}
 
 \subsection{Correcting Logically Inconsistent Data}
 In some cases, data entries contain contradictions or impossible values. These must be corrected or removed to prevent erroneous model predictions.
@@ -2060,9 +2070,9 @@ In the figure below, the vertical axis represents performance, such as accuracy,
     \node[right, black] at (axis cs:7,0.55) {\textbf{Model}};
 
     % Performance improvement arrows
-    \foreach \x/\y in {5/0.65, 6/0.6, 7/0.55} {
-        \draw[thick, black, ->] (\x, \y) -- (\x, \y+0.1);
-    }
+    \addplot[->, thick, black] coordinates {(5, 0.65) (5, 0.75)};
+    \addplot[->, thick, black] coordinates {(6, 0.6) (6, 0.7)};
+    \addplot[->, thick, black] coordinates {(7, 0.55) (7, 0.65)};
     \end{axis}
 \end{tikzpicture}
 
@@ -2179,9 +2189,11 @@ Examples include:
 
 These “shortcuts” can dramatically inflate validation accuracy but lead to brittle models that collapse in real-world use. Always ask: \textbf{Would this feature still be available and behave similarly at inference time?}
 
+\noindent\begin{minipage}{\textwidth}
 \begin{examplebox}
 In a hospital readmission prediction task, the model showed high accuracy—until it was discovered that discharge time was acting as a proxy for readmission. Overnight discharges were rare and often followed by urgent returns. The model had learned scheduling artifacts, not patient risk.
 \end{examplebox}
+\end{minipage}
 
 
 \subsection{Drop Uninformative Features}
@@ -2198,7 +2210,7 @@ Common candidates include:
 \textbf{If a feature provides no useful variation, drop it. It only adds noise.}
 
 \begin{examplebox}
-In a customer churn dataset, the column “customer_region” had 99.8\% of entries as “North America.” It added no useful signal and only served to distract the model. Dropping it improved training stability and interpretability.
+In a customer churn dataset, the column “customer region” had 99.8\% of entries as “North America.” It added no useful signal and only served to distract the model. Dropping it improved training stability and interpretability.
 \end{examplebox}
 
 
@@ -2300,7 +2312,6 @@ Other models, however, do require explicit encoding of categorical features, suc
     \item SVMs
     \item Neural networks (if no embedding layer is used)
 \end{itemize}
-\newline
 
 For these models, categorical features must be encoded into numerical form. The encoding strategy depends on whether the feature is nominal (no meaningful order) or ordinal (ordered categories), and on the number of unique levels. \newline
 
@@ -2554,6 +2565,222 @@ This setup enforces a clean separation between raw inputs and modified versions,
 
 
 
+\chapter{Data Tools}
+
+\section{Overview: The Role of Tools in Data-Centric Work}
+
+In real-world machine learning, data rarely arrives clean, small, and ready to model. The tools used to store, access, transform, and version data are crucial—sometimes more important than the model itself.
+
+Unlike in academic settings where datasets are static and preprocessed, in applied ML projects, choosing the right data tools is a strategic decision. It affects development speed, reproducibility, and scalability. \newline
+
+This chapter provides a practical overview of data tools, with a focus on \textbf{what exists}, \textbf{when it’s useful}, and \textbf{why you might choose one over another}. The emphasis is not on technical setup or configuration, but on informed selection during a machine learning workflow. \newline
+
+We organize tools by their primary function:
+\begin{itemize}
+    \item \textbf{Storage and Access:} Where and how the data lives
+    \item \textbf{Querying and Extraction:} How to get the data out
+    \item \textbf{Transformation and Cleaning:} How to prepare it for modeling
+    \item \textbf{Versioning and Tracking:} How to make workflows reproducible
+    \item \textbf{Integration:} How to connect tools and expose data downstream
+\end{itemize}
+
+
+
+\section{Storage}
+
+The first decision is where your data lives. This choice impacts accessibility, scalability, and the range of tools available for downstream tasks. You typically don’t get to choose the storage format in a project, but you need to understand its implications.
+
+\subsection*{Flat Files}
+
+\textbf{CSV, Parquet, JSON, Excel} \newline
+Used when datasets are small, tabular, and fit into memory. Flat files are ideal for local development, prototyping, and sharing. \newline
+\textbf{When to use:} Early stages, ad-hoc experiments, or exporting subsets of larger databases. \newline
+\textbf{Why not always:} Poor support for concurrency, schema evolution, or large-scale data.
+
+\subsection*{Relational Databases (SQL)}
+
+\textbf{PostgreSQL, MySQL, SQLite, Microsoft SQL Server} \newline
+Reliable, structured storage for transactional or tabular data. You define schemas and query with SQL. \newline
+\textbf{When to use:} Most structured data projects—especially when data comes from internal systems or multiple sources that require joins. \newline
+\textbf{Why not always:} Scaling can become complex; not well suited for unstructured data.
+
+\subsection*{Non-Relational Databases (NoSQL)}
+
+\textbf{MongoDB, Cassandra, DynamoDB, Redis} \newline
+Useful for storing nested, semi-structured, or key-value data. Often used in production pipelines or when schema flexibility is required. \newline
+\textbf{When to use:} Event logs, web/app data, hierarchical documents, or high-throughput systems. \newline
+\textbf{Why not always:} Less consistent query language, harder to enforce data integrity, poorer support for joins.
+
+\subsection*{Data Lakes and Warehouses}
+
+\textbf{BigQuery, Snowflake, Redshift, Databricks, Delta Lake} \newline
+Designed for large-scale analytics across massive datasets. Support SQL-style querying, versioned tables, and compute separation. \newline
+\textbf{When to use:} Large datasets shared across teams, cloud-scale analytics, time-travel queries. \newline
+\textbf{Why not always:} Overhead for small projects, sometimes high cost and learning curve.
+
+\begin{notebox}
+If you're training ML models on structured business data, you will likely interact with a SQL-based warehouse (e.g., BigQuery or Snowflake) and a flat file export pipeline. Know how to extract and structure the data yourself.
+\end{notebox}
+
+
+
+\section{Access}
+
+Once data is stored, you need to extract the right subset for modeling. Whether it lives in a warehouse, database, or file—efficient access is a fundamental skill.
+
+\subsection*{SQL}
+
+\textbf{Standard SQL (PostgreSQL, MySQL, SQLite)} \newline
+The foundation of querying structured data. Know it well. \newline
+\textbf{When to use:} Any structured relational source. \newline
+\textbf{Strengths:} Precise, optimized for joins and filters. \newline
+\textbf{Weaknesses:} Cumbersome for complex transformations.
+
+\subsection*{SQL Extensions and Warehouse Dialects}
+
+\textbf{BigQuery SQL, Snowflake SQL, Athena SQL} \newline
+Cloud-specific SQL dialects with added features: UDFs, window functions, nested fields. \newline
+\textbf{When to use:} Inside data warehouses. Syntax quirks matter.
+
+\subsection*{DataFrames in Python or R}
+
+\textbf{Pandas, Polars, dplyr} \newline
+Excellent for in-memory filtering and transformations after querying. \newline
+\textbf{When to use:} After extracting data from SQL or files. \newline
+\textbf{Why not always:} RAM-limited, not scalable.
+
+\subsection*{ORMs and Query Builders}
+
+\textbf{SQLAlchemy, Django ORM, dbplyr} \newline
+Encapsulate SQL in Python/R. Good for structured pipelines. \newline
+\textbf{When to use:} When building ingestion systems or production code. \newline
+\textbf{Why not always:} Abstracts away too much for ad-hoc work.
+
+\subsection*{APIs (REST and GraphQL)}
+
+\textbf{REST + JSON, GraphQL} \newline
+For third-party and internal services exposing data via HTTP. \newline
+\textbf{When to use:} If SQL access is restricted or you're working with SaaS platforms. \newline
+\textbf{Why not always:} Not built for analytics. Fragile, rate-limited, often undocumented.
+
+\begin{examplebox}
+If your company uses Snowflake and dbt, you’ll write warehouse SQL to define reusable data models, and then extract them via Python with \texttt{snowflake.connector}.
+\end{examplebox}
+
+
+
+
+\section{Data Processing and Transformation Frameworks}
+
+Once data is extracted, it often needs to be cleaned, merged, reshaped, or enriched. For anything beyond what fits in memory or involves many moving parts, you need a processing framework.
+
+\subsection*{Pandas and Data.table}
+
+\textbf{Pandas (Python) / Data.table (R)} \newline
+Still the most common tools for in-memory data wrangling. Good for prototyping and medium-scale transformations. \newline
+\textbf{When to use:} Local work on datasets that fit in memory. \newline
+\textbf{Strengths:} Flexible, expressive, well-supported. \newline
+\textbf{Limits:} RAM-bound, no built-in parallelism.
+
+\subsection*{Polars and Dask}
+
+\textbf{Polars:} A fast DataFrame library with Rust under the hood. \newline
+\textbf{Dask:} Parallelizes NumPy/Pandas workflows across cores or clusters. \newline
+\textbf{When to use:} If you're hitting memory limits or performance walls with Pandas. \newline
+\textbf{Tip:} Use Polars for raw speed, Dask when working with larger-than-memory data.
+
+\subsection*{Apache Spark (PySpark)}
+
+\textbf{Spark} is the industry standard for distributed data processing. It scales across clusters and can handle terabytes. \newline
+\textbf{When to use:} Transformations on huge datasets, building ETL pipelines, or working in a cloud data lake. \newline
+\textbf{Strengths:} Scalable, fault-tolerant, integrates well with HDFS and cloud storage. \newline
+\textbf{Drawbacks:} Verbose, hard to debug, overkill for small tasks.
+
+\subsection*{dbt (Data Build Tool)}
+
+\textbf{dbt} lets you define data transformations as modular SQL files. It brings software engineering practices (testing, versioning) to analytics pipelines. \newline
+\textbf{When to use:} When your company uses a cloud data warehouse and your transformations are in SQL. \newline
+\textbf{Why it matters:} It standardizes data modeling across teams.
+
+\subsection*{Airflow and Workflow Orchestration}
+
+\textbf{Apache Airflow, Prefect, Dagster} \newline
+Orchestrate complex data workflows with clear dependencies and schedules. \newline
+\textbf{When to use:} When you have many interdependent data tasks running daily or hourly. \newline
+\textbf{Important:} These are not for processing data—they schedule and manage the things that do.
+
+\begin{examplebox}
+A typical data workflow might pull raw logs from S3, transform them in Spark, store the result in Snowflake, and use dbt to clean up the schema. Airflow schedules the whole thing hourly.
+\end{examplebox}
+
+
+
+\section{Versioning, Tracking, and Lineage}
+
+In real-world machine learning projects, data is not static. It evolves—through cleaning, filtering, annotation, or as new samples arrive. Without tracking these changes, results become irreproducible and collaboration breaks down. Versioning and lineage tools help manage this complexity.
+
+\subsection*{Why Versioning Matters}
+
+\begin{itemize}
+    \item Re-running a pipeline on a slightly modified dataset can lead to different results.
+    \item Teams need to know which data version was used for a model.
+    \item Debugging a model requires knowing the exact state of the data it saw during training.
+\end{itemize}
+
+\subsection*{Popular Tools}
+
+\textbf{DVC (Data Version Control):} Git-like interface for tracking datasets and model artifacts.\newline
+\textbf{LakeFS / Pachyderm:} Git-style versioning on top of object storage systems.\newline
+\textbf{Delta Lake / Apache Hudi / Apache Iceberg:} Add versioning, rollback, and lineage to data lakes (often used with Spark).\newline
+\textbf{MLflow Tracking:} While mainly used for experiment tracking, it can log datasets and parameters alongside models.
+
+\subsection*{Best Practices}
+
+\begin{itemize}
+    \item Treat datasets as code: use commits, tags, and branches.
+    \item Log metadata and processing steps alongside raw data.
+    \item Always tie a model to a specific version of the dataset.
+\end{itemize}
+
+\begin{examplebox}
+A company detected a model accuracy drop after retraining. Using DVC, they quickly traced the issue to a mislabeled sample introduced in a new dataset version—saving hours of debugging.
+\end{examplebox}
+
+
+\section{Interfacing and Integration}
+
+A strong data stack doesn’t end at pipelines and storage—it needs to interface with users, applications, and stakeholders. Interfacing tools ensure that data flows smoothly between systems and people.
+
+\subsection*{Cloud Data Platforms}
+
+\textbf{Examples:} Snowflake, BigQuery, Redshift \newline
+
+These platforms allow teams to run analytical queries on massive datasets with minimal infrastructure effort. They're commonly used in production environments for:
+
+\begin{itemize}
+    \item Fast querying across large tables.
+    \item Feeding dashboards and reporting systems.
+    \item Integrating with machine learning pipelines via connectors or APIs.
+\end{itemize}
+
+\subsection*{BI and Dashboards}
+
+\textbf{Examples:} Tableau, Power BI, Superset \newline
+
+Business Intelligence (BI) tools empower non-technical users to explore data and generate insights visually. They are most useful when:
+
+\begin{itemize}
+    \item Stakeholders need live reporting dashboards.
+    \item Teams want to track metrics and KPIs without writing code.
+    \item Data scientists need a fast way to explore structured data.
+\end{itemize}
+
+\begin{notebox}
+Even if you're not directly building dashboards, understanding the BI stack helps align your work with how stakeholders consume insights.
+\end{notebox}
+
+
+
 
 
 \part{Modeling}
@@ -2607,6 +2834,7 @@ Treat as Classification & When the ordinal nature of the target is not critical 
 Use an Ordinal Classification Model & When you want an interpretable model that respect class ordering without complex tuning \\
 Map to Integers and Regress & When the target can be meaningfully treated as a continuous scale (e.g., severity levels), and simple regression yields competitive results. Useful when exact ranking matters more than discrete class boundaries. \\
 Regression with Ordinal-Aware Loss & When you're training flexible models (like trees or neural nets) and want to enforce that predicting “2” instead of “3” is better than predicting “5”. Ideal when minimizing the distance between predicted and true class is more important than raw accuracy. \\
+Classification with Ordinal-Aware Loss & When you want discrete class outputs but still want the model to respect the ordinal structure during training. Useful when ordinal penalties matter but classification is preferred over regression. \\
 Deep Learning with Ordinal Encoding & When using deep learning and you want the model to learn thresholds between classes explicitly, preserving ordinal structure without relying on regression tricks. Especially useful for problems with many ordered classes or noisy boundaries. \\
 \bottomrule
 \end{tabular}
@@ -2696,8 +2924,26 @@ instead of `5` is worse than predicting `4` instead of `5`.
 \vspace{5pt}
 
 
+\section{Strategy 5: Classification with Ordinal-Aware Loss}
 
-\section{Strategy 5: Deep Learning with Ordinal Encoding}
+Instead of treating the problem as pure regression, you can stick with a classification model while modifying the loss function to respect the ordinal structure. This encourages the model to treat misclassifications proportionally to their severity.
+
+\begin{itemize}
+    \item Preserves discrete class outputs
+    \item Penalizes distant class errors more than close ones
+    \item Can be implemented via custom loss functions (e.g., MAE-style gradient)
+    \item Compatible with models like XGBoost and Neural Networks
+\end{itemize}
+
+\begin{examplebox}
+In an earthquake damage classification task (classes 1–3), an XGBoost model is trained using a custom loss that penalizes a prediction of `3` for a true class of `1` more than a prediction of `2`. This reflects the ordered nature of damage severity without switching to regression.
+\end{examplebox}
+
+\vspace{5pt}
+
+
+
+\section{Strategy 6: Deep Learning with Ordinal Encoding}
 
 Deep learning models can be adapted for ordinal targets by designing the output layer to reflect the \textbf{ordered structure} of the labels. Instead of predicting class probabilities with a softmax (which treats all classes as unrelated), these models use techniques like:
 
@@ -2736,7 +2982,7 @@ In the modeling stage of a machine learning project, choosing the right model cl
 Key factors in selecting a model class include:
 \begin{itemize}
     \item \textbf{Fit to Data:} How well the model captures underlying patterns.
-    \item \textbf{Complexity vs. Interpretability:} Simpler models are easier to understand, but complex models may generalize better.
+    \item \textbf{Complexity vs. Interpretability:} Simpler models are easier to understand, but may fail to capture intricate patterns.
     \item \textbf{Computational Efficiency:} Some models require significant training time and resources.
     \item \textbf{Generalization Ability:} Overly complex models may overfit the training data.
     \item \textbf{Task-Specific Requirements:} The choice of model depends on whether the task is classification, regression, clustering, or reinforcement learning.
@@ -2759,19 +3005,23 @@ Supervised learning models are trained on labeled data, mapping inputs to known 
 \begin{table}[H]
     \centering
     \small
-    \caption{Supervised learning models that treat features independently (no interaction modeling). Data type support (structured or unstructured) and training speed are indicated.}
+    \caption{Supervised learning models that treat features independently (no interaction modeling). Data type support (structured (S) or unstructured (U)) and training speed are indicated.}
     \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|p{2.2cm}|c|c|p{2.5cm}|p{3cm}|p{3cm}|p{1.8cm}|}
+    \begin{tabular}{|p{2.2cm}|c|c|p{3.5cm}|p{3cm}|p{3cm}|p{1.8cm}|}
         \hline
-        \textbf{Model Type} & \textbf{Struct.} & \textbf{Unstruct.} & \textbf{When to Use} & \textbf{Advantages} & \textbf{Disadvantages} & \textbf{Training Speed} \\
+        \textbf{Model Type} & \textbf{S} & \textbf{U} & \textbf{When to Use} & \textbf{Advantages} & \textbf{Disadvantages} & \textbf{Training Speed} \\
         \hline
-        Linear Regression & \cmark & \xmark & Structured data with linear relationships & Fast, interpretable, low variance & Assumes linearity, no interaction modeling unless manually added & \textbf{Very Fast} \\
+        Linear Regression & \cmark & \xmark & When interpretability is very important and there is a linear relationship & Fast, interpretable, low variance & Assumes linearity, no interaction modeling unless manually added, can only be used for regression & \textbf{Very Fast} \\
+        \hline
+        Linear Discriminant Analysis (LDA) & \cmark & \xmark & When you need a fast, interpretable classifier that works well on small datasets with linearly separable classes & Captures some interactions via shared covariance, probabilistic output & Assumes normality and equal covariance across classes, limited to linear boundaries & \textbf{Fast} \\
+        \hline
+        Quadratic Discriminant Analysis (QDA) & \cmark & \xmark & When you need a more flexible classifier than LDA for small datasets with moderately non-linear, class-specific distributions & Models class-specific covariance, flexible decision boundaries & Requires more data, sensitive to overfitting, assumes Gaussian features & \textbf{Moderate} \\
         \hline
         Logistic Regression & \cmark & \xmark & Binary classification with simple features & Probabilistic output, interpretable coefficients & Linear decision boundaries only, no implicit interactions & \textbf{Fast} \\
         \hline
         K-Nearest Neighbors (KNN) & \cmark & \xmark & Small to medium datasets with local structure & No training time, easy to understand & Poor in high dimensions, sensitive to feature scale & \textbf{Slow (at inference)} \\
         \hline
-        Naïve Bayes & \cmark & \xmark & Text classification or independent features & Extremely fast, works well on sparse data & Strong independence assumption, poor for correlated features & \textbf{Very Fast} \\
+        Naïve Bayes & \cmark & \xmark & Use Naive Bayes when you need a fast, simple, and interpretable model for high-dimensional, sparse, and small datasets with mostly independent features. Prime use cases are text classification, spam detection, and sentiment analysis. Can only be used for classification. & Extremely fast, works well on sparse data & Strong independence assumption, poor for correlated features, can only be used for classification & \textbf{Very Fast} \\
         \hline
     \end{tabular}
     }
@@ -2781,11 +3031,11 @@ Supervised learning models are trained on labeled data, mapping inputs to known 
 \begin{table}[H]
     \centering
     \small
-    \caption{Supervised learning models that model interactions between features. Data type support (structured or unstructured) and training speed are indicated.}
+    \caption{Supervised learning models that model interactions between features. Data type support (structured (S) or unstructured (U)) and training speed are indicated.}
     \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|p{2.2cm}|c|c|p{2.5cm}|p{3cm}|p{3cm}|p{1.8cm}|}
+    \begin{tabular}{|p{2.2cm}|c|c|p{3.5cm}|p{3cm}|p{3cm}|p{1.8cm}|}
         \hline
-        \textbf{Model Type} & \textbf{Struct.} & \textbf{Unstruct.} & \textbf{When to Use} & \textbf{Advantages} & \textbf{Disadvantages} & \textbf{Training Speed} \\
+        \textbf{Model Type} & \textbf{S} & \textbf{U} & \textbf{When to Use} & \textbf{Advantages} & \textbf{Disadvantages} & \textbf{Training Speed} \\
         \hline
         Decision Tree & \cmark & \xmark & Simple structured data with non-linear rules & Interpretable, handles non-linearities & Unstable, prone to overfitting & \textbf{Fast} \\
         \hline
@@ -2801,10 +3051,11 @@ Supervised learning models are trained on labeled data, mapping inputs to known 
         \hline
         AdaBoost & \cmark & \xmark & Simple data with low noise & Easy to implement, interpretable base learners & Sensitive to noise, less powerful than XGBoost & \textbf{Fast} \\
         \hline
-        NGBoost & \cmark & \xmark & When uncertainty estimates are needed & Predictive distributions, interpretable outputs & Slower training, less known & \textbf{Slow} \\
+        NGBoost & \cmark & \xmark & When you need accurate predictions with well-calibrated uncertainty in complex, non-linear problems & Predictive distributions, interpretable outputs & Slower training, less known & \textbf{Slow} \\
         \hline
         Neural Networks & \cmark & \cmark & Unstructured or high-dimensional data & Models complex patterns, automatic feature learning & Black box, high compute cost, need for large datasets & \textbf{Slow} \\
         \hline
+        Bayesian Neural Network & \cmark & \cmark & Like neural networks but when uncertainty estimation is critical & Quantifies uncertainty, regularization built-in & Complex to implement and scale & \textbf{Very Slow} \\
     \end{tabular}
     }
 \end{table}
@@ -3178,7 +3429,238 @@ misordering severity.
 
 
 
-\chapter{Modeling Timeseries Data}
+\chapter{Modeling Time Series Data}
+
+Time series tasks differ fundamentally from traditional machine learning due to the temporal structure in the data. This structure breaks key assumptions of standard modeling pipelines—such as the independence of observations—and requires models to explicitly account for the order and spacing of data points. Choosing an appropriate modeling strategy depends on the prediction goal, the data structure, and the trade-off between complexity and interpretability.
+
+\section{Defining the Prediction Objective}
+
+Before selecting a model, it is crucial to clarify what the model is expected to predict. Time series modeling can serve different types of objectives:
+
+\begin{itemize}
+    \item \textbf{Forecasting:} Predicting future values of a continuous target variable based on past observations (e.g., temperature in the next 7 days).
+    \item \textbf{Classification:} Assigning a class label based on a temporal pattern (e.g., predicting machine failure from recent sensor readings).
+    \item \textbf{Regression:} Estimating a continuous outcome using a sliding window of past values (e.g., predicting energy consumption for the next hour).
+\end{itemize}
+
+These objectives define the structure of the modeling pipeline—especially what type of labels are needed, how inputs and outputs are paired, and whether the model is expected to make single-step or multi-step predictions. Models that ignore this early step often suffer from poor alignment between training data and real-world evaluation conditions.
+
+
+\section{Choosing the Modeling Strategy}
+
+The way temporal input maps to predictions defines the modeling strategy. Time series tasks require decisions about how much history the model uses, and what kind of prediction it is expected to produce.
+
+\begin{itemize}
+    \item \textbf{Sequence-to-one:} A fixed-length window of past values is used to predict a single future point. Common in forecasting (e.g., predicting stock price for tomorrow).
+    
+    \item \textbf{Sequence-to-sequence:} The model predicts a sequence of future values, one for each time step. This is used in multi-step forecasting, especially in planning and control applications.
+
+    \item \textbf{Many-to-one:} A series of past inputs is used to predict a static label. This setup is typical in classification tasks such as churn prediction or failure detection.
+
+    \item \textbf{Many-to-many:} Each time step maps to a label (e.g., activity classification from wearable sensors). This is also used when the task is to tag each point in a sequence.
+\end{itemize}
+
+The choice depends on how granular the prediction must be and how far into the future you're looking. Sequence-to-sequence and many-to-many setups tend to require more complex models and more data, but give finer-grained output. Sequence-to-one is often easier to debug and optimize.
+
+
+\section{Model Class Selection}
+
+Time series modeling can be approached with three distinct classes of models, depending on data size, complexity, and task type.
+
+\subsection*{1. Statistical Models}
+
+\begin{itemize}
+    \item \textbf{ARIMA, SARIMA:} Classical models for univariate forecasting. They assume stationarity (or use differencing to achieve it) and capture trend and seasonality. Best for small datasets and interpretable forecasts.
+    
+    \item \textbf{Exponential Smoothing (ETS):} Prioritizes recent observations while accounting for trend and seasonality. Simple, robust, and commonly used in business settings.
+\end{itemize}
+
+These models assume a specific structure in the data and can only handle univariate inputs. They are not ideal when external variables or many features are involved.
+
+\subsection*{2. Classical Machine Learning Models}
+
+\begin{itemize}
+    \item \textbf{Tree-based models (e.g., Random Forest, XGBoost):} To use these models on time series, the data must first be reframed as a supervised learning problem. This is done by manually creating lag features (e.g., value at $t-1$, $t-2$, etc.), rolling averages, trend indicators, or calendar-based features (e.g., hour of day, weekday). Once reframed, the model learns a mapping from these features to the target at $t$ or $t+h$.
+    
+    \item \textbf{Support Vector Machines, KNN, etc.:} Rarely used in practice for time series, but technically applicable after similar feature engineering. Less robust to temporal structure.
+\end{itemize}
+
+These methods are flexible, fast to train, and often strong in structured datasets. However, they lack built-in memory and require careful feature design.
+
+\subsection*{3. Neural Network-Based Methods}
+
+\begin{itemize}
+    \item \textbf{RNNs, LSTMs, GRUs:} Designed for sequential data. They process one time step at a time, maintaining an internal state to capture temporal dependencies. Good for modeling longer sequences or multivariate time series.
+
+    \item \textbf{1D CNNs:} Apply convolutional filters over time steps, capturing local patterns. Often outperform RNNs on short sequences due to parallelism and lower training time.
+
+    \item \textbf{Transformers:} Capture long-range dependencies without recurrence, using self-attention mechanisms. Require large datasets but are state-of-the-art in multivariate and irregular time series modeling.
+
+    \item \textbf{Hybrid models (e.g., Temporal Fusion Transformers):} Combine attention, gating mechanisms, and static covariates. Designed for interpretable multivariate forecasting.
+\end{itemize}
+
+Neural models require more data, careful tuning, and typically longer training, but they eliminate the need for manual lag features and can model complex dynamics.
+
+
+\section{Handling Multi-Step Forecasting}
+
+In time series, it’s common to predict not just the next value, but several future steps — for example, forecasting demand for the next 7 days. There are three main strategies for handling this:
+
+\subsection*{1. Direct Forecasting}
+
+Train a separate model for each future step (e.g., $y_{t+1}$, $y_{t+2}$, ..., $y_{t+h}$).
+
+\begin{itemize}
+    \item \textbf{Pros:} No error propagation; each model optimizes for its specific horizon.
+    \item \textbf{Cons:} Requires training and maintaining multiple models; ignores inter-step dependencies.
+\end{itemize}
+
+\subsection*{2. Recursive Forecasting}
+
+Train one model to predict the next time step ($y_{t+1}$), then feed its prediction back in to predict $y_{t+2}$, and so on.
+
+\begin{itemize}
+    \item \textbf{Pros:} Only one model; reflects natural temporal dependency.
+    \item \textbf{Cons:} Prediction errors accumulate with each step.
+\end{itemize}
+
+\subsection*{3. Sequence-to-Sequence Forecasting}
+
+Train a model to predict an entire sequence of future values in one shot. Often used with neural networks.
+
+\begin{itemize}
+    \item \textbf{Pros:} Captures interdependencies between future steps; end-to-end training.
+    \item \textbf{Cons:} Requires more data and model capacity.
+\end{itemize}
+
+\begin{notebox}
+For short-term forecasting, recursive models are often sufficient. For longer horizons or when future steps are strongly correlated, sequence-to-sequence models are usually better.
+\end{notebox}
+
+
+\section{Handling Irregular Time Steps and Missing Values}
+
+Time series data is not always regularly spaced. Missing observations, sensor outages, or asynchronous events can lead to gaps or uneven intervals — and many models assume a regular sequence.
+
+\subsection*{Irregular Time Steps}
+
+\begin{itemize}
+    \item \textbf{Resample to regular intervals:} Interpolate or aggregate data to a fixed time grid (e.g., hourly, daily). Common in classical methods.
+    \item \textbf{Use time deltas as input:} For models like neural networks, explicitly include the time between events as a feature.
+    \item \textbf{Model event sequences directly:} Use models designed for irregular sequences (e.g., Time-aware LSTM, Neural ODEs).
+\end{itemize}
+
+\subsection*{Missing Values}
+
+\begin{itemize}
+    \item \textbf{Imputation:} Fill missing values using interpolation, forward fill, or model-based methods.
+    \item \textbf{Indicator features:} Add a binary mask to indicate missingness — can improve performance in models that can leverage this (e.g., tree models, neural nets).
+    \item \textbf{Models that tolerate missing data:} Some algorithms (e.g., CatBoost, certain tree models) can handle missing values natively.
+\end{itemize}
+
+\begin{notebox}
+If missingness is informative (e.g., “no measurement” signals a condition), never impute blindly — encode it explicitly.
+\end{notebox}
+
+
+\section{Choosing the Modeling Objective}
+
+Time series modeling is not limited to forecasting future values. Different tasks require different modeling objectives:
+
+\subsection*{1. Forecasting (Regression)}
+
+The most common case: predicting future numeric values (e.g., temperature, demand, stock price).
+
+\begin{itemize}
+    \item Use regression models: ARIMA, XGBoost, LSTM, etc.
+    \item Target variable is continuous (e.g., $y_{t+1}$).
+\end{itemize}
+
+\subsection*{2. Classification over Time}
+
+Predicting discrete categories, such as machine failure (yes/no), user churn, or event detection.
+
+\begin{itemize}
+    \item Use classification models: logistic regression, tree ensembles, neural nets.
+    \item Can be framed as sequence classification or stepwise classification (e.g., classify each $t$).
+\end{itemize}
+
+\subsection*{3. Anomaly Detection}
+
+Detecting when a time series deviates from expected behavior.
+
+\begin{itemize}
+    \item Use probabilistic models, autoencoders, or prediction-based residual thresholds.
+    \item Typically unsupervised or semi-supervised.
+\end{itemize}
+
+\begin{notebox}
+Clearly defining the task type (regression, classification, anomaly detection) helps choose the appropriate loss function, evaluation metric, and model architecture.
+\end{notebox}
+
+
+\section{Global vs.\ Local Models}
+
+When working with many related time series (e.g., one per user, sensor, or region), a key design decision is whether to model each series separately or together.
+
+\subsection*{Local Models}
+
+Train a separate model for each time series.
+
+\begin{itemize}
+    \item Works well when series behave very differently.
+    \item Easy to debug and explain.
+    \item Doesn’t scale well — requires many models.
+\end{itemize}
+
+\subsection*{Global Models}
+
+Train a single model across all time series.
+
+\begin{itemize}
+    \item Leverages shared patterns across series.
+    \item Often better generalization, especially with limited data per series.
+    \item Requires additional inputs to differentiate series (e.g., categorical ID, static metadata).
+\end{itemize}
+
+\begin{notebox}
+Tree-based models and neural networks scale naturally to global modeling. Classical methods like ARIMA are mostly used locally.
+\end{notebox}
+
+
+\section{Single-Step vs.\ Multi-Step Forecasting}
+
+The number of future steps a model needs to predict influences both modeling strategy and evaluation.
+
+\subsection*{Single-Step Forecasting}
+
+Predict only the next value in the sequence (e.g., $y_{t+1}$ given $y_t, y_{t-1}, \dots$).
+
+\begin{itemize}
+    \item Simple and robust — often a good baseline.
+    \item Can be extended to multiple steps by recursive prediction.
+\end{itemize}
+
+\subsection*{Multi-Step Forecasting}
+
+Predict multiple future time steps at once (e.g., $y_{t+1}, y_{t+2}, \dots, y_{t+h}$).
+
+\begin{itemize}
+    \item Better for planning and long-term optimization.
+    \item Harder to model due to compounding uncertainty.
+\end{itemize}
+
+\subsection*{Modeling Strategies for Multi-Step Forecasting}
+
+\begin{itemize}
+    \item \textbf{Recursive:} Predict one step ahead, feed it back in, repeat. Easy to implement but error accumulates.
+    \item \textbf{Direct:} Train separate models for each future step (e.g., one for $y_{t+1}$, one for $y_{t+2}$). More stable, but higher complexity.
+    \item \textbf{Multi-output:} Predict all future steps jointly with one model. Efficient and coherent, but harder to train.
+\end{itemize}
+
+\begin{notebox}
+Choose multi-output if you care about the entire future trajectory. Use recursive when model simplicity or flexibility is more important.
+\end{notebox}
 
 
 
@@ -4056,9 +4538,11 @@ Use ICE plots to:
   \item Find interaction effects (by comparing ICE curves across many instances)
 \end{itemize}
 
+\noindent\begin{minipage}{\textwidth}
 \begin{notebox}
 ICE assumes features can be changed independently, which may not hold if inputs are correlated or constrained.
 \end{notebox}
+\end{minipage}
 
 \begin{examplebox}
 For one user, an ICE plot might show that increasing ``app visits per week'' linearly reduces churn probability — useful for designing retention strategies.
@@ -4525,7 +5009,7 @@ In all these cases, a gradual ramp-up with monitoring is advisable. This allows 
 
 \section{Shadow Mode Deployment}
 
-A **shadow mode deployment** allows a new machine learning model to run in parallel with an existing system without affecting real decisions. This is particularly useful when replacing human inspectors or an older machine learning model, as it allows direct comparison of outputs.
+A \textbf{shadow mode deployment} allows a new machine learning model to run in parallel with an existing system without affecting real decisions. This is particularly useful when replacing human inspectors or an older machine learning model, as it allows direct comparison of outputs.
 
 \begin{examplebox}
    A smartphone manufacturing plant currently relies on human inspectors to detect scratches on devices. To integrate an AI-based inspection system, a shadow mode deployment is used. The AI model runs alongside human inspectors, generating predictions without influencing factory decisions. If the AI model consistently aligns with human judgments, it can later take on a more active role.
@@ -4535,7 +5019,7 @@ By analyzing discrepancies between human and AI predictions, developers can refi
 
 \section{Canary Deployment}
 
-A **canary deployment** involves rolling out a new model to a small percentage of real traffic before gradually expanding its reach. This minimizes risks by limiting the impact of potential failures.
+A \textbf{canary deployment} involves rolling out a new model to a small percentage of real traffic before gradually expanding its reach. This minimizes risks by limiting the impact of potential failures.
 
 \begin{examplebox}
    A defect detection model in a smartphone factory is deployed to inspect only 5\% of production initially. If its performance matches expectations, the deployment is incrementally expanded. In case of errors, rollback is straightforward since most production still relies on the previous system.
@@ -4545,7 +5029,7 @@ This approach helps catch issues early and ensures that any mistakes affect only
 
 \section{Blue-Green Deployment}
 
-A **blue-green deployment** is used to transition from an old model (blue) to a new model (green) with minimal disruption. Traffic is routed to the blue model initially and switched to the green model when ready.
+A \textbf{blue-green deployment} is used to transition from an old model (blue) to a new model (green) with minimal disruption. Traffic is routed to the blue model initially and switched to the green model when ready.
 
 \begin{examplebox}
    A visual inspection system processes images from factory cameras. Initially, all traffic is routed to the old system (blue). Once the new system (green) is ready, traffic is switched over instantly. If problems arise, the router can redirect traffic back to the blue system.
@@ -4555,7 +5039,7 @@ This method ensures seamless transitions while maintaining the option for rollba
 
 \section{Choosing the Right Degree of Automation}
 
-Deployment is not a binary decision between **manual** and **fully automated** systems. Instead, a spectrum of automation levels exists:
+Deployment is not a binary decision between manual and fully automated systems. Instead, a spectrum of automation levels exists:
 
 \begin{itemize}
     \item \textbf{Shadow mode}: AI makes predictions but does not influence decisions.
@@ -4575,10 +5059,10 @@ Many industrial applications benefit from human-in-the-loop approaches rather th
 Several deployment patterns can be used based on the context and risk tolerance:
 
 \begin{itemize}
-    \item **Shadow mode deployment**: AI runs in parallel with human or existing model-based decisions.
-    \item **Canary deployment**: AI is deployed to a small percentage of cases before scaling up.
-    \item **Blue-green deployment**: AI replaces an older model while keeping rollback options available.
-    \item **Automation spectrum**: AI’s role can range from pure assistance to full automation.
+    \item \textbf{Shadow mode deployment:} AI runs in parallel with human or existing model-based decisions.
+    \item \textbf{Canary deployment:} AI is deployed to a small percentage of cases before scaling up.
+    \item \textbf{Blue-green deployment:} AI replaces an older model while keeping rollback options available.
+    \item \textbf{Automation spectrum:} AI’s role can range from pure assistance to full automation.
 \end{itemize}
 
 Choosing the right deployment pattern can ensure a smooth transition and minimize the risks associated with deploying a new machine learning system.
@@ -4589,7 +5073,7 @@ Choosing the right deployment pattern can ensure a smooth transition and minimiz
 
 Deploying a machine learning model is only the beginning—monitoring is essential to ensure that the system continues to perform as expected. Over time, models may degrade due to changes in data, unexpected software behavior, or external shifts in user behavior. A robust monitoring system helps detect these issues early and allows for timely intervention.
 
-This chapter explores best practices for monitoring both **single models** and **full machine learning pipelines**.
+This chapter explores best practices for monitoring both single models and full machine learning pipelines.
 
 \section{Monitoring a Single Model}
 
@@ -4605,23 +5089,25 @@ Monitoring metrics can be broadly categorized into three types:
     \item \textbf{Output Metrics}: Indicators that measure whether the model's outputs are behaving as expected.
 \end{itemize}
 
+\noindent\begin{minipage}{\textwidth}
 \begin{examplebox}
-   A speech recognition system may monitor the **average input length** and **input volume** of audio clips. A sudden change in these values may indicate a shift in user behavior or hardware differences (e.g., a new microphone model).
+   A speech recognition system may monitor the average input length and input volume of audio clips. A sudden change in these values may indicate a shift in user behavior or hardware differences (e.g., a new microphone model).
 \end{examplebox}
+\end{minipage}
 
 \begin{examplebox}
-   A smartphone defect detection model can track **image brightness** to ensure consistent lighting conditions in a factory. If brightness decreases significantly, it may signal a problem with the factory's lighting setup.
+   A smartphone defect detection model can track image brightness to ensure consistent lighting conditions in a factory. If brightness decreases significantly, it may signal a problem with the factory's lighting setup.
 \end{examplebox}
 
 \subsection{Iterative Approach to Monitoring}
 
-Monitoring is an **iterative process**. The initial deployment will likely include a broad set of metrics, some of which may prove unnecessary over time. It is common to refine and adapt monitoring metrics as new issues arise.
+Monitoring is an \textbf{iterative process}. The initial deployment will likely include a broad set of metrics, some of which may prove unnecessary over time. It is common to refine and adapt monitoring metrics as new issues arise.
 
 \begin{examplebox}
-   A fraud detection system monitors the **rate of flagged transactions**. Initially, the team sets a threshold, but after deployment, they realize that seasonal shopping patterns affect this rate. They adjust the threshold dynamically based on time-of-year trends.
+   A fraud detection system monitors the rate of flagged transactions. Initially, the team sets a threshold, but after deployment, they realize that seasonal shopping patterns affect this rate. They adjust the threshold dynamically based on time-of-year trends.
 \end{examplebox}
 
-Once key metrics are established, it is useful to set **alert thresholds** to trigger notifications when values exceed acceptable ranges. Common triggers include:
+Once key metrics are established, it is useful to set alert thresholds to trigger notifications when values exceed acceptable ranges. Common triggers include:
 
 \begin{itemize}
     \item Server load exceeding 90\%.
@@ -4629,49 +5115,49 @@ Once key metrics are established, it is useful to set **alert thresholds** to tr
     \item Model output confidence scores dropping significantly.
 \end{itemize}
 
-If an issue is detected, the appropriate action may involve **updating the software infrastructure, retraining the model, or adjusting the input data**.
+If an issue is detected, the appropriate action may involve updating the software infrastructure, retraining the model, or adjusting the input data.
 
 \section{Monitoring Machine Learning Pipelines}
 
-Many AI systems are not standalone models but **pipelines** involving multiple processing steps. Monitoring a pipeline requires tracking multiple components that influence the final outcome.
+Many AI systems are not standalone models but pipelines involving multiple processing steps. Monitoring a pipeline requires tracking multiple components that influence the final outcome.
 
 \subsection{Example: Speech Recognition Pipeline}
 
 A speech recognition system typically involves multiple stages:
 
 \begin{enumerate}
-    \item **Voice Activity Detection (VAD):** Determines if speech is present.
-    \item **Speech Recognition Model:** Transcribes detected speech.
+    \item \textbf{Voice Activity Detection (VAD):} Determines if speech is present.
+    \item \textbf{Speech Recognition Model:} Transcribes detected speech.
 \end{enumerate}
 
 \begin{examplebox}
-   If a new smartphone model alters how background noise is filtered, the **VAD module** may clip audio differently. This, in turn, can degrade the performance of the **speech recognition model** downstream.
+   If a new smartphone model alters how background noise is filtered, the VAD module may clip audio differently. This, in turn, can degrade the performance of the **speech recognition model** downstream.
 \end{examplebox}
 
 Because errors in early pipeline stages can cascade, it is important to monitor input and output metrics at each stage.
 
 \subsection{Example: User Profile-Based Recommendations}
 
-Recommendation systems often build **user profiles** based on clickstream data. These profiles feed into another model that generates product recommendations.
+Recommendation systems often build user profiles based on clickstream data. These profiles feed into another model that generates product recommendations.
 
 \begin{examplebox}
-   If clickstream data quality degrades, user profiles may become unreliable. A key metric to monitor is the **percentage of user profiles with missing attributes** (e.g., a user's car ownership status being marked as "unknown").
+   If clickstream data quality degrades, user profiles may become unreliable. A key metric to monitor is the percentage of user profiles with missing attributes (e.g., a user's car ownership status being marked as "unknown").
 \end{examplebox}
 
 By monitoring individual pipeline components, issues can be detected before they propagate through the system.
 
 \section{Understanding Data Change Rates}
 
-The frequency of **data changes** depends on the type of application:
+The frequency of data changes depends on the type of application:
 
 \begin{itemize}
     \item \textbf{Gradual Change:} Face recognition systems change slowly as people's appearances shift over time.
     \item \textbf{Sudden Change:} Factory defect detection may shift rapidly if new materials are introduced in manufacturing.
-    \item \textbf{User Behavior Change:} Consumer behavior generally evolves slowly, except in cases like **COVID-19**, which caused drastic changes overnight.
+    \item \textbf{User Behavior Change:} Consumer behavior generally evolves slowly, except in cases like COVID-19, which caused drastic changes overnight.
 \end{itemize}
 
 \begin{examplebox}
-   An e-commerce recommendation system monitors **search trends**. If a holiday season or viral product causes a shift in search behavior, the system must adapt accordingly.
+   An e-commerce recommendation system monitors search trends. If a holiday season or viral product causes a shift in search behavior, the system must adapt accordingly.
 \end{examplebox}
 
 \section{Summary}
@@ -4679,14 +5165,14 @@ The frequency of **data changes** depends on the type of application:
 Effective monitoring is crucial for maintaining the **long-term performance** of machine learning systems. Best practices include:
 
 \begin{itemize}
-    \item Using **dashboards** to track relevant metrics.
-    \item Monitoring **software, input, and output metrics**.
-    \item Implementing **alert thresholds** for key indicators.
-    \item Tracking **data drift and pipeline interactions**.
+    \item Using dashboards to track relevant metrics.
+    \item Monitoring software, input, and output metrics.
+    \item Implementing alert thresholds for key indicators.
+    \item Tracking data drift and pipeline interactions.
     \item Adapting monitoring strategies as data changes over time.
 \end{itemize}
 
-By continuously **refining monitoring processes**, machine learning teams can detect issues early and ensure system reliability.
+By continuously refining monitoring processes, machine learning teams can detect issues early and ensure system reliability.
 
 
 
@@ -4697,7 +5183,7 @@ By continuously **refining monitoring processes**, machine learning teams can de
     \vspace*{\fill}
     \Large{\textbf{Thank You for Reading!}}\\[1cm]
     \normalsize{
-        I appreciate your interest in this eBook. Your feedback, comments, and suggestions for improvement are highly valued and will help me refine this work.
+        I appreciate your interest in this ebook. Your feedback, comments, and suggestions for improvement are highly valued and will help me refine this work.
     }\\[0.5cm]
     \textbf{Feel free to get in touch:}\\[0.5cm]
     \begin{tabbing}
