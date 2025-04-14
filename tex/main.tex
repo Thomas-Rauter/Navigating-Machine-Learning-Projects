@@ -18,6 +18,7 @@
 % \usepackage{sectsty}
 \usepackage{pifont}
 \usepackage{pgfplots}
+\usepackage[most]{tcolorbox}
 \usepackage{titlesec} % For customizing section and chapter titles
 \usepackage{tikz}
 \usepackage{xcolor}
@@ -138,6 +139,28 @@
 % Use the summary box sparingly to highlight essential takeaways for sections or chapters.
 
 
+\newtcolorbox{keywordsbox}{
+  colback=gray!5,
+  colframe=black!50,
+  fonttitle=\bfseries,
+  title=Keywords,
+  sharp corners,
+  boxrule=0.5pt,
+  left=6pt,
+  right=6pt,
+  top=4pt,
+  bottom=4pt,
+  before skip=10pt,
+  after skip=10pt
+}
+% Put such a box at the very beginning of a section when it makes sense to have keywords for that section. Don't force it!
+%Example:
+%\begin{keywordsbox}
+%Time series forecasting, autoregression, recurrent networks, horizon, lag %features, statistical models
+%\end{keywordsbox}
+
+
+
 
 \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
 \tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
@@ -199,6 +222,27 @@
 \hfuzz=1.5pt                      % ignore small overflows outside paragraphs
 \hbadness=10000                  % suppress low-severity badness messages
 \AtBeginDocument{\sloppy}       % global sloppy mode
+
+
+% Formatting guidelines:
+% 1 empty line between paragraphs, figures, text-boxes, etc.
+% 2 empty lines before subsections
+% 3 empty lines before sections
+% 4 empty lines before chapters
+% 5 empty lines before parts
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \begin{document}
@@ -402,9 +446,9 @@ For example, in the context of an ecommerce retailer, common business problems m
 This separation between problem identification and solution generation is critical. By clearly articulating the desired outcomes in business terms, teams can ensure alignment with organizational goals. Furthermore, this approach lays a strong foundation for brainstorming AI solutions in the next phase of the scoping process.
 
 
-\section{Brainstorm AI Solutions}
+\section{Brainstorm ML Solutions}
 
-After identifying the key business problems, the next step is to explore potential AI solutions that could address these challenges. This phase involves mapping the business objectives to technical possibilities and evaluating whether machine learning can effectively contribute to solving the problem.
+After identifying the key business problems, the next step is to explore potential ML solutions that could address these challenges. This phase involves mapping the business objectives to technical possibilities and evaluating whether machine learning can effectively contribute to solving the problem.
 \newline
 
 It is important to approach this step collaboratively, working with both technical teams and business stakeholders. Begin by brainstorming various machine learning approaches that align with the identified business problems. For instance:
@@ -414,7 +458,7 @@ It is important to approach this step collaboratively, working with both technic
     \item To boost profit margins, price optimization algorithms or bundling strategies informed by user purchasing behavior could be employed.
 \end{itemize}
 
-Not every business problem will have a feasible AI solution, and that is perfectly acceptable. In cases where machine learning does not present a viable path forward, the focus can shift to non-AI alternatives. However, if AI solutions are identified, it is crucial to assess their alignment with the business goals and their potential for impact.
+Not every business problem will have a feasible ML solution, and that is perfectly acceptable. In cases where machine learning does not present a viable path forward, the focus can shift to non-ML alternatives. However, if ML solutions are identified, it is crucial to assess their alignment with the business goals and their potential for impact.
 
 This phase also benefits from separating the ideation of solutions from the feasibility assessment. By first brainstorming a wide range of possibilities, teams can engage in creative and innovative thinking before narrowing down the options to those that are both impactful and practical. This sets the stage for the subsequent steps of assessing feasibility and determining value.
 
@@ -557,6 +601,11 @@ Ultimately, machine learning practitioners should strive to focus their efforts 
 
 \section{Milestones and Resourcing}
 
+\begin{keywordsbox}
+project milestones, performance metrics, proof of concept, resource planning, timeline
+\end{keywordsbox}
+
+
 Once a problem has been identified, a solution proposed, and due diligence completed to confirm the project's feasibility and value, the final steps of the scoping process involve determining milestones and resourcing. These steps ensure that the project is well-defined and has a clear roadmap for execution.
 
 \subsection{Milestones}
@@ -645,6 +694,10 @@ A fraud detection system trained on historic bank data failed after deployment b
 
 
 \section{Label Consistency}
+
+\begin{keywordsbox}
+annotation disagreement, labeling guidelines
+\end{keywordsbox}
 
 Data quality plays a crucial role in machine learning projects, and ensuring consistent labeling is one of the most important aspects of dataset preparation. Inconsistent labeling can lead to confusion for the learning algorithm and significantly impact model performance. This section explores why defining data consistently is challenging and how inconsistencies arise even when labelers are diligent and well-intentioned. \newline
 
@@ -897,6 +950,10 @@ insights needed to make informed preprocessing and modeling decisions.
 
 \section{Variable Distributions}
 
+\begin{keywordsbox}
+variable distribution, central tendency, dispersion, histogram, Q-Q plot
+\end{keywordsbox}
+
 Assessing the distribution of each variable is a fundamental step in exploratory data analysis. It provides insights into the data's range, central tendency, dispersion, and overall shape. By thoroughly understanding the distribution of each variable, we can detect data quality issues, recognize patterns, and inform downstream modeling decisions.
 
 \subsection{Understanding Central Tendency and Dispersion}
@@ -979,6 +1036,10 @@ A well-executed variable distribution analysis lays the foundation for deeper in
 
 
 \section{Outliers, Data Errors, and Missing Values}
+
+\begin{keywordsbox}
+outliers, data errors, missing values, anomaly detection, visualization
+\end{keywordsbox}
 
 Detecting outliers, data errors, and missing values is a critical step in 
 exploratory data analysis (EDA). These elements can indicate errors, 
@@ -1122,7 +1183,12 @@ Detecting them is crucial for ensuring data integrity before analysis.
 \newline
 
 
+
 \section{Comparing Variables}
+
+\begin{keywordsbox}
+correlation, visualization, mutual information, variable relationships
+\end{keywordsbox}
 
 Examining relationships between variables is essential for understanding dependencies, correlations, and potential interactions. This step helps detect redundant features, uncover predictive relationships, and guide feature engineering decisions. 
 
@@ -1248,6 +1314,10 @@ where \( P(x, y) \) is the joint probability distribution, and \( P(x) \) and \(
 
 \section{Dimensionality Reduction}
 
+\begin{keywordsbox}
+pca, tsne, umap, high-dimensional data, visualization
+\end{keywordsbox}
+
 When exploring high-dimensional datasets, it can be challenging to understand relationships between variables or detect meaningful structures. \textbf{Dimensionality reduction} techniques help visualize and summarize complex datasets by reducing the number of features while preserving the most relevant information. In the context of EDA, the goal is not to transform features for modeling but to uncover patterns, groupings, and structures in the data.
 
 \subsection{Why Use Dimensionality Reduction in EDA?}
@@ -1321,6 +1391,10 @@ Dimensionality reduction in EDA helps explore complex datasets by summarizing fe
 
 
 \section{Pattern Discovery}
+
+\begin{keywordsbox}
+clustering, correlation analysis, association rules, time-series patterns
+\end{keywordsbox}
 
 Pattern discovery in exploratory data analysis aims to uncover hidden structures, trends, and regularities within the dataset. Identifying patterns helps in feature engineering, data preprocessing, and understanding the underlying relationships that could impact modeling decisions.
 
@@ -1636,6 +1710,10 @@ In a balanced split, the train set would have 18 positive examples, and both the
 
 \section{Cross-Validation}
 
+\begin{keywordsbox}
+cross-validation, stratified k-fold, leave-one-out, time series split
+\end{keywordsbox}
+
 Cross-validation is a model evaluation strategy used when data is limited or noisy, and a single train/validation split may give unreliable estimates. Instead of holding out a fixed validation set, the data is split into multiple folds, and the model is trained and evaluated multiple times—once per fold. The results are then averaged to provide a more stable estimate of generalization performance. 
 \newline
 
@@ -1683,16 +1761,21 @@ In a brain signal study using EEG, each smoker was measured twice: once after sm
 
 
 
-
-
 \section{Systematic and Random Errors in Training Data}
+
 Many machine learning algorithms are robust to random errors in the training set, so minor inaccuracies are often acceptable. However, systematic errors, such as consistent mislabeling of a particular category, can significantly degrade model performance by introducing biases in the learned patterns. \newline
 
 \begin{examplebox}
 Consider a scenario where a labeller is annotating images of cats and occasionally mislabels some dogs as cats, perhaps due to accidentally pressing the wrong button. This type of error is random and does not consistently affect a specific subset of the data, therefore this does not introduce a consistent bias in the dataset. However, if the labeller consistently labels small white dogs as cats, this constitutes a systematic error. The model would then learn an incorrect correlation and likely label all small white dogs as cats in the future. 
 \end{examplebox}
 
+
+
 \section{Distributions of Train, Dev, and Test Sets}
+
+\begin{keywordsbox}
+distribution alignment, data mismatch, evaluation reliability
+\end{keywordsbox}
 
 \subsection{Dev and Test Set Distributions}
 The dev and test sets must share the same distribution, which should align with the distribution expected in the final application. This also means that any modifications to the dev set, such as correcting mislabeled instances, should also be applied to the test set to preserve distributional alignment. This ensures that hyperparameter optimization and evaluation are targeted correctly, enabling the model to perform optimally on the actual task. If the dev and test sets differ or do not reflect the application distribution, the model's performance may not generalize well to application scenarios where the model is employed. \newline
@@ -1794,9 +1877,11 @@ Figure~\ref{fig:catboost-benchmark} illustrates a benchmark from the CatBoost we
 
 
 
-
-
 \section{Data Cleaning}
+
+\begin{keywordsbox}
+missing values, outliers, inconsistent data, data formatting
+\end{keywordsbox}
 
 Data cleaning is a fundamental step in any machine learning pipeline. Poor data quality can lead to misleading patterns and reduce the effectiveness of even the most advanced models. This process typically involves handling missing values, identifying and removing outliers, correcting logically inconsistent entries, and ensuring uniform data formatting. \newline
 
@@ -1854,6 +1939,11 @@ Effective data cleaning enhances model reliability and ensures that patterns in 
 
 \section{Handling Class Imbalances in Data}
 
+\begin{keywordsbox}
+class imbalance, target imbalance, rare categories, resampling, class weighting
+\end{keywordsbox}
+
+
 Class imbalances can occur in both features and target variables. While target imbalances are well-known for causing model bias, imbalanced feature distributions can also impact learning. Below are concise guidelines on when these issues must be addressed and how to mitigate them.
 
 \subsection{Imbalanced Feature Categories}
@@ -1909,6 +1999,10 @@ Addressing class imbalances correctly improves model performance, ensures better
 
 
 \section{Understanding Colliders, Confounders, and Mediators}
+
+\begin{keywordsbox}
+colliders, confounders, mediators, causal features, spurious correlation
+\end{keywordsbox}
 
 Many machine learning models rely on feature-target correlations without considering underlying causal relationships. However, blindly using correlated features can lead to spurious conclusions and harm generalization. This section explains three key concepts—colliders, confounders, and mediators—and when to drop certain features.
 
@@ -1975,6 +2069,11 @@ Understanding these relationships ensures better feature selection, reduces over
 
 \section{Dataset Size and Dimensional Regimes}
 
+\begin{keywordsbox}
+dimensionality, sample-to-feature ratio, overfitting risk, high-dimensional data
+\end{keywordsbox}
+
+
 In machine learning, dataset size is often described in loose terms such as ``small'', ``medium'', or ``large''. However, these labels are inherently context-dependent and should be treated as rough heuristics rather than strict classifications.
 
 \subsection{Heuristic Classification of Dataset Size}
@@ -2023,10 +2122,11 @@ The categorization of data size and its dimensional regime is a critical diagnos
 
 
 
-
-
-
 \section{Data Augmentation}
+
+\begin{keywordsbox}
+unstructured data, performance gaps, synthetic data, error analysis
+\end{keywordsbox}
 
 \subsection{The Role of Data Augmentation in Performance Improvement}
 
@@ -2142,6 +2242,7 @@ Beyond model iteration—where the model is refined through hyperparameter tunin
 For many practical problems, taking this data-centric approach often leads to faster performance improvements than solely modifying the model. When error analysis reveals weaknesses in specific data subsets—such as speech with cafe noise—targeted data augmentation can efficiently address these gaps, improving model performance without requiring new architectures or complex model modifications.
 
 
+
 \section{Can Adding Data Hurt?}
 
 In many machine learning problems, the training, development, and test sets initially come from similar distributions. However, when using data augmentation, new data is often added to specific subsets of the training set—such as introducing more speech samples with cafe noise. This can shift the distribution of the training data significantly compared to the dev and test sets. Does this hurt the performance of a learning algorithm? Usually, the answer is no, with some important caveats. \newline
@@ -2242,6 +2343,9 @@ Some examples for feature engineering:
 
 
 \section{Transforming and Encoding Features}
+
+\begin{keywordsbox}
+scaling, encoding strategies, categorical variables, target encoding \end{keywordsbox}
 
 Not all features speak the same language—models need help understanding the difference between categories, ordered categories, and numerical values. This chapter outlines how to transform or encode features depending on their measurement scale, with practical guidance tailored to downstream modeling.
 \newline
@@ -2357,6 +2461,7 @@ In a dataset of buildings affected by the Gorkha earthquake, each building has a
 \end{examplebox}
 
 
+
 \section{Using Cluster Membership as a Feature}
 
 Cluster membership can be added as a feature for supervised modeling. This is useful when the clusters capture higher-order structure that isn't obvious from the raw variables. Apply this when you suspect the model might benefit from latent groupings in the data, such as temporal states, cell populations, or condition clusters.
@@ -2453,7 +2558,6 @@ Unlike unstructured data, where deep learning models learn features automaticall
 
 
 
-
 \chapter{Dataset Versioning}
 
 In any real-world machine learning project, datasets evolve over time: new features are added, preprocessing methods change, and additional sources are integrated. Keeping track of these versions in a clear and reproducible way is essential to ensure transparency and reliability throughout the modeling pipeline.
@@ -2487,8 +2591,6 @@ And separately for the dev set:
 \end{itemize}
 
 
-
-
 \subsection{Modification glossary}
 This table defines the meaning of each code used in dataset version names:
 \newline
@@ -2508,7 +2610,6 @@ ohe      & One-hot encoding for categoricals & \texttt{one\_hot\_encode.py} \\
 \newline
 
 Each code must be unique, and each modification should represent a single, well-defined change. Accordingly, each code in the version name should correspond to exactly one script that performs that specific step. Avoid combining multiple changes into a single modification (e.g.\ \texttt{tohe} \(\rightarrow\) \texttt{target\_and\_one\_hot\_encode.py}); instead, apply each change separately with one script per step. This ensures modularity, clarity, and scalability in dataset versioning.
-
 
 
 \subsection{Version table}
@@ -2562,6 +2663,7 @@ project/
 \end{itemize}
 
 This setup enforces a clean separation between raw inputs and modified versions, while providing a transparent audit trail of how each dataset was generated.
+
 
 
 
@@ -2843,6 +2945,8 @@ Deep Learning with Ordinal Encoding & When using deep learning and you want the 
 
 \vspace{10pt}
 
+
+
 \section{Strategy 1: Treat as Classification}
 
 The simplest approach is to use a standard classification algorithm, ignoring
@@ -2863,7 +2967,13 @@ inconsistent or illogical class rankings.
 
 \vspace{5pt}
 
+
+
 \section{Strategy 2: Use an Ordinal Classification Model}
+
+\begin{keywordsbox}
+ordinal logistic regression, proportional odds model, cumulative probabilities, polr
+\end{keywordsbox}
 
 Ordinal models explicitly respect the class order. The most common is
 the \textit{proportional odds model} (ordinal logistic regression).
@@ -2884,6 +2994,8 @@ $P(\text{level} \leq \text{secondary})$.
 
 \vspace{5pt}
 
+
+
 \section{Strategy 3: Map to Integers and Regress}
 
 Map classes to integers (e.g., `low` = 1, `medium` = 2, `high` = 3) and
@@ -2902,6 +3014,8 @@ then rounded to predict `good`. Note that the spacing is assumed equal.
 \end{examplebox}
 
 \vspace{5pt}
+
+
 
 \section{Strategy 4: Regression with Ordinal-Aware Loss}
 
@@ -2922,6 +3036,7 @@ instead of `5` is worse than predicting `4` instead of `5`.
 \end{examplebox}
 
 \vspace{5pt}
+
 
 
 \section{Strategy 5: Classification with Ordinal-Aware Loss}
@@ -2958,8 +3073,8 @@ These methods impose ordinal structure \emph{directly into the network’s outpu
 Instead of predicting a softmax over 5 pain severity levels, a neural network outputs four binary decisions: “Is pain \textgreater{} 0?”, “\textgreater{} 1?”, “\textgreater{} 2?”, “\textgreater{} 3?”. This reflects the natural ordering and improves consistency across predictions.
 \end{examplebox}
 
-
 \vspace{10pt}
+
 
 
 
@@ -2974,7 +3089,13 @@ Most data analysis methods comprise the following four steps:
 \end{itemize}
 
 
+
 \section{Selecting a Model Class}
+
+\begin{keywordsbox}
+supervised learning, unsupervised learning, reinforcement learning, self-supervised learning, model interpretability, generalization, computational efficiency
+\end{keywordsbox}
+
 
 In the modeling stage of a machine learning project, choosing the right model class is a fundamental decision that affects predictive performance, interpretability, and computational efficiency. The model class defines the structure of the relationship between input data and predictions. Some models, such as linear regression, make strong assumptions about the underlying data, while others, like neural networks, provide more flexibility at the cost of complexity.
 \newline
@@ -3166,6 +3287,11 @@ by maximizing rewards.
 
 \section{Selecting an Objective Function}
 
+\begin{keywordsbox}
+loss function, model fitting, optimization
+\end{keywordsbox}
+
+
 Choosing a model class defines the general structure of a model, 
 typically in terms of a set of parameters. However, to determine 
 the best or at least a good model for a given dataset, a 
@@ -3270,8 +3396,11 @@ functions are required.
 
 
 
-
 \section{Selecting an Optimization Algorithm}
+
+\begin{keywordsbox}
+gradient descent, SGD, Adam, closed-form solution, analytical optimization, combinatorial search, random search, heuristic optimization
+\end{keywordsbox}
 
 The objective functions, mostly error functions as explained in the previous section, do not tell us directly how to find the best or at least a good model with respect to the fitting criterion. For this purpose, methods from optimization are needed. Optimizers (optimization algorithms) guide the learning process by adjusting model parameters to minimize the chosen objective function. Different algorithms are suited for different scenarios, depending on dataset size, model type, computational constraints, and the characteristics of the objective function.
 \newline
@@ -3325,9 +3454,11 @@ These methods do not rely on gradients and are useful when the search space is c
 
 
 
-
-
 \section{Selecting an Evaluation Metric}
+
+\begin{keywordsbox}
+RMSE, MAE, R-squared, accuracy, F1 score, AUC
+\end{keywordsbox}
 
 Once a model is trained by optimizing an objective function, it is 
 essential to assess how well it performs. This is the role of the 
@@ -3429,9 +3560,12 @@ misordering severity.
 
 
 
+
 \chapter{Modeling Time Series Data}
 
 Time series tasks differ fundamentally from traditional machine learning due to the temporal structure in the data. This structure breaks key assumptions of standard modeling pipelines—such as the independence of observations—and requires models to explicitly account for the order and spacing of data points. Choosing an appropriate modeling strategy depends on the prediction goal, the data structure, and the trade-off between complexity and interpretability.
+
+
 
 \section{Defining the Prediction Objective}
 
@@ -3538,9 +3672,11 @@ For short-term forecasting, recursive models are often sufficient. For longer ho
 \end{notebox}
 
 
+
 \section{Handling Irregular Time Steps and Missing Values}
 
 Time series data is not always regularly spaced. Missing observations, sensor outages, or asynchronous events can lead to gaps or uneven intervals — and many models assume a regular sequence.
+
 
 \subsection*{Irregular Time Steps}
 
@@ -3549,6 +3685,7 @@ Time series data is not always regularly spaced. Missing observations, sensor ou
     \item \textbf{Use time deltas as input:} For models like neural networks, explicitly include the time between events as a feature.
     \item \textbf{Model event sequences directly:} Use models designed for irregular sequences (e.g., Time-aware LSTM, Neural ODEs).
 \end{itemize}
+
 
 \subsection*{Missing Values}
 
@@ -3563,9 +3700,11 @@ If missingness is informative (e.g., “no measurement” signals a condition), 
 \end{notebox}
 
 
+
 \section{Choosing the Modeling Objective}
 
 Time series modeling is not limited to forecasting future values. Different tasks require different modeling objectives:
+
 
 \subsection*{1. Forecasting (Regression)}
 
@@ -3576,6 +3715,7 @@ The most common case: predicting future numeric values (e.g., temperature, deman
     \item Target variable is continuous (e.g., $y_{t+1}$).
 \end{itemize}
 
+
 \subsection*{2. Classification over Time}
 
 Predicting discrete categories, such as machine failure (yes/no), user churn, or event detection.
@@ -3584,6 +3724,7 @@ Predicting discrete categories, such as machine failure (yes/no), user churn, or
     \item Use classification models: logistic regression, tree ensembles, neural nets.
     \item Can be framed as sequence classification or stepwise classification (e.g., classify each $t$).
 \end{itemize}
+
 
 \subsection*{3. Anomaly Detection}
 
@@ -3599,9 +3740,11 @@ Clearly defining the task type (regression, classification, anomaly detection) h
 \end{notebox}
 
 
+
 \section{Global vs.\ Local Models}
 
 When working with many related time series (e.g., one per user, sensor, or region), a key design decision is whether to model each series separately or together.
+
 
 \subsection*{Local Models}
 
@@ -3612,6 +3755,7 @@ Train a separate model for each time series.
     \item Easy to debug and explain.
     \item Doesn’t scale well — requires many models.
 \end{itemize}
+
 
 \subsection*{Global Models}
 
@@ -3628,9 +3772,11 @@ Tree-based models and neural networks scale naturally to global modeling. Classi
 \end{notebox}
 
 
+
 \section{Single-Step vs.\ Multi-Step Forecasting}
 
 The number of future steps a model needs to predict influences both modeling strategy and evaluation.
+
 
 \subsection*{Single-Step Forecasting}
 
@@ -3641,6 +3787,7 @@ Predict only the next value in the sequence (e.g., $y_{t+1}$ given $y_t, y_{t-1}
     \item Can be extended to multiple steps by recursive prediction.
 \end{itemize}
 
+
 \subsection*{Multi-Step Forecasting}
 
 Predict multiple future time steps at once (e.g., $y_{t+1}, y_{t+2}, \dots, y_{t+h}$).
@@ -3649,6 +3796,7 @@ Predict multiple future time steps at once (e.g., $y_{t+1}, y_{t+2}, \dots, y_{t
     \item Better for planning and long-term optimization.
     \item Harder to model due to compounding uncertainty.
 \end{itemize}
+
 
 \subsection*{Modeling Strategies for Multi-Step Forecasting}
 
@@ -3665,8 +3813,9 @@ Choose multi-output if you care about the entire future trajectory. Use recursiv
 
 
 
-
 \chapter{Setup Before Model Training}
+
+
 
 \section{Optimizing and Satisficing Metrics}
 
@@ -3679,6 +3828,7 @@ To sum it up, when using N metrics that evaluate the usability of your model, fo
     \item Choose \textbf{one optimizing metric} that drives model improvement.
     \item Define \textbf{N minus 1 satisficing metrics} with thresholds that the model must satisfy.
 \end{itemize}
+
 
 
 \section{Performance Baseline} \label{sec:performance_baseline}
@@ -3716,6 +3866,8 @@ This lower bound stands in contrast to the \textbf{(hard) upper bound}, which is
 by the Bayes error, the irreducible error inherent to the problem itself. For more 
 details on the upper bound, refer to the \hyperlink{bayes-error}{definition of Bayes error}. \newline
 
+
+
 \section{Sanity Checks for the Code and Algorithm}
 
 Before training your model on the full dataset, which may require significant time and computational resources, it is a good practice to perform sanity checks on a smaller scale. For example, attempt to overfit your model on a small training dataset or even a single example. This approach helps identify potential bugs in your code or issues with the model's behavior. \newline
@@ -3725,15 +3877,20 @@ If the model fails to correctly predict on the small dataset, it is likely there
 
 
 
-
-
 \chapter{Overarching Strategies}
 
 This part presents high-level strategies that span the entire modeling stage. Unlike more focused techniques that address specific challenges, these overarching strategies—such as transfer learning, multitask learning, and end-to-end learning—are comprehensive frameworks that guide the overall approach to building and optimizing models. They are typically applied selectively, with one or two strategies often shaping the foundation of a project, depending on its goals, data availability, and complexity.
 
+
+
 \section{Transfer Learning}
 
+\begin{keywordsbox}
+pre-training, fine-tuning, pretrained models, task adaptation, neural networks, feature reuse, domain similarity, representation learning
+\end{keywordsbox}
+
 Transfer learning is a technique in machine learning where a model trained on one task (task A) is adapted for a similar but distinct task (task B). This approach leverages knowledge learned from task A, especially when task A has a large dataset and task B has relatively limited data. Transfer learning involves the following steps:
+
 
 \subsection{Pre-training and Fine-tuning}
 
@@ -3746,6 +3903,7 @@ Transfer learning is a technique in machine learning where a model trained on on
     \end{itemize}
 \end{itemize}
 
+
 \subsection{When Does Transfer Learning Make Sense?}
 
 Transfer learning is most effective under the following conditions:
@@ -3754,6 +3912,7 @@ Transfer learning is most effective under the following conditions:
     \item \textbf{Task A has significantly more data than Task B:} The abundance of data in Task A allows the model to learn rich, transferable features.
     \item \textbf{Low-level features from task A are relevant to task B:} For instance, features learned for detecting shapes in images (task A) can help with a new image classification task (task B).
 \end{itemize}
+
 
 \subsection{When Transfer Learning is Less Effective}
 
@@ -3770,14 +3929,21 @@ Transfer learning is less beneficial in scenarios where:
 Transfer learning is most commonly associated with neural networks and less frequently used with other machine learning algorithms. This is because neural networks are highly effective at learning hierarchical and reusable representations from large datasets, which can then be fine-tuned for specific tasks. Traditional machine learning algorithms, such as Random Forests or SVMs, lack this inherent ability to automatically learn generalizable features. As a result, transfer learning with these methods often requires significant manual intervention, such as feature engineering or domain adaptation, making it less seamless and scalable compared to neural networks.
 \end{notebox}
 
+
 \subsection{Conclusion}
 
-Transfer learning enables the reuse of learned knowledge from a well-resourced task (task A) to improve performance on a resource-limited task (task B). By leveraging pre-trained models, it reduces training time and improves model accuracy, particularly when task A and task B share similar characteristics and input formats. However, the effectiveness of transfer learning depends on the amount of data available for each task and the relevance of features between the tasks. \
+Transfer learning enables the reuse of learned knowledge from a well-resourced task (task A) to improve performance on a resource-limited task (task B). By leveraging pre-trained models, it reduces training time and improves model accuracy, particularly when task A and task B share similar characteristics and input formats. However, the effectiveness of transfer learning depends on the amount of data available for each task and the relevance of features between the tasks. 
+
 
 
 \section{Multitask Learning}
 
+\begin{keywordsbox}
+multitask models, shared features, joint training, conditional loss, vector outputs, label sparsity, cross-task learning
+\end{keywordsbox}
+
 Multitask learning is an approach in machine learning where a single model is trained simultaneously on multiple tasks. Unlike transfer learning, which follows a sequential process—pre-training on task A and fine-tuning for task B—multitask learning tackles all tasks concurrently. The central premise is that learning one task can benefit the others by leveraging shared information and features.
+
 
 \subsection{Mechanics of Multitask Learning}
 
@@ -3788,6 +3954,7 @@ In multitask learning, the model learns to predict a vector of outputs \( \mathb
     \item \textbf{Loss function:} Each task contributes equally to the total loss. If labels for some tasks are missing for specific inputs, the loss is computed conditionally, summing only over tasks with available labels.
 \end{itemize}
 
+
 \subsection{Advantages of Multitask Learning}
 
 \begin{itemize}
@@ -3795,6 +3962,7 @@ In multitask learning, the model learns to predict a vector of outputs \( \mathb
     \item \textbf{Computational efficiency:} Training a single model for multiple tasks reduces the computational cost compared to training separate models for each task.
     \item \textbf{Flexibility with missing labels:} The model can still learn effectively even if some tasks lack labels for certain inputs.
 \end{itemize}
+
 
 \subsection{When Does Multitask Learning Make Sense?}
 
@@ -3804,6 +3972,7 @@ Multitask learning is particularly effective in scenarios where:
     \item \textbf{Data availability is balanced:} The amount of data for each task is roughly similar, although this is not strictly necessary.
     \item \textbf{Model capacity is sufficient:} A large enough model is required to handle all tasks effectively. Research indicates that multitask learning rarely hurts performance unless the model is too small to handle the complexity of all tasks.
 \end{itemize}
+
 
 
 \section{End-to-End Learning}
@@ -3818,6 +3987,7 @@ To decide whether to use end-to-end learning, answer the following question: \ne
     \item \textbf{If yes:} End-to-end learning can provide advantages, such as simplicity, fewer assumptions about the task, and potentially better performance by optimizing the entire process jointly.
     \item \textbf{If no:} Do not use end-to-end learning. A pipeline approach may be more effective when data is limited or when intermediate steps can leverage domain-specific knowledge.
 \end{itemize}
+
 
 
 
@@ -3862,7 +4032,12 @@ Suppose your model performs poorly on the test set. Through error analysis, you 
 In summary, the key steps are simple: examine error metrics, identify the largest gaps, understand their sources, and apply targeted solutions. This structured approach ensures that every improvement is intentional, measurable, and focused on addressing the most significant problems in your machine learning project.
 
 
+
 \section{Error Analysis} \label{sec:error_analysis}
+
+\begin{keywordsbox}
+error gaps, Bayes error, data mismatch, underfitting, overfitting, shortcut learning, ceiling analysis
+\end{keywordsbox}
 
 As discussed in the introduction of this chapter, diagnosing the sources of your model’s poor performance begins with a careful examination of error metrics. Error analysis focuses on identifying and quantifying the gaps between different error numbers, such as Bayes error, train- and dev set errors. Each of these metrics represents a specific stage of your workflow, and the gaps between them highlight the root causes of performance issues. \newline
 
@@ -4062,7 +4237,12 @@ For tasks where human intuition may be limited, such as regression or classifica
 Ultimately, error analysis provides a clear framework for understanding the limitations of a model and guides iterative improvements, helping bridge the gap between current performance and the desired level of accuracy. By incorporating these strategies, machine learning practitioners can build more reliable and generalizable models, driving better outcomes for their applications.
 
 
+
 \section{Addressing Sources of the Error Gaps} \label{sec:addressing_sources_error_gaps}
+
+\begin{keywordsbox}
+underfitting, overfitting, data mismatch, regularization, domain adaptation, augmentation, shortcut learning
+\end{keywordsbox}
 
 Once error analysis has identified the sources of the gaps between error numbers, the next step is to apply targeted strategies to address the most pronounced problem. This section provides collections of techniques for each type of problem, offering practical methods to reduce avoidable bias, variance, data mismatch, overfitting to the dev set, and shortcut learning.
 
@@ -4219,11 +4399,18 @@ Shortcut learning refers to the gap between the test set error and the gen set e
 
 
 
+
 \chapter{Performance Auditing}
 
 Even when a learning algorithm achieves high accuracy, F1-score, or another relevant metric, it is crucial to conduct a final performance audit before deploying it to production. This step can prevent significant post-deployment issues and ensure that the system operates reliably across various conditions. 
 
+
+
 \section{Framework for Performance Auditing}
+
+\begin{keywordsbox}
+fairness, subgroup analysis, performance slices, MLOps, error types, auditing metrics, model bias
+\end{keywordsbox}
 
 A structured approach to performance auditing involves the following steps:
 
@@ -4291,7 +4478,10 @@ By proactively auditing performance, teams can deploy machine learning models wi
 
 
 
+
 \part{Insights}
+
+
 
 
 \chapter{Introduction to Insight Extraction}
@@ -4303,6 +4493,8 @@ By proactively auditing performance, teams can deploy machine learning models wi
 \end{itemize}
 \end{summarybox}
 
+
+
 \section{Purpose of this Stage}
 
 The insight extraction stage exists to answer one core question: \textbf{What can we learn from this model that helps us make better decisions?} While the modeling stage focuses on optimizing predictive performance, insight extraction focuses on translating that model into understanding, strategy, or intervention. This step is essential when the end goal is not automation, but human decision-making.
@@ -4310,6 +4502,8 @@ The insight extraction stage exists to answer one core question: \textbf{What ca
 \begin{notebox}
 Insight extraction is often where the actual business value gets realized — especially in settings where the model is never deployed.
 \end{notebox}
+
+
 
 \section{Why Insights are unequal to Prediction}
 
@@ -4320,6 +4514,8 @@ A model might predict customer churn with 90\% AUC using features like zip code 
 \end{examplebox}
 
 To extract insight, you need to go beyond performance metrics and investigate how the model reaches decisions, which features it responds to, and what hypothetical changes might alter its outputs.
+
+
 
 \section{When to Prioritize Insights Over Deployment}
 
@@ -4337,6 +4533,7 @@ A company wants to understand what drives loan defaults, not just predict them. 
 
 
 
+
 \chapter{Global Model Interpretation}
 
 Global model interpretation aims to answer: \textbf{What patterns has the model learned across the entire dataset?} This type of analysis helps you understand overall trends, identify influential features, and extract high-level rules. It is useful when the objective is to inform strategic decisions or communicate findings to non-technical stakeholders.
@@ -4350,11 +4547,18 @@ Global model interpretation aims to answer: \textbf{What patterns has the model 
 \end{itemize}
 \end{summarybox}
 
+
+
 \section{Feature Importance}
+
+\begin{keywordsbox}
+permutation importance, gain-based ranking, SHAP values
+\end{keywordsbox}
 
 Feature importance is the process of identifying which features most influence the model’s predictions. It answers the question: \textit{What is the model paying attention to?}
 
 This insight is essential for validating model behavior, communicating findings, and guiding follow-up actions. Importance scores can be computed in different ways, depending on the model type and your need for interpretability, speed, or theoretical rigor.
+
 
 \subsection{Types of Feature Importance}
 
@@ -4364,6 +4568,7 @@ There are two broad approaches:
     \item \textbf{Model-Specific Importance:} Uses the internal structure of the model to compute importance. Fast, but potentially biased or inconsistent across models.
     \item \textbf{Model-Agnostic Importance:} Measures how predictions change when a feature is altered. More general, but often slower and sensitive to correlations.
 \end{itemize}
+
 
 \subsection{Common Techniques}
 
@@ -4380,6 +4585,7 @@ Gain-based importance is fast but biased toward high-cardinality or continuous f
 \begin{examplebox}
 In a customer churn model, gain-based importance may rank ``account age'' highly because it's frequently used in tree splits. But SHAP values might show that ``number of support tickets'' actually has more influence on individual churn predictions — and better reflects causal intuition.
 \end{examplebox}
+
 
 \subsection{SHAP Plots for Global Insight}
 
@@ -4403,7 +4609,6 @@ Figure~\ref{fig:shap-summary-dependence} illustrates two global SHAP visualizati
     \caption{SHAP summary plot (left) and SHAP dependence plot (right) for a gradient boosting model trained on the California Housing dataset. These plots highlight which features matter most and how specific values influence predictions.}
     \label{fig:shap-summary-dependence}
 \end{figure}
-
 
 
 
@@ -4431,6 +4636,7 @@ Figure~\ref{fig:partial-dependence} shows a partial dependence plot created usin
 \end{figure}
 
 
+
 \section{Surrogate Models}
 
 Surrogate models are interpretable models (e.g., decision trees or linear models) trained to mimic the behavior of a more complex model. They are not used for prediction themselves — their purpose is to approximate the black-box model’s output in a simplified form that humans can understand.
@@ -4454,6 +4660,8 @@ A surrogate decision tree might reveal that a fraud model mostly splits based on
 \chapter{Local Model Interpretation}
 
 Local model interpretation focuses on individual predictions. The goal is to understand \textbf{why the model made this specific decision} — which features pushed it in which direction, and whether that outcome could have been different. This is crucial when decisions affect real people (e.g., credit scoring, rejections, medical predictions), or when you need to investigate edge cases, errors, or inconsistencies.
+
+
 
 \section{SHAP Force Plots \& Waterfall Plots}
 
@@ -4492,7 +4700,6 @@ Figure~\ref{fig:shap-force} and Figure~\ref{fig:shap-waterfall} show two ways to
 
 
 
-
 \section{LIME}
 
 LIME (Local Interpretable Model-agnostic Explanations) fits a simple interpretable model (like a linear model) around a single prediction by sampling nearby data points. It’s model-agnostic and especially useful for non-tree models like neural nets or ensembles.
@@ -4512,6 +4719,8 @@ LIME’s outputs can be unstable and sensitive to how it samples the neighborhoo
 For a customer with a predicted loan rejection, LIME might show that the main drivers were ``unstable income'' and ``high debt-to-income ratio'', with weights derived from the local linear fit.
 \end{examplebox}
 
+
+
 \section{Counterfactual Explanations}
 
 Counterfactuals answer the question: \textbf{What minimal change would have led to a different prediction?} Unlike SHAP or LIME, this is not about explaining what happened — it’s about showing how to achieve a different outcome.
@@ -4526,6 +4735,8 @@ Use counterfactuals when:
 \begin{examplebox}
 A counterfactual for a rejected loan applicant might say: ``If monthly income were \$300 higher and credit utilization 10\% lower, the loan would have been approved.''
 \end{examplebox}
+
+
 
 \section{Individual Conditional Expectation (ICE)}
 
@@ -4565,6 +4776,8 @@ For one user, an ICE plot might show that increasing ``app visits per week'' lin
 
 Behavioral and segment analysis focuses on identifying meaningful subgroups within your data — and understanding how model behavior or feature effects differ across these groups. Instead of treating the population as homogeneous, you deliberately seek heterogeneity in feature importance, relationships, and outcomes. This is essential when your users, products, or cases fall into qualitatively different categories that require different strategies.
 
+
+
 \section{Clustering Post-Modeling}
 
 Clustering after model training can reveal behavioral patterns or user segments that relate to the prediction in different ways. You cluster based on either:
@@ -4583,6 +4796,8 @@ Use clustering to:
   \item Identify outlier groups for targeted analysis
   \item Visualize behavior patterns in reduced-dimensionality plots (e.g., UMAP or t-SNE on SHAP)
 \end{itemize}
+
+
 
 \section{Subgroup-Specific Feature Effects}
 
@@ -4768,9 +4983,12 @@ Causal insight bridges the gap between analytics and action. Once you know what 
 
 
 
+
 \chapter{Communicating Insights}
 
 Even the most valuable insight is worthless if it isn’t understood or acted upon. Communicating insights means translating complex model behavior into language, visuals, and narratives that stakeholders can use to make decisions. This is not optional — it’s where your work becomes useful.
+
+
 
 \section{Translating Model Outputs into Strategy}
 
@@ -4786,6 +5004,8 @@ Instead of presenting “SHAP values and ICE curves,” tell your audience: “H
 \end{examplebox}
 
 Make it clear what the insight means, who it applies to, and what should change because of it.
+
+
 
 \section{Visual Storytelling for Non-Technical Stakeholders}
 
@@ -4804,6 +5024,8 @@ Every plot should answer a specific question — if it doesn’t, leave it out.
 A PDP showing diminishing returns on discount level should be annotated with “Optimal range: 10–20\% — above this, additional spend has little effect.”
 \end{examplebox}
 
+
+
 \section{Prioritizing Interpretability}
 
 Some models are too complex to explain clearly. If interpretability is a priority, consider:
@@ -4816,6 +5038,8 @@ Some models are too complex to explain clearly. If interpretability is a priorit
 \begin{examplebox}
 Instead of showing a black-box prediction, present a surrogate rule: “Users are likely to churn if their support rating < 3 and usage dropped > 30\% in the last month.”
 \end{examplebox}
+
+
 
 \section{Tailoring Insights to Your Audience}
 
@@ -4841,9 +5065,12 @@ Avoid one-size-fits-all reporting. One insight may need multiple presentations.
 
 
 
+
 \chapter{Common Pitfalls}
 
 Insight extraction is where real business value can emerge — but it’s also where false confidence and bad decisions are easily introduced. This chapter highlights common mistakes to avoid when interpreting, simulating, or communicating model insights.
+
+
 
 \section{Mistaking Correlation for Causation}
 
@@ -4852,6 +5079,8 @@ This is the most dangerous error. Just because a feature strongly influences pre
 \begin{examplebox}
 If high activity predicts low churn, it doesn’t follow that forcing users to be active (e.g., through spammy notifications) will reduce churn — activity may just be a symptom of satisfaction, not a driver.
 \end{examplebox}
+
+
 
 \section{Overtrusting Feature Importance}
 
@@ -4866,6 +5095,8 @@ Feature importance methods are often treated as truth, but they:
 Always pair feature importance with domain knowledge and context — never treat it as a definitive ranking.
 \end{notebox}
 
+
+
 \section{Ignoring Unchangeable Features}
 
 A feature may be highly predictive but totally useless for decision-making if it can’t be changed. Age, country, or account creation date might improve model accuracy but provide zero actionable leverage.
@@ -4874,6 +5105,8 @@ A feature may be highly predictive but totally useless for decision-making if it
 If “signup year” is the top feature in your churn model, your insight is: old users are loyal. That’s nice — but not something you can influence.
 \end{examplebox}
 
+
+
 \section{Forgetting Segments and Interactions}
 
 Relying only on global explanations hides important heterogeneity. If you fail to analyze subgroups or interactions, you risk building one-size-fits-none strategies.
@@ -4881,6 +5114,8 @@ Relying only on global explanations hides important heterogeneity. If you fail t
 \begin{notebox}
 What works for one user segment might harm another. Always look for diverging patterns.
 \end{notebox}
+
+
 
 \section{Presenting Without Purpose}
 
@@ -4920,79 +5155,7 @@ In a customer churn project, a team used SHAP values from a poorly performing mo
 
 \part{Deployment}
 
-\chapter{Data and Concept Drift}
 
-Deploying a machine learning system is an exciting milestone, but it also introduces a new set of challenges that extend far beyond model training. One of the most significant issues that arise after deployment is the risk of \textbf{data drift} and \textbf{concept drift}. Those are situations where the data distribution or the target relationships shift over time. Addressing these drifts is crucial to maintaining model performance and reliability in real-world applications.
-
-\section{Understanding Data and Concept Drift}
-
-When a machine learning model is trained, it assumes that the data distribution seen during training will remain stable in deployment. However, in most real-world applications, this assumption does not hold. Data evolves due to external factors such as user behavior changes, technological advancements, or economic shifts. The two primary types of drift are data and concept drift. Both types of drift can degrade model performance over time, making continuous monitoring and adaptation essential.
-
-\subsection{Data Drift}
-
-This occurs when the distribution of input features (\(X\)) changes over time, even if the relationship between \(X\) and \(Y\) remains the same. 
-
-\begin{examplebox}
-    In a speech recognition system, a new smartphone model with a different microphone can cause shifts in the acoustic data collected.
-\end{examplebox}
-
-\begin{examplebox}
-    For manufacturing inspection, a visual defect detection model trained under a specific lighting setup may fail if the lighting in the factory changes, altering the image distribution.
-\end{examplebox}
-
-\subsection{Concept Drift}
-
-This happens when the underlying relationship between \(X\) and \(Y\) changes, meaning that the same input data no longer maps to the same output labels.
-    
-\begin{examplebox}
-     In fraud detection, before COVID-19, an online shopping pattern with frequent purchases could indicate fraud, but after the pandemic, the same pattern might be considered normal for many users and should not flag those transaction as potential fraud.
-\end{examplebox}
-
-\begin{examplebox}
-     If a model is trained to estimate house prices based on historical data, an economic shift or inflation could cause significant changes in prices. Here, house sizes (\(X\)) might remain stable, but the target price (\(Y\)) increases, which is a concept drift.
-\end{examplebox}
-
-\section{Gradual vs. Sudden Drift}
-
-\textbf{Gradual Drift}: Some changes happen slowly over time, making them less noticeable until they accumulate enough to affect performance. For example, in speech recognition, language evolves as new slang and phrases are introduced gradually. \newline
-
-\textbf{Sudden Drift}: Some shifts occur abruptly, causing an immediate drop in model accuracy. The COVID-19 pandemic triggered such a shift in credit card fraud detection models, as user behaviors changed overnight, making past fraud indicators unreliable.
-
-\section{Detecting Data and Concept Drift}
-
-Monitoring deployed models for drift requires robust detection mechanisms. Some common strategies include:
-
-\begin{itemize}
-    \item \textbf{Statistical Tests}: Use statistical methods such as Kolmogorov-Smirnov tests or Population Stability Index (PSI) to compare current input distributions against historical training data.
-    \item \textbf{Performance Monitoring}: Track key model metrics like accuracy, precision, and recall over time to detect any sudden drops in performance.
-    \item \textbf{Shadow Models}: Deploy a new version of the model alongside the existing one and compare their predictions to detect inconsistencies.
-    \item \textbf{Data Sampling}: Continuously collect and analyze recent real-world data to check for discrepancies from the original distribution.
-\end{itemize}
-
-\section{Mitigating Drift in Production}
-
-Once drift is detected, appropriate corrective measures must be taken to maintain model performance. Some key approaches include:
-
-\subsection{Retraining Models Regularly}
-Periodically retraining the model with fresh data ensures it adapts to changes in data distribution. The retraining frequency depends on how dynamic the data is.
-
-\subsection{Adaptive Learning Approaches}
-Techniques such as online learning and continual learning allow models to update incrementally without full retraining. These approaches are particularly useful in rapidly changing environments like financial markets.
-
-\subsection{Feature Engineering Adjustments}
-If data drift is detected, new features that better capture the evolving patterns may help restore model accuracy without a full retraining cycle.
-
-\subsection{Hybrid Deployment Strategies}
-Deploying multiple models—such as an ensemble of older and newer models—can provide a safety net during data transitions. When significant drift is detected, fallback models can maintain reliability while the primary model is updated.
-
-\section{Key Takeaways}
-
-\begin{itemize}
-    \item Data and concept drift are inevitable in most real-world machine learning applications.
-    \item Continuous monitoring and statistical methods are essential for detecting drift early.
-    \item Effective mitigation strategies include retraining, adaptive learning, and deploying hybrid models.
-    \item Proactive drift management helps maintain model reliability and long-term success.
-\end{itemize}
 
 
 \chapter{Deployment Patterns}
@@ -5007,6 +5170,8 @@ Deploying a machine learning model is not simply a matter of turning it on and h
 
 In all these cases, a gradual ramp-up with monitoring is advisable. This allows for performance validation before full-scale deployment. Additionally, rollback mechanisms should be in place in case the new model does not perform as expected.
 
+
+
 \section{Shadow Mode Deployment}
 
 A \textbf{shadow mode deployment} allows a new machine learning model to run in parallel with an existing system without affecting real decisions. This is particularly useful when replacing human inspectors or an older machine learning model, as it allows direct comparison of outputs.
@@ -5016,6 +5181,8 @@ A \textbf{shadow mode deployment} allows a new machine learning model to run in 
 \end{examplebox}
 
 By analyzing discrepancies between human and AI predictions, developers can refine the model before it is entrusted with decision-making.
+
+
 
 \section{Canary Deployment}
 
@@ -5027,6 +5194,8 @@ A \textbf{canary deployment} involves rolling out a new model to a small percent
 
 This approach helps catch issues early and ensures that any mistakes affect only a small fraction of cases.
 
+
+
 \section{Blue-Green Deployment}
 
 A \textbf{blue-green deployment} is used to transition from an old model (blue) to a new model (green) with minimal disruption. Traffic is routed to the blue model initially and switched to the green model when ready.
@@ -5036,6 +5205,8 @@ A \textbf{blue-green deployment} is used to transition from an old model (blue) 
 \end{examplebox}
 
 This method ensures seamless transitions while maintaining the option for rollback.
+
+
 
 \section{Choosing the Right Degree of Automation}
 
@@ -5054,6 +5225,8 @@ Deployment is not a binary decision between manual and fully automated systems. 
 
 Many industrial applications benefit from human-in-the-loop approaches rather than full automation. The appropriate level of automation depends on model reliability and operational constraints.
 
+
+
 \section{Summary}
 
 Several deployment patterns can be used based on the context and risk tolerance:
@@ -5069,15 +5242,19 @@ Choosing the right deployment pattern can ensure a smooth transition and minimiz
 
 
 
+
 \chapter{Monitoring}
 
 Deploying a machine learning model is only the beginning—monitoring is essential to ensure that the system continues to perform as expected. Over time, models may degrade due to changes in data, unexpected software behavior, or external shifts in user behavior. A robust monitoring system helps detect these issues early and allows for timely intervention.
 
 This chapter explores best practices for monitoring both single models and full machine learning pipelines.
 
+
+
 \section{Monitoring a Single Model}
 
 The most common approach to monitoring a machine learning model is to use a **dashboard** that tracks performance over time. Dashboards can monitor a variety of metrics, depending on the application. A well-designed monitoring system should help detect issues before they impact users.
+
 
 \subsection{Key Monitoring Metrics}
 
@@ -5099,6 +5276,7 @@ Monitoring metrics can be broadly categorized into three types:
    A smartphone defect detection model can track image brightness to ensure consistent lighting conditions in a factory. If brightness decreases significantly, it may signal a problem with the factory's lighting setup.
 \end{examplebox}
 
+
 \subsection{Iterative Approach to Monitoring}
 
 Monitoring is an \textbf{iterative process}. The initial deployment will likely include a broad set of metrics, some of which may prove unnecessary over time. It is common to refine and adapt monitoring metrics as new issues arise.
@@ -5117,9 +5295,12 @@ Once key metrics are established, it is useful to set alert thresholds to trigge
 
 If an issue is detected, the appropriate action may involve updating the software infrastructure, retraining the model, or adjusting the input data.
 
+
+
 \section{Monitoring Machine Learning Pipelines}
 
-Many AI systems are not standalone models but pipelines involving multiple processing steps. Monitoring a pipeline requires tracking multiple components that influence the final outcome.
+Many ML systems are not standalone models but pipelines involving multiple processing steps. Monitoring a pipeline requires tracking multiple components that influence the final outcome.
+
 
 \subsection{Example: Speech Recognition Pipeline}
 
@@ -5136,6 +5317,7 @@ A speech recognition system typically involves multiple stages:
 
 Because errors in early pipeline stages can cascade, it is important to monitor input and output metrics at each stage.
 
+
 \subsection{Example: User Profile-Based Recommendations}
 
 Recommendation systems often build user profiles based on clickstream data. These profiles feed into another model that generates product recommendations.
@@ -5145,6 +5327,8 @@ Recommendation systems often build user profiles based on clickstream data. Thes
 \end{examplebox}
 
 By monitoring individual pipeline components, issues can be detected before they propagate through the system.
+
+
 
 \section{Understanding Data Change Rates}
 
@@ -5160,6 +5344,8 @@ The frequency of data changes depends on the type of application:
    An e-commerce recommendation system monitors search trends. If a holiday season or viral product causes a shift in search behavior, the system must adapt accordingly.
 \end{examplebox}
 
+
+
 \section{Summary}
 
 Effective monitoring is crucial for maintaining the **long-term performance** of machine learning systems. Best practices include:
@@ -5173,8 +5359,6 @@ Effective monitoring is crucial for maintaining the **long-term performance** of
 \end{itemize}
 
 By continuously refining monitoring processes, machine learning teams can detect issues early and ensure system reliability.
-
-
 
 \newpage
 \thispagestyle{empty}
@@ -5198,6 +5382,110 @@ By continuously refining monitoring processes, machine learning teams can detect
     \\[1cm]
     \vspace*{\fill}
 \end{center}
+
+
+
+
+\chapter{Data and Concept Drift}
+
+Deploying a machine learning system is an exciting milestone, but it also introduces a new set of challenges that extend far beyond model training. One of the most significant issues that arise after deployment is the risk of \textbf{data drift} and \textbf{concept drift}. Those are situations where the data distribution or the target relationships shift over time. Addressing these drifts is crucial to maintaining model performance and reliability in real-world applications.
+
+
+
+\section{Understanding Data and Concept Drift}
+
+\begin{keywordsbox}
+distribution shift, input feature change, label relationship change, deployment robustness
+\end{keywordsbox}
+
+When a machine learning model is trained, it assumes that the data distribution seen during training will remain stable in deployment. However, in most real-world applications, this assumption does not hold. Data evolves due to external factors such as user behavior changes, technological advancements, or economic shifts. The two primary types of drift are data and concept drift. Both types of drift can degrade model performance over time, making continuous monitoring and adaptation essential.
+
+
+\subsection{Data Drift}
+
+This occurs when the distribution of input features (\(X\)) changes over time, even if the relationship between \(X\) and \(Y\) remains the same. 
+
+\begin{examplebox}
+    In a speech recognition system, a new smartphone model with a different microphone can cause shifts in the acoustic data collected.
+\end{examplebox}
+
+\begin{examplebox}
+    For manufacturing inspection, a visual defect detection model trained under a specific lighting setup may fail if the lighting in the factory changes, altering the image distribution.
+\end{examplebox}
+
+
+\subsection{Concept Drift}
+
+This happens when the underlying relationship between \(X\) and \(Y\) changes, meaning that the same input data no longer maps to the same output labels.
+    
+\begin{examplebox}
+     In fraud detection, before COVID-19, an online shopping pattern with frequent purchases could indicate fraud, but after the pandemic, the same pattern might be considered normal for many users and should not flag those transaction as potential fraud.
+\end{examplebox}
+
+\begin{examplebox}
+     If a model is trained to estimate house prices based on historical data, an economic shift or inflation could cause significant changes in prices. Here, house sizes (\(X\)) might remain stable, but the target price (\(Y\)) increases, which is a concept drift.
+\end{examplebox}
+
+
+
+\section{Gradual vs. Sudden Drift}
+
+\textbf{Gradual Drift}: Some changes happen slowly over time, making them less noticeable until they accumulate enough to affect performance. For example, in speech recognition, language evolves as new slang and phrases are introduced gradually. \newline
+
+\textbf{Sudden Drift}: Some shifts occur abruptly, causing an immediate drop in model accuracy. The COVID-19 pandemic triggered such a shift in credit card fraud detection models, as user behaviors changed overnight, making past fraud indicators unreliable.
+
+
+
+\section{Detecting Data and Concept Drift}
+
+\begin{keywordsbox}
+statistical tests, model retraining, adaptive learning, hybrid deployment
+\end{keywordsbox}
+
+Monitoring deployed models for drift requires robust detection mechanisms. Some common strategies include:
+
+\begin{itemize}
+    \item \textbf{Statistical Tests}: Use statistical methods such as Kolmogorov-Smirnov tests or Population Stability Index (PSI) to compare current input distributions against historical training data.
+    \item \textbf{Performance Monitoring}: Track key model metrics like accuracy, precision, and recall over time to detect any sudden drops in performance.
+    \item \textbf{Shadow Models}: Deploy a new version of the model alongside the existing one and compare their predictions to detect inconsistencies.
+    \item \textbf{Data Sampling}: Continuously collect and analyze recent real-world data to check for discrepancies from the original distribution.
+\end{itemize}
+
+
+
+\section{Mitigating Drift in Production}
+
+Once drift is detected, appropriate corrective measures must be taken to maintain model performance. Some key approaches include:
+
+
+\subsection{Retraining Models Regularly}
+Periodically retraining the model with fresh data ensures it adapts to changes in data distribution. The retraining frequency depends on how dynamic the data is.
+
+
+\subsection{Adaptive Learning Approaches}
+Techniques such as online learning and continual learning allow models to update incrementally without full retraining. These approaches are particularly useful in rapidly changing environments like financial markets.
+
+
+\subsection{Feature Engineering Adjustments}
+If data drift is detected, new features that better capture the evolving patterns may help restore model accuracy without a full retraining cycle.
+
+
+\subsection{Hybrid Deployment Strategies}
+Deploying multiple models—such as an ensemble of older and newer models—can provide a safety net during data transitions. When significant drift is detected, fallback models can maintain reliability while the primary model is updated.
+
+
+
+\section{Key Takeaways}
+
+\begin{itemize}
+    \item Data and concept drift are inevitable in most real-world machine learning applications.
+    \item Continuous monitoring and statistical methods are essential for detecting drift early.
+    \item Effective mitigation strategies include retraining, adaptive learning, and deploying hybrid models.
+    \item Proactive drift management helps maintain model reliability and long-term success.
+\end{itemize}
+
+
+
 
 
 \end{document}
