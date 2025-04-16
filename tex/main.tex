@@ -30,6 +30,13 @@
 \newcommand{\xmark}{{\color{red!80!black}\ding{55}}}   % cross
 
 
+% Increase space between main text and footnote
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@makefntext}{\@thefnmark}{\@thefnmark\hspace{0.5em}}{}{}
+\setlength{\skip\footins}{1.5em}  % vertical space above footnotes
+\makeatother
+
 
 \captionsetup[table]{position=above}
 \captionsetup[figure]{position=below}
@@ -3027,6 +3034,7 @@ train a regression model. Predictions are rounded to the nearest class.
 The ordinal target `bad`, `average`, `good`, `excellent` is mapped to 
 $[1,2,3,4]$. A linear regression model predicts scores like 2.7, which are 
 then rounded to predict `good`. Note that the spacing is assumed equal.
+\vspace{1mm}
 \end{examplebox}
 
 \vspace{5pt}
@@ -4057,13 +4065,13 @@ There are four different causes of errors:
 \end{itemize}
 
 
-\subsection{Bayes Error}
+\subsection{Bayes Error}  \label{subsec:Bayes_error}
 
-The \textit{Bayes error} represents the irreducible lower bound on prediction error for any model, regardless of how complex or well-tuned it is. It reflects the inherent uncertainty in the problem and arises from limitations in the data-generating process itself. Even with perfect knowledge of the underlying distributions, a model cannot reliably achieve an error lower than the Bayes error on unseen data. \newline
+The \textit{Bayes error} (also known as pure, intrinsic, or experimental error) represents the irreducible lower bound on prediction error for any model, regardless of how complex or well-tuned it is. It reflects the inherent uncertainty in the problem and arises from limitations in the data-generating process itself. Even with perfect knowledge of the underlying distributions, a model cannot reliably achieve an error lower than the Bayes error on unseen data. \newline
 
 There are several fundamental reasons for this irreducibility: measurement noise, random fluctuations in the system, unobserved variables that influence the outcome but are not included in the feature set, and label ambiguity in the data. These factors introduce uncertainty that no model can resolve. \newline
 
-Figure~\ref{fig:bayes-error-darts} illustrates this with a dart-throwing example. The throws of three skill levels are shown: beginners (yellow), amateurs (blue), and professionals (red). All players aim at the same target—so their distributions share the same mean—but differ in variance, resulting in significant overlap. The figure also shows the optimal decision boundaries derived from these distributions. Even though the classifier assigns each location to the class with the highest likelihood and thus behaves optimally, it still cannot perfectly separate the groups. Sometimes a beginner lands in the bullseye area, and sometimes a professional misses. This residual, unavoidable error is the Bayes error: the minimum possible error rate on unseen data, caused by randomness, noise, or unobserved variables—even under ideal modeling conditions.
+Figure~\ref{fig:bayes-error-darts} illustrates this with a dart-throwing example. The throws of three skill levels are shown: beginners (yellow), amateurs (blue), and professionals (red). All players aim at the same target—so their distributions share the same mean—but differ in variance, resulting in significant overlap (We assume here that all players aim for the center, ignoring the common real-world strategy of targeting the triple-20 segment, which is both larger and yields a higher score than the bullseye). The figure also shows the optimal decision boundaries derived from these distributions. Even though the classifier assigns each location to the class with the highest likelihood and thus behaves optimally, it still cannot perfectly separate the groups. Sometimes a beginner lands in the bullseye area, and sometimes a professional misses. This residual, unavoidable error is the Bayes error: the minimum possible error rate on unseen data, caused by randomness, noise, or unobserved variables—even under ideal modeling conditions.
 
 \begin{figure}[H]
     \centering
@@ -4075,7 +4083,7 @@ Figure~\ref{fig:bayes-error-darts} illustrates this with a dart-throwing example
 \end{figure}
 
 
-\subsection{Sample Error}
+\subsection{Sample Error}  \label{subsec:sample_error}
 
 The sample error (also called variance error or statistical scatter) arises because the data available to a model is only a finite and potentially unrepresentative sample from the true underlying distribution. According to the law of large numbers, the sample distribution converges in probability to the true distribution as the sample size approaches infinity. However, for any finite sample, deviations from the true distribution are expected—especially when the sample size is small. These deviations introduce variance into model estimation and evaluation. \newline
 
@@ -4095,9 +4103,9 @@ Sample error is not only due to limited sample size but can also stem from measu
 In addition to random fluctuations, sample error can also arise from systematic issues in how the data was collected. If the sample is \textbf{biased}—for example, if certain subgroups are over- or under-represented due to the sampling process—then it no longer reflects the true population distribution, and the model may learn distorted patterns. Another related issue is \textbf{censoring}, where parts of the data are systematically excluded or missing, such as when only successful transactions are recorded, or when measurement is truncated by design. Both sampling bias and censoring introduce structural deviations from the true distribution and can severely degrade model generalization if not detected and corrected.
 
 
-\subsection{Model Error}
+\subsection{Model Error}  \label{subsec:model_error}
 
-Model error—also referred to as \textit{bias error} or \textit{lack-of-fit error}—arises when the chosen model class is fundamentally unable to capture the structure present in the data. Even if we train the model perfectly and minimize the loss on the training data, it may still fail to generalize well if it lacks the necessary complexity. This type of error is independent of the sample size or the optimization procedure; it stems purely from an inadequate model class. \newline
+Model error (also referred to as \textit{bias error} or \textit{lack-of-fit error}) arises when the chosen model class is fundamentally unable to capture the structure present in the data. Even if we train the model perfectly and minimize the loss on the training data, it may still fail to generalize well if it lacks the necessary complexity. This type of error is independent of the sample size or the optimization procedure; it stems purely from an inadequate model class. \newline
 
 A typical example is attempting to fit a linear model to data that exhibits a clear quadratic pattern. No matter how well we optimize the linear model's parameters, it will consistently underperform because it cannot represent the curvature in the data. The bias is introduced by the model’s assumptions—here, the assumption of linearity—which do not align with the actual data-generating process. \newline
 
@@ -4107,13 +4115,13 @@ Figure~\ref{fig:model-error-linear-fit} visualizes this issue. The scatter plot 
     \centering
     \includegraphics[width=0.8\textwidth]{./modeling_figures/model_error_quadratic_vs_linear_fit.png}
     \caption{
-    Illustration of model error (bias): The data (gray points) follows a quadratic relationship, while the fitted model (blue line) assumes linearity. The systematic deviations between the model and the data, especially at the extremes, reveal a mismatch between the model class and the true data-generating process. This mismatch is referred to as model error or bias error.
+    Illustration of model error (bias): The data (gray points) follows a quadratic relationship, while the fitted model (blue line) assumes linearity. The systematic deviations between the model and the data, especially at the extremes, reveal a mismatch between the model class and the true data-generating process. 
     }
     \label{fig:model-error-linear-fit}
 \end{figure}
 
 
-\subsection{Algorithmic Error}
+\subsection{Algorithmic Error}  \label{subsec:algorithmic_error}
 
 Algorithmic error arises from the optimization procedure used to fit the model parameters. In ideal cases, where an analytical solution for the objective function exists and can be computed exactly, this error is zero—apart from potential numerical imprecision. However, such ideal cases are rare. In many practical scenarios, the objective function lacks a closed-form solution, and heuristic optimization methods must be used instead. \newline
 
@@ -4121,21 +4129,41 @@ Even if a model class is expressive enough to contain a solution with minimal er
 
 Importantly, this error is distinct from other sources of error. It is not caused by noise or randomness in the data (pure error), by deviations due to finite sample sizes (sample error), or by an inadequate model class (model error). \newline
 
-In most machine learning applications, algorithmic error is often assumed to be negligible, under the assumption that the chosen optimization procedure is sufficiently robust and effective. However, in high-dimensional or non-convex settings—such as deep learning—this assumption may not hold, and algorithmic error can become a limiting factor in model performance.
+In most machine learning applications, algorithmic error is often assumed to be negligible, under the assumption that the chosen optimization procedure is sufficiently robust and effective. Contrary to common intuition, in high-dimensional settings—such as those found in deep learning—becoming trapped in poor local minima is actually less likely. This is because it is rare for the gradients to vanish along all dimensions simultaneously, allowing optimizers to escape shallow basins through directions of non-zero gradient. Instead of local minima, the primary optimization challenges in such settings stem from saddle points, flat regions, and poorly conditioned surfaces, which can slow convergence and lead to suboptimal solutions if not addressed with appropriate optimization techniques.
 
 
 
 \section{Under- and Overfitting}
 
+\begin{table}[H]
+    \centering
+    \small
+    \caption{
+        Overview of different fitting regimes and their behavior with respect to the types of patterns present in training data. 
+        \textbf{Regularities} refer to genuine, generalizable patterns that reflect the underlying data-generating process.
+        \textbf{Accidental properties} are spurious patterns, noise, or quirks that are random and specific to the training sample and therefore do not generalize.
+        }
+    \renewcommand{\arraystretch}{1.4}
+    \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{Fitting Regime} & \textbf{Fits Regularities} & \textbf{Fits Accidental Properties} \\
+        \hline
+        Underfitting   & \xmark & \xmark \\
+        Proper Fitting & \cmark & \xmark \\
+        Overfitting    & \cmark & \cmark \\
+        \hline
+    \end{tabular}
+\end{table}
 
-\subsection{Underfitting}
 
-Underfitting occurs when the model lacks the capacity to capture the underlying patterns in the data. This typically happens when the model is too simple relative to the true complexity of the data-generating process. As a result, it fails to represent even the dominant regularities and yields high training and test errors. This issue is also referred to as model bias or lack of fit. \newline
+\subsection{Underfitting}  \label{subsec:underfitting}
+
+Underfitting occurs when the model lacks the capacity to capture the underlying patterns (the regularities) in the data. This typically happens when the model is too simple relative to the true complexity of the data-generating process. As a result, it fails to represent even the dominant regularities and yields high training and test errors. This issue is also referred to as model bias or lack of fit. \newline
 
 Figure~\ref{fig:model-error-linear-fit} illustrates underfitting: although a clear curved trend is present, the linear model fails to adapt and misses the pattern.
 
 
-\subsection{Proper Fitting}
+\subsection{Proper Fitting}  \label{subsec:proper_fitting}
 
 Proper fitting occurs when the model has the right capacity to capture the essential patterns in the data without chasing noise. It generalizes well to unseen data because it learns the structure of the problem, not the idiosyncrasies of the training sample. This is the goal in most machine learning workflows: to hit the sweet spot between bias and variance. \newline
 
@@ -4149,7 +4177,7 @@ Figure~\ref{fig:proper-fitting-example} shows a model that captures the overall 
 \end{figure}
 
 
-\subsection{Overfitting}
+\subsection{Overfitting} \label{subsec:overfitting}
 
 Overfitting happens when the model has too much capacity relative to the size and quality of the training data. Instead of learning generalizable patterns, it also fits accidental properties—noise, outliers, and sample-specific quirks. This leads to excellent performance on the training set but poor generalization to unseen data. \newline
 
@@ -4211,7 +4239,7 @@ Figure ~\ref{fig:error-hierarchy} summarizes the key error numbers encountered d
 Each error number reflects a specific stage in the project and provides information on the performance of the model, or represents a useful theoretical concept that helps to put the model performance into context.
 \begin{itemize}
     \item \textbf{Zero Error} The theoretical scenario where the model makes no mistakes. When this is unequal to Bayes error, it is impossible for the model to reliably achieve zero error on unseen data.
-    \item \hypertarget{bayes-error}{\textbf{Bayes Error:}} The theoretical lower bound on error, determined by the information content of the data itself. This represents the ideal performance of a model, the hard upper bound on performance. The Bayes error can be equal to zero error, but in most cases it is greater due to limitations such as inherent noise or ambiguity in the data. It is theoretically possible for a model to reliably achieve Bayes error on unseen data.
+    \item \textbf{\hyperref[subsec:Bayes_error]{Bayes Error:}} The theoretical lower bound on error, determined by the information content of the data itself. This represents the ideal performance of a model, the hard upper bound on performance. The Bayes error can be equal to zero error, but in most cases it is greater due to limitations such as inherent noise or ambiguity in the data. It is theoretically possible for a model to reliably achieve Bayes error on unseen data.
     \item \textbf{Train Set Error:} The error on the training data, which indicates how well the model has fit the train set.
     \item \textbf{Train-Dev Set Error:} The error on an optional train-dev set, sampled from the training distribution but not used for training. This helps to distinguish between the case where the model overfits the train set and data mismatch problems when the train set is coming from a different distribution than the dev set.
     \item \textbf{Dev Set Error:} Informs hyperparameter tuning and serves as a proxy for the test set performance.
@@ -4223,18 +4251,20 @@ Each error number reflects a specific stage in the project and provides informat
 
 \begin{itemize}
     \item \textbf{Unavoidable Error:} The gap between zero error and Bayes error, which arises due to intrinsic limitations of the dataset such as noise or ambiguity. This error gap cannot be eliminated.
-    \item \textbf{Underfitting:} The gap between Bayes error and the train set error. This gap arises from the model's limitations in capturing the underlying patterns in the data, because it lacks capacity/complexity. The ideal model has a train set error equal to the Bayes error.
-    \item \textbf{Overfitting the Train Set:} Happens when the model has too much capacity and starts fitting not only the general patterns in the training data, but also the accidental noise. Since noise is random and not present in the same form in new data, this leads to poor generalization. It is observed as a large gap between train and dev set performance.
+    \item \textbf{\hyperref[subsec:underfitting]{Underfitting:}} The gap between Bayes error and the train set error. This gap arises from the model's limitations in capturing the underlying patterns in the data, because it lacks capacity/complexity. The ideal model has a train set error equal to the Bayes error.
+    \item \textbf{\hyperref[subsec:overfitting]{Overfitting} the Train Set:}
+     Happens when the model has too much capacity and starts fitting not only the general patterns in the training data, but also the accidental noise. Since noise is random and not present in the same form in new data, this leads to poor generalization. It is observed as a large gap between train and dev set performance.
     \item \textbf{Data Mismatch:} The gap between the train-dev error and the dev set error, caused by differences in the distributions of the training and dev/test sets.
-    \item \textbf{Overfitting the Dev Set:} The gap between the dev set error and the test set error, indicating that the model has overfit to the dev set. This often occurs when hyperparameters are inadvertently tuned to minimize the dev set error through extensive optimization, leading to a model that performs well on the dev set but fails to generalize to unseen test data.
-    \item \textbf{Shortcut Learning:} The gap between the test set error and the gen set error. This indicates that the model has learned superficial patterns that do not generalize across relevant distributions.
+    \item \textbf{\hyperref[subsec:overfitting]{Overfitting} the Dev Set:}
+     The gap between the dev set error and the test set error, indicating that the model has overfit to the dev set. This often occurs when hyperparameters are inadvertently tuned to minimize the dev set error through extensive optimization, leading to a model that performs well on the dev set but fails to generalize to unseen test data.
+    \item \textbf{Shortcut Learning:} The gap between the test set error and the gen set error. This indicates that the model has learned superficial patterns that do not generalize across relevant distributions. \footnote{See \href{https://doi.org/10.1038/s42256-020-00257-z}{Geirhos et al.\ (2020)} on \textit{Shortcut Learning in Deep Neural Networks}.}
 \end{itemize}
 
 
 \subsection{Proxy for Bayes Error} \label{subsec:proxy-for-bayes-error}
 Since the true Bayes error is unknown, we must use proxies to estimate it:
 \begin{itemize}
-    \item \textbf{Human-level performance (when applicable):} Often close to Bayes error for tasks humans are skilled at, such as natural perception (e.g. image classification).
+    \item \textbf{Human-level performance (when applicable):} Often close to \hyperref[subsec:Bayes_error]{Bayes error} for tasks humans are skilled at, such as natural perception (e.g. image classification).
     \item \textbf{Other proxies:} For tasks humans are poor at, such as predicting weather patterns or network traffic, alternatives include state-of-the-art model performance, cross-model agreement, or domain-specific insights (e.g., noise levels or uncertainty analysis). 
 \end{itemize} 
 
@@ -4385,7 +4415,7 @@ Once error analysis has identified the sources of the gaps between error numbers
 
 \subsection{Addressing Underfitting}
 
-Avoidable bias (underfitting) refers to the gap between the proxy for Bayes error and the train set error. Reducing this gap improves the model’s ability to fit the training data. Strategies to address avoidable bias include:
+\hyperref[subsec:underfitting]{Underfitting} refers to the gap between the proxy for Bayes error and the train set error. Reducing this gap improves the model’s ability to fit the training data. Strategies to address avoidable bias include:
 
 \begin{itemize}
     \item \textbf{Increase model capacity:} Use a larger or more complex model, such as increasing the amount of layers in a neural network or transitioning from linear to polynomial regression.
@@ -4402,7 +4432,7 @@ You should not aim for an error lower than your proxy for Bayes error. Having a 
 
 \subsection{Addressing Overfitting the Train Set} \label{sec:addressing_variance}
 
-Overfitting the train set reflects the model’s inability to generalize to unseen data. To effectively address overfitting, it is important to understand \textbf{why} it occurs. Overfitting can stem from two main causes:
+\hyperref[subsec:overfitting]{Overfitting} the train set reflects the model’s inability to generalize to unseen data. To effectively address overfitting, it is important to understand \textbf{why} it occurs. Overfitting can stem from two main causes:
 
 \begin{itemize}
     \item \textbf{Too little data:} When training and dev sets are both small, they represent different random subsamples of the population. Even if the model learns only genuine patterns from the training set, these patterns may not transfer well to the dev set simply because the two samples differ due to sampling variability. This is a problem of statistical inference: small samples are unstable and not representative of the full population. The model isn't necessarily learning noise—it just cannot generalize reliably between mismatched subsets.
@@ -4510,7 +4540,7 @@ Addressing data mismatch requires a combination of strategies tailored to the na
 
 \subsection{Addressing Overfitting to the Dev Set}
 
-Overfitting to the dev set refers to the gap between the dev set error and the test set error. This happens when the model is excessively tuned to the dev set. Strategies to address overfitting to the dev set include:
+\hyperref[subsec:overfitting]{Overfitting} to the dev set refers to the gap between the dev set error and the test set error. This happens when the model is excessively tuned to the dev set. Strategies to address overfitting to the dev set include:
 \begin{itemize}
     \item \textbf{Increase the size of the dev set:} A larger dev set reduces the risk of overfitting to its specific examples.
     \item \textbf{Use k-fold cross-validation:} This reduces dependence on a single dev set by averaging performance over multiple folds.
