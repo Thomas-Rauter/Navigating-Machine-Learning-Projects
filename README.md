@@ -1,4 +1,4 @@
-# Decision-Making in Machine Learning Projects
+# Navigating Machine Learning Projects
 
 **A field manual for making smarter decisions in real-world machine learning workflows.**  
 Written by Thomas Rauter.

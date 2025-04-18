@@ -1,4 +1,4 @@
-\documentclass[12pt,openany]{book}
+\documentclass[12pt,openany, draft]{book}
 
 % Packages
 \usepackage{amsmath} % For advanced math formatting (e.g., \max, \min, and align environments)
@@ -15,7 +15,6 @@
 \usepackage{hyperref} % For clickable table of contents
 \usepackage[top=1in, bottom=1in, left=0.75in, right=0.75in]{geometry}
 \usepackage{mdframed}
-% \usepackage{sectsty}
 \usepackage{pifont}
 \usepackage{pgfplots}
 \usepackage[most]{tcolorbox}
@@ -24,10 +23,18 @@
 \usepackage{xcolor}
 
 
+\setlength{\headheight}{17pt} % Increase headheight to avoid fancyhdr warning: ensures header fits properly without clipping or layout issues
+
 \pgfplotsset{compat=1.18}  
 
 \newcommand{\cmark}{{\color{green!60!black}\ding{51}}} % checkmark
 \newcommand{\xmark}{{\color{red!80!black}\ding{55}}}   % cross
+
+\newcommand{\speedfast}{\textcolor{green!60!black}{\ding{108}}}    % Green circle
+\newcommand{\speedmod}{\textcolor{orange!85!black}{\ding{117}}}   % Orange diamond
+\newcommand{\speedslow}{\textcolor{red!70!black}{\ding{115}}}     % Red triangle
+\newcommand{\speedvslow}{\textcolor{purple!70!black}{\ding{72}}}  % Purple star
+
 
 
 % Increase space between main text and footnote
@@ -283,7 +290,7 @@
     \end{tikzpicture}
     
     \vspace*{2cm}
-    {\LARGE \textbf{\textcolor{darknavy}{Decision Making in Machine Learning Projects}}} \\
+    {\LARGE \textbf{\textcolor{darknavy}{Navigating Machine Learning Projects}}} \\
 
     
     \vspace{2cm}  % Adjusted spacing for better balance
@@ -349,41 +356,58 @@ To ensure consistency and clarity throughout this document, the following terms 
     \item \textbf{Dev set:} Refers to the validation or development set used during model evaluation and hyperparameter tuning. The model is not trained on this data, rather, it is used to asses how well the model performs on unseen data. During development, the dev set is used for this to avoid overfitting the hyperparameters to the test set.
     \item \textbf{Instances:} Refers to the individual rows of a dataset, also known as observations, examples, or samples. 
     \item \textbf{Structured data:} Also known as tabular data. Encompasses data that can naturally be presented with a table with human understandable columns headers, such as age, income, etc. Examples are datasets of house price and loan defaulting prediction.
-    \item \textbf{Unstructured data:} Column names (feature names) are just indices or something else, but don't represent human concepts. Examples are images, audio, text, which can also be represented as a table, but...
+    \item \textbf{Unstructured data:} Data that does not come with clearly defined, semantically meaningful feature names. While it can be represented numerically (e.g., as arrays or tensors), the dimensions themselves lack immediate human interpretability. Common examples include images (pixel grids), audio (waveforms or spectrograms), and text (token sequences). 
 \end{itemize}
 
 
-% Introduction
+
+% Abstract
+% Data science aims to solve real-world problems by extracting actionable insights from data, with machine learning providing powerful tools to automate this process. However, despite its potential, the failure rate of machine learning projects remains high, often due to poor decision-making rather than technical shortcomings. Successfully navigating these projects requires practical experience and strategic judgment, not just algorithmic expertise. This book addresses that gap by collecting insights and strategies from leading practitioners, offering guidance for better decision-making across the machine learning workflow. It organizes the project lifecycle into five interconnected stages—Scoping, Data, Modeling, Insights, and Deployment—providing a structured, experience-driven framework for delivering value with machine learning.
+
+
+
 \section{Introduction}
 
-Machine learning projects follow a structured workflow, from defining project goals to deploying and maintaining the final system. This workflow can be broadly divided into four interconnected stages: \textbf{Scoping}, where project objectives and constraints are defined; \textbf{Data}, where data is (collected), explored, cleaned, split, and changed to improve model performance; \textbf{Modeling}, where algorithms are used to train models; and \textbf{Deployment}, where models are integrated into production systems and monitored for continued success. Figure~\ref{fig:ml_project_overview} provides an overview of this workflow, highlighting the key steps within each stage.
+% General topic
+Data science is about solving problems by leveraging data. Whether the goal is to predict future sales, optimize supply chains, improve healthcare outcomes, or personalize user experiences, the underlying principle remains the same: extracting actionable insights from data to make better decisions. At its core, data science is not just about analysis—it is about using evidence systematically to drive real-world improvements across industries, organizations, and society. \newline
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{./general_figures/ml_project_overview.png}
-    \caption{Overview of the machine learning workflow: Scoping, Data, Modeling, and Deployment. While these steps are generally carried out sequentially, iterative refinement is often required to optimize outcomes.}
-    \label{fig:ml_project_overview}
-\end{figure}
+% Niche
+Machine learning offers a powerful set of tools within data science to automate the extraction of patterns from data. Instead of manually crafting rules, models learn directly from examples to either make predictions or uncover hidden structures. Machine learning enables systems that can adapt, generalize, and provide insights at scales and levels of complexity that traditional methods often cannot match. \newline
 
-Throughout the machine learning workflow, countless decisions shape the success of a project. \textbf{Scoping} involves choosing the right problems to tackle—should you focus on improving product recommendations or optimizing inventory management? Some problems carry much higher impact than others. In the \textbf{data} stage, you must decide what to look for, how to split the data, whether to remove outliers, and how best to represent the data for your model. During \textbf{modeling}, you face questions about model selection, diagnosing performance issues, and figuring out what to do when the results still fall short. Finally, in \textbf{deployment}, you need to select a deployment strategy and ensure your model continues to perform reliably in the real world. This ebook is here to help you navigate these decisions and make choices that actually move the needle. 
-\newline
+% Problem
+Despite the promise of machine learning, successfully building and delivering valuable models or extracting insights from them is far from guaranteed. In fact, industry analyses have estimated that up to 85\% of machine learning and data science projects ultimately fail to deliver meaningful business value.\footnote{VentureBeat (2021), summarizing Gartner research. See: \url{https://venturebeat.com/ai/why-most-ai-implementations-fail-and-what-enterprises-can-do-to-beat-the-odds/}}
 
 \begin{examplebox}
 A data science team at a mid-sized retail company was tasked with "improving operations using AI." Without clearly scoping the problem, they jumped straight into modeling, deciding to predict future sales using historical transaction data. They spent months building a complex deep learning model—only to realize late that the business actually needed better inventory management, not sales prediction. Their data was full of inconsistencies, but they cleaned it based on intuition instead of involving domain experts. Their test set was drawn from a different time period than their deployment setting, leading to misleadingly good offline performance. Once deployed, the model failed catastrophically—stockouts increased, inventory costs soared, and customer complaints piled up. Leadership lost confidence in the entire data team, and the initiative was quietly shelved. Hundreds of hours of work were wasted because poor decisions were made throughout the project.
 \end{examplebox}
 
+This example is fictional, but it should highlight that even highly skilled technical teams can fall into such traps if they lack a systematic approach to making decisions throughout the project lifecycle. Expertise in machine learning algorithms alone is not enough—navigating the broader project context wisely is just as critical. \newline
 
-This is a fictional example, and we don’t believe data science projects usually go this wrong—or that you’re reading this book because this applies to you. However, we do hope this book helps you to become an even more effective data scientist.
-\newline
+% Solution
+The challenges of navigating machine learning projects are best addressed by drawing on the practical experience of those who have successfully overcome them. Because much of this knowledge is not formalized in theory but accumulated through real-world trial and error, the most effective way to learn it is to benefit from the hard-earned insights of experienced practitioners. This book compiles such practical strategies, principles, and lessons, providing a guide to making better, more informed decisions across the entire machine learning project lifecycle. \newline
 
+The major sources informing this work include:
 
-The chapters are organized as follows:
+\begin{itemize}
+    \item \href{https://www.linkedin.com/in/andrewyng/}{Andrew Ng}
+    \item \href{https://www.plus.ac.at/aihi/der-fachbereich/team/dipl-inform-dr-ing-christian-borgelt/}{Christian Borgelt}
+    \item Practitioner discussions, case studies, and experience reports from platforms such as Medium, Kaggle, and others.
+\end{itemize}
+
+% Introduction to the methods
+This book adopts a structured approach based on dividing the project workflow into distinct but interconnected stages. This structure—originally proposed in various forms by experienced practitioners—helps organize the complex landscape of choices that arise. Each part of the book corresponds to one major stage, providing practical strategies for navigating the specific decisions typical of that phase. \newline
+
+The major stages are:
+
 \begin{itemize}
     \item \textbf{Scoping:} Strategies for identifying and prioritizing impactful projects and setting clear objectives.
-    \item \textbf{Data:} Exploratory data analysis, cleaning, augmentation, feature engineering, and dataset splitting
-    \item \textbf{Modeling:} Choosing a model class, objective function, optimizer, and evaluation metric, choosing training strategies, diagnosing errors, and auditing model performance in a structured, practical way.
-    \item \textbf{Deployment:} Best practices for integrating models into production and monitoring them.
+    \item \textbf{Data:} Exploratory data analysis, cleaning, augmentation, feature engineering, and dataset splitting.
+    \item \textbf{Modeling:} Choosing a model class, objective function, optimizer, and evaluation metric; selecting training strategies; diagnosing errors; and auditing model performance in a structured, practical way.
+    \item \textbf{Insights:} Using trained models to extract meaningful patterns and drive business or research insights.
+    \item \textbf{Deployment:} Best practices for integrating models into production environments and monitoring them over time.
 \end{itemize}
+
+
 
 
 
@@ -535,7 +559,7 @@ Ensuring that humans are restricted to the same data as the algorithm is crucial
 
 For structured data problems, assessing the availability of predictive features is a key step in determining technical feasibility. Predictive features are input variables (\(x\)) that have a strong correlation with the target output (\(y\)) you aim to predict. Identifying whether such features exist can guide the decision to proceed with a project.
 
-Figure~\ref{fig:predictive_features} provides examples of scenarios where features are predictive, uncertain, or not predictive at all:
+Here are examples of scenarios where features are predictive, uncertain, or not predictive at all:
 \begin{itemize}
     \item \textbf{Predictive:} Past purchases are strongly predictive of future purchases in ecommerce systems, as people often exhibit similar purchasing behaviors. Similarly, weather data is predictive of shopping mall foot traffic; for instance, fewer people go out when it rains.
     \item \textbf{Uncertain:} Using DNA to predict heart disease falls into a gray area. While genetic information has some predictive power, the mapping between genotype (genetic sequence) and phenotype (health condition) is known to be noisy. Social media chatter, while potentially indicative of current trends, is less reliable for predicting long-term demand for clothing styles.
@@ -544,17 +568,10 @@ Figure~\ref{fig:predictive_features} provides examples of scenarios where featur
 
 These examples highlight the importance of examining the relationship between features and the target variable. Projects lacking predictive features often lead to models that perform no better than random guessing, undermining the viability of the initiative. Therefore, careful evaluation of the predictive strength of available features is an essential part of assessing feasibility.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{scoping_figures/predictive_features.png}
-    \caption{Examples of predictive, uncertain, and non-predictive features across different scenarios.}
-    \label{fig:predictive_features}
-\end{figure}
-
 
 \subsection{History of a Project}
 
-The history of a project can serve as a valuable tool for assessing its feasibility, particularly for existing systems. By analyzing past progress, you can estimate the rate of future improvement and determine whether the project’s goals are achievable. Figure~\ref{fig:history_of_project} illustrates how historical error rates can inform projections for future performance. \newline
+The history of a project can serve as a valuable tool for assessing its feasibility, particularly for existing systems. By analyzing past progress, you can estimate the rate of future improvement and determine whether the project’s goals are achievable.
 
 Consider a machine learning system, such as a speech recognition application. Initially, the system might have a high error rate—for instance, 10\% at the start of the project (Q1). Over subsequent quarters (Q2, Q3, Q4), the error rate decreases steadily. Human-level performance (HLP) acts as the benchmark for irreducible error. \newline
 
@@ -562,12 +579,6 @@ A simple but effective model for estimating progress assumes that the gap betwee
 
 This method provides a quantitative basis for evaluating feasibility in projects with historical data, helping teams set realistic expectations and identify potential limitations. \newline
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{scoping_figures/history_of_project.png}
-    \caption{Historical error rates can be used to predict future progress, assuming a fixed rate of improvement relative to human-level performance (HLP).}
-    \label{fig:history_of_project}
-\end{figure}
 
 
 \section{Diligence on Value}
@@ -2411,6 +2422,7 @@ Start by identifying which features are measured on an interval or ratio scale. 
     \item \textbf{Min-max scaling}: Rescales features to a fixed range (e.g., 0 to 1). Useful when inputs have known bounds or when interpreting weights matters.
     \item \textbf{Robust scaling}: Uses median and IQR instead of mean and standard deviation. More stable when outliers are present.
     \item \textbf{Log or square root transforms}: Reduce skew for heavy-tailed distributions. Only apply to strictly positive data.
+    \item \textbf{Gaussianization (normalizing shape)}: Apply power transforms (e.g., Box-Cox, Yeo-Johnson) or quantile transforms to make feature distributions resemble a Gaussian. Useful when model assumptions favor normality.
 \end{itemize}
 
 \begin{notebox}
@@ -2422,8 +2434,35 @@ Transformations should be \textbf{fit on the training set only}, then applied to
 \end{notebox}
 
 \begin{examplebox}
-In a credit scoring model using logistic regression, the raw income feature ranged from hundreds to millions. Without scaling, the optimization algorithm failed to converge. Applying a log transform followed by standardization resolved the issue and significantly improved performance.
+In a credit scoring model using logistic regression, the raw income feature ranged from hundreds to millions. Without scaling, the optimization algorithm failed to converge. Applying a log transform followed by standardization resolved the issue and significantly improved performance. \mbox{}\\
 \end{examplebox}
+
+
+\subsection{Transforming Numerical Target Variables}
+
+While most feature engineering focuses on input features, transforming the target variable itself can sometimes simplify learning, improve model performance, or stabilize variance.
+
+Common reasons for target transformation include:
+\begin{itemize}
+    \item \textbf{Stabilizing variance}: If the target has heteroscedasticity (variance increasing with the mean), applying a transformation such as a logarithm or square root can make the noise more homoscedastic, which better aligns with assumptions of many models.
+    \item \textbf{Reducing skewness}: Highly skewed target distributions can cause models to underperform, especially when using squared-error losses. Log, square root, or Box-Cox transforms can help symmetrize the target.
+    \item \textbf{Satisfying model assumptions}: Some models assume Gaussian noise around predictions. Transforming the target to be more normally distributed can make these assumptions more realistic.
+    \item \textbf{Improving optimization}: Smooth, well-scaled targets can accelerate convergence in gradient-based methods and improve numerical stability.
+\end{itemize}
+
+\textbf{Important considerations:}
+\begin{itemize}
+    \item Always apply the inverse transformation when interpreting predictions.
+    \item Choose a transformation that makes sense for your problem context. For example, log-transformations are only applicable if the target is strictly positive.
+    \item Be cautious when applying loss functions: you should minimize loss in the transformed space if you train in that space, not directly on the original scale.
+\end{itemize}
+
+Common transformations for target variables include:
+\begin{itemize}
+    \item \textbf{Logarithm} (\(y' = \log(y)\)) – Common for targets spanning several orders of magnitude.
+    \item \textbf{Square root} (\(y' = \sqrt{y}\)) – Useful for count data or moderate right skew.
+    \item \textbf{Box-Cox and Yeo-Johnson} transforms – Parametric transformations that automatically find the best shape adjustment (Box-Cox requires positive values; Yeo-Johnson can handle zeros and negatives).
+\end{itemize}
 
 
 \subsection{Encoding Categorical Features}
@@ -2574,118 +2613,12 @@ Common use cases include:
 These features are easy to interpret and can highlight edge cases or exceptional instances that the model might otherwise underweight. They are especially helpful in noisy, heterogeneous datasets or when building interpretable models.
 
 
+
+
+
 \section{Conclusion}
 
 Unlike unstructured data, where deep learning models learn features automatically, structured data often benefits from explicitly designed features, especially when dataset sizes are moderate. While large-scale deep learning models may eventually eliminate the need for manual feature engineering, for most real-world structured data applications, adding well-designed features remains a crucial technique for improving model accuracy and robustness.
-
-
-
-
-\chapter{Dataset Versioning}
-
-In any real-world machine learning project, datasets evolve over time: new features are added, preprocessing methods change, and additional sources are integrated. Keeping track of these versions in a clear and reproducible way is essential to ensure transparency and reliability throughout the modeling pipeline.
-
-
-
-\section{Tree-based System}
-
-This section introduces a lightweight, tree-based system for organizing and naming datasets along with metadata tracking. 
-
-
-\subsection{Underscore-path naming convention}
-
-Each dataset version name encodes its modification lineage using an underscore-separated format. Each code in the path represents a specific step or operation applied to the data. The path is read from left to right, with each new code indicating a modification built upon the previous one. All codes used in a version name must be defined in the modification glossary.
-\newline
-
-For example:
-
-\begin{itemize}
-    \item \texttt{trainR99} -- training split (99\% of raw data)
-    \item \texttt{trainR99\_teG} -- added target encoding
-    \item \texttt{trainR99\_teG\_ohe} -- added one-hot encoding
-\end{itemize}
-
-And separately for the dev set:
-
-\begin{itemize}
-    \item \texttt{devR1} -- dev split (1\% of raw data)
-    \item \texttt{devR1\_teG} -- added target encoding
-    \item \texttt{devR1\_teG\_ohe} -- added one-hot encoding
-\end{itemize}
-
-
-\subsection{Modification glossary}
-This table defines the meaning of each code used in dataset version names:
-\newline
-
-\renewcommand{\arraystretch}{1.3}
-\begin{tabular}{|l|p{9.5cm}|p{4.2cm}|}
-\hline
-\textbf{code} & \textbf{description} & \textbf{script} \\
-\hline
-trainR99 & 99\% of raw data used as train set (random split) & \texttt{split\_raw\_data.py} \\
-devR1    & 1\% of raw data used as dev set (random split) & \texttt{split\_raw\_data.py} \\
-teG       & Target encoding for geo features & \texttt{target\_encode\_geo.py} \\
-ohe      & One-hot encoding for categoricals & \texttt{one\_hot\_encode.py} \\
-\hline
-\end{tabular}
-\newline
-\newline
-
-Each code must be unique, and each modification should represent a single, well-defined change. Accordingly, each code in the version name should correspond to exactly one script that performs that specific step. Avoid combining multiple changes into a single modification (e.g.\ \texttt{tohe} \(\rightarrow\) \texttt{target\_and\_one\_hot\_encode.py}); instead, apply each change separately with one script per step. This ensures modularity, clarity, and scalability in dataset versioning.
-
-
-\subsection{Version table}
-This table logs each dataset version and its associated metadata:
-\newline
-
-\renewcommand{\arraystretch}{1.3}
-\begin{tabular}{|l|p{2.5cm}|p{2.5cm}|p{5.5cm}|}
-\hline
-\textbf{version} & \textbf{date} & \textbf{person} & \textbf{comment} \\
-\hline
-v1 & 2025-03-29 & Thomas & Initial split (1\% dev) \\
-v1\_te & 2025-03-29 & Thomas & Added target encoding \\
-v1\_teG\_ohe & 2025-03-29 & Thomas &  \\
-v1\_teG\_ohe\_ext & 2025-03-30 & Thomas & Added external features \\
-\hline
-\end{tabular}
-
-
-\subsection{Example: Project Directory Structure}
-
-The following example illustrates how this dataset versioning system is applied in a real project. The directory structure is organized as follows:
-
-\begin{verbatim}
-project/
-|- data/
-   |- raw/
-   |  |- data_values.csv
-   |  |- data_labels.csv
-   |  |- test_values.csv
-   |- modified/
-      |- modification_glossary.csv
-      |- version_table.csv
-      |- datasets/
-         |- trainR99.csv
-         |- trainR99_ohe.csv
-         |- devR1.csv
-         |- devR1_ohe.csv
-\end{verbatim}
-
-
-\begin{itemize}
-    \item The \texttt{raw} directory contains the original input files provided by the company. These are immutable.
-    \item \texttt{data\_values.csv} and \texttt{data\_labels.csv} are merged and split to create \texttt{trainR99.csv} (99\% of the data) and \texttt{devR1.csv} (1\% of the data).
-    \item The combined CSV files (e.g., \texttt{trainR99.csv}) contain both features and target labels, with the ID as the first column and the label as the last.
-    \item \texttt{test\_values.csv} contains unlabeled data for model testing or submission.
-    \item The \texttt{modified} directory holds all derived datasets and tracking metadata.
-    \item \texttt{modification\_glossary.csv} defines all codes used in dataset version names.
-    \item \texttt{version\_table.csv} logs when and why each version was created, by whom, and with what intent.
-    \item The \texttt{datasets/} subfolder contains all versioned datasets as CSV files, named according to the underscore-based convention.
-\end{itemize}
-
-This setup enforces a clean separation between raw inputs and modified versions, while providing a transparent audit trail of how each dataset was generated.
 
 
 
@@ -3031,10 +2964,11 @@ train a regression model. Predictions are rounded to the nearest class.
 \end{itemize}
 
 \begin{examplebox}
+\begin{minipage}{\textwidth}
 The ordinal target `bad`, `average`, `good`, `excellent` is mapped to 
 $[1,2,3,4]$. A linear regression model predicts scores like 2.7, which are 
 then rounded to predict `good`. Note that the spacing is assumed equal.
-\vspace{1mm}
+\end{minipage}
 \end{examplebox}
 
 \vspace{5pt}
@@ -3150,60 +3084,79 @@ Supervised learning models are trained on labeled data, mapping inputs to known 
 \begin{table}[H]
     \centering
     \small
-    \caption{Supervised learning models that treat features independently (no interaction modeling). Data type support (structured (S) or unstructured (U)) and training speed are indicated.}
+    \caption{
+        Supervised learning models that treat features independently (i.e., no interaction modeling). 
+        All models operate only on structured data. 
+        The columns R and C indicate whether the model can be used for regression (R) and/or classification (C), using 
+        \cmark{} (yes) and \xmark{} (no). 
+        Training speed: {\speedfast} = Fast, {\speedmod} = Moderate, {\speedslow} = Slow, {\speedslow} = Very Slow.
+    }
     \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|p{2.2cm}|c|c|p{3.5cm}|p{3cm}|p{3cm}|p{1.8cm}|}
+    \begin{tabular}{|p{2.6cm}|c|c|p{3.6cm}|p{3cm}|p{3cm}|c|}
         \hline
-        \textbf{Model Type} & \textbf{S} & \textbf{U} & \textbf{When to Use} & \textbf{Advantages} & \textbf{Disadvantages} & \textbf{Training Speed} \\
+        \textbf{Model Type} & \textbf{R} & \textbf{C} & \textbf{When to Use} & \textbf{Advantages} & \textbf{Disadvantages} & \shortstack{\textbf{Training} \\ \textbf{Speed}} \\
         \hline
-        Linear Regression & \cmark & \xmark & When interpretability is very important and there is a linear relationship & Fast, interpretable, low variance & Assumes linearity, no interaction modeling unless manually added, can only be used for regression & \textbf{Very Fast} \\
+        Linear Regression & \cmark & \xmark & When interpretability is very important and there is a linear relationship & Fast, interpretable, low variance & Assumes linearity, no interaction modeling unless manually added & \speedfast \\
         \hline
-        Linear Discriminant Analysis (LDA) & \cmark & \xmark & When you need a fast, interpretable classifier that works well on small datasets with linearly separable classes & Captures some interactions via shared covariance, probabilistic output & Assumes normality and equal covariance across classes, limited to linear boundaries & \textbf{Fast} \\
+        Linear Discriminant Analysis (LDA) & \xmark & \cmark & When you need a fast, interpretable classifier that works well on small datasets with linearly separable classes & Captures some interactions via shared covariance, probabilistic output & Assumes normality and equal covariance across classes, linear only & \speedfast \\
         \hline
-        Quadratic Discriminant Analysis (QDA) & \cmark & \xmark & When you need a more flexible classifier than LDA for small datasets with moderately non-linear, class-specific distributions & Models class-specific covariance, flexible decision boundaries & Requires more data, sensitive to overfitting, assumes Gaussian features & \textbf{Moderate} \\
+        Quadratic Discriminant Analysis (QDA) & \xmark & \cmark & When you need a more flexible classifier than LDA for small datasets with moderately non-linear distributions & Models class-specific covariance, flexible boundaries & Requires more data, sensitive to overfitting, assumes Gaussianity & \speedmod \\
         \hline
-        Logistic Regression & \cmark & \xmark & Binary classification with simple features & Probabilistic output, interpretable coefficients & Linear decision boundaries only, no implicit interactions & \textbf{Fast} \\
+        Logistic Regression & \xmark & \cmark & Binary classification with simple features & Probabilistic output, interpretable coefficients & Linear decision boundaries only, no implicit interactions & \speedfast \\
         \hline
-        K-Nearest Neighbors (KNN) & \cmark & \xmark & Small to medium datasets with local structure & No training time, easy to understand & Poor in high dimensions, sensitive to feature scale & \textbf{Slow (at inference)} \\
+        K-Nearest Neighbors (KNN) & \cmark & \cmark & Small to medium datasets with local structure & No training time, easy to understand & Poor in high dimensions, slow inference, sensitive to scaling & \speedslow \\
         \hline
-        Naïve Bayes & \cmark & \xmark & Use Naive Bayes when you need a fast, simple, and interpretable model for high-dimensional, sparse, and small datasets with mostly independent features. Prime use cases are text classification, spam detection, and sentiment analysis. Can only be used for classification. & Extremely fast, works well on sparse data & Strong independence assumption, poor for correlated features, can only be used for classification & \textbf{Very Fast} \\
+        Naïve Bayes & \xmark & \cmark & High-dimensional, sparse, independent features—text classification, spam, sentiment & Extremely fast, well-suited for sparse data & Strong independence assumption, poor for correlated features & \speedfast \\
         \hline
     \end{tabular}
     }
 \end{table}
-
 
 \begin{table}[H]
     \centering
     \small
-    \caption{Supervised learning models that model interactions between features. Data type support (structured (S) or unstructured (U)) and training speed are indicated.}
+    \caption{
+        Supervised learning models that model interactions between features. 
+        All listed models can be used for both regression and classification. 
+        Only neural networks can handle unstructured data. 
+        Training speed symbols: {\speedfast} = Fast, {\speedmod} = Moderate, {\speedslow} = Slow, {\speedvslow} = Very Slow.
+    }
     \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|p{2.2cm}|c|c|p{3.5cm}|p{3cm}|p{3cm}|p{1.8cm}|}
+    \begin{tabular}{|p{2.6cm}|p{3.5cm}|p{3cm}|p{3cm}|c|}
         \hline
-        \textbf{Model Type} & \textbf{S} & \textbf{U} & \textbf{When to Use} & \textbf{Advantages} & \textbf{Disadvantages} & \textbf{Training Speed} \\
+        \textbf{Model Type} & \textbf{When to Use} & \textbf{Advantages} & \textbf{Disadvantages} & \shortstack{\textbf{Training} \\ \textbf{Speed}} \\
         \hline
-        Decision Tree & \cmark & \xmark & Simple structured data with non-linear rules & Interpretable, handles non-linearities & Unstable, prone to overfitting & \textbf{Fast} \\
+        Decision Tree & Simple structured data with non-linear rules & Interpretable, handles non-linearities & Unstable, prone to overfitting & \speedfast \\
         \hline
-        Random Forest & \cmark & \xmark & Structured data with moderate complexity & Reduces overfitting, handles interactions well & Less interpretable, slower than single tree & \textbf{Moderate} \\
+        Random Forest & Structured data with moderate complexity & Reduces overfitting, handles interactions well & Less interpretable, slower than single tree & \speedmod \\
         \hline
-        SVM & \cmark & \xmark & Small, high-dimensional datasets & Captures complex decision boundaries with kernels & Sensitive to scaling, hard to tune & \textbf{Slow} \\
+        SVM & Small, high-dimensional datasets & Captures complex decision boundaries with kernels & Sensitive to scaling, hard to tune & \speedslow \\
         \hline
-        XGBoost & \cmark & \xmark & Structured data with high accuracy demand & Top performance, regularization built-in & Slower to train, harder to tune & \textbf{Moderate} \\
+        XGBoost & Structured data with high accuracy demand & Top performance, regularization built-in & Slower to train, harder to tune & \speedmod \\
         \hline
-        CatBoost & \cmark & \xmark & Categorical-heavy structured data & Handles categoricals natively, minimal tuning & Slower training, less interpretable & \textbf{Moderate} \\
+        CatBoost & Categorical-heavy structured data & Handles categoricals natively, minimal tuning & Slower training, less interpretable & \speedmod \\
         \hline
-        LightGBM & \cmark & \xmark & Large structured datasets where speed matters & Fastest boosting, good accuracy & Sensitive to tuning, less robust for small data & \textbf{Fast} \\
+        LightGBM & Large structured datasets where speed matters & Fastest boosting, good accuracy & Sensitive to tuning, less robust for small data & \speedfast \\
         \hline
-        AdaBoost & \cmark & \xmark & Simple data with low noise & Easy to implement, interpretable base learners & Sensitive to noise, less powerful than XGBoost & \textbf{Fast} \\
+        AdaBoost & Simple data with low noise & Easy to implement, interpretable base learners & Sensitive to noise, less powerful than XGBoost & \speedfast \\
         \hline
-        NGBoost & \cmark & \xmark & When needing well-calibrated uncertainty estimation in complex, non-linear problems & Predictive distributions, interpretable outputs & Slower training, less known & \textbf{Slow} \\
+        NGBoost & Uncertainty estimation in complex, non-linear problems & Predictive distributions, interpretable outputs & Slower training, less known & \speedslow \\
         \hline
-        Neural Networks & \cmark & \cmark & Unstructured or high-dimensional data & Models complex patterns, automatic feature learning & Black box, high compute cost, need for large datasets & \textbf{Slow} \\
+        Neural Networks & Unstructured or high-dimensional data & Models complex patterns, automatic feature learning & Black box, high compute cost, needs large datasets & \speedslow \\
         \hline
-        Bayesian Neural Network & \cmark & \cmark & Like neural networks but when uncertainty estimation is critical & Quantifies uncertainty, regularization built-in & Complex to implement and scale & \textbf{Very Slow} \\
+        Bayesian Neural Network & Uncertainty estimation with deep learning & Quantifies uncertainty, regularization built-in & Complex to implement and scale & \speedvslow \\
+        \hline
     \end{tabular}
     }
 \end{table}
+
+\begin{notebox}
+    Tree-based models like XGBoost continue to outperform neural networks on structured (tabular) data. This is demonstrated in the benchmarking study by Varoquaux et al., \href{https://doi.org/10.48550/arXiv.2207.08815}{\textit{Why do tree-based models still outperform deep learning on tabular data?}}, which also discusses potential reasons behind this consistent performance gap.
+\end{notebox}
+
+\begin{notebox}
+Several tree-based algorithms can handle missing values and categorical columns natively. For instance, \textbf{XGBoost} and \textbf{LightGBM} can handle missing values during training by learning optimal default directions in tree splits. Additionally, \textbf{CatBoost} and \textbf{LightGBM} support categorical features directly without requiring manual one-hot or ordinal encoding—CatBoost uses permutation-driven encoding, while LightGBM applies gradient-based grouping techniques. This makes them especially powerful for structured data with mixed feature types and missing entries.
+\end{notebox}
 
 
 \subsection{Self-Supervised Learning}
@@ -5519,29 +5472,6 @@ Effective monitoring is crucial for maintaining the **long-term performance** of
 
 By continuously refining monitoring processes, machine learning teams can detect issues early and ensure system reliability.
 
-\newpage
-\thispagestyle{empty}
-
-\begin{center}
-    \vspace*{\fill}
-    \Large{\textbf{Thank You for Reading!}}\\[1cm]
-    \normalsize{
-        I appreciate your interest in this ebook. Your feedback, comments, and suggestions for improvement are highly valued and will help me refine this work.
-    }\\[0.5cm]
-    \textbf{Feel free to get in touch:}\\[0.5cm]
-    \begin{tabbing}
-        \hspace{3cm} \= \hspace{6cm} \kill
-        \textbf{Name:} \> Thomas Rauter \\
-        \textbf{Email:} \> \texttt{rauterthomas0@gmail.com} \\
-        \textbf{LinkedIn:} \> \texttt{www.linkedin.com/in/thomas-rauter-003583281} \\
-    \end{tabbing}
-    \normalsize{
-        I look forward to hearing your ideas, critiques, or even just a note that you found this work useful!
-    }
-    \\[1cm]
-    \vspace*{\fill}
-\end{center}
-
 
 
 
@@ -5645,6 +5575,29 @@ Deploying multiple models—such as an ensemble of older and newer models—can 
 
 
 
+\newpage
+\thispagestyle{empty}
+
+\begin{center}
+    \vspace*{\fill}
+    \Large{\textbf{Thank You for Reading!}}\\[1cm]
+    \normalsize{
+        I appreciate your interest in this eBook. Your feedback, comments, and suggestions for improvement are highly valued and will help me refine this work.
+    }\\[0.5cm]
+    \textbf{Feel free to get in touch:}\\[0.5cm]
+    \begin{tabbing}
+        \hspace{3cm} \= \hspace{6cm} \kill
+        \textbf{Name:} \> Thomas Rauter \\
+        \textbf{Email:} \> \texttt{rauterthomas0@gmail.com} \\
+        \textbf{LinkedIn:} \> \texttt{www.linkedin.com/in/thomas-rauter-003583281} \\
+    \end{tabbing}
+    \normalsize{
+        If you found this eBook helpful, I would kindly appreciate it if you gave it a star on \href{https://github.com/Thomas-Rauter/Navigating-Machine-Learning-Projects}{GitHub}.\\
+        If you notice any errors or have suggestions for improvements, please feel free to open an issue there. Your feedback is valuable!
+    }
+    \\[1cm]
+    \vspace*{\fill}
+\end{center}
 
 
 \end{document}
