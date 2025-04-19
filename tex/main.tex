@@ -340,7 +340,7 @@ but if you want to know \textcolor{red!70!black}{\textbf{how}}, or dive into the
     \item \textcolor{red!70!black}{\textbf{Details:}} Refers to in-depth theoretical explanations, such as the mathematical foundations of neural networks.
 \end{itemize}
 % Code and tutorials gets outdated more quickly than general knowledge, and therefore needs maintenance. Further, there are many online resources that provide this. For this reason, it is not covered in this book, to make it more concise.
-% For the details there also exist many resources, in the form of books, free online articles, or online courses.
+% For the details there also exist many resources, in the form of books, free online articles, or online courses. This book cites such resources when it fits, allowing to easily dive into the details.
 
 
 This document is intended for practitioners who already possess a 
@@ -541,9 +541,6 @@ Human Level Performance (HLP) serves as a benchmark to assess the feasibility of
 
 For example, in a self-driving car application, you might need to classify whether a traffic light is red, yellow, or green. To test feasibility using HLP, you would present an image captured by the car's camera to a human and ask them to identify the illuminated light. In Figure~\ref{fig:hlp_examples}, the image above shows a green light that is clearly visible, allowing a human to reliably identify it. This suggests that the task is likely feasible for a machine learning model as well. However, the image below in the same figure demonstrates poor quality, making it impossible for a human to determine the state of the traffic light. In such cases, investing in a better imaging setup, such as higher contrast cameras or improved lighting, would be a more effective solution than attempting to refine the learning algorithm for an infeasible task. \newline
 
-
-Ensuring that humans are restricted to the same data as the algorithm is crucial. Misjudgments about feasibility can arise if humans rely on external context, such as physically inspecting an object, instead of the image provided. For example, a team may spend significant time developing an algorithm to detect defects in an object, only to later realize that even a human cannot reliably identify the defect from the available image. Early identification of these limitations allows resources to be redirected to improving data quality, such as upgrading camera systems, rather than pursuing an unfeasible task. \newline
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{scoping_figures/positive_hlp_example.png}
@@ -553,6 +550,7 @@ Ensuring that humans are restricted to the same data as the algorithm is crucial
     \label{fig:hlp_examples}
 \end{figure}
 
+Ensuring that humans are restricted to the same data as the algorithm is crucial. Misjudgments about feasibility can arise if humans rely on external context, such as physically inspecting an object, instead of the image provided. For example, a team may spend significant time developing an algorithm to detect defects in an object, only to later realize that even a human cannot reliably identify the defect from the available image. Early identification of these limitations allows resources to be redirected to improving data quality, such as upgrading camera systems, rather than pursuing an unfeasible task. \newline
 
 
 \subsection{Predictive Features}
@@ -583,13 +581,14 @@ This method provides a quantitative basis for evaluating feasibility in projects
 
 \section{Diligence on Value}
 
+
 \subsection{Finding Value Metrics}
 
 Machine learning (ML) projects often involve bridging the gap between the metrics optimized by the technical team and those valued by the business team. As illustrated in Figure~\ref{fig:value_metrics}, ML teams tend to focus on technical metrics, such as word-level accuracy, while business teams prioritize metrics like revenue or user engagement. However, directly optimizing for business metrics is often infeasible for machine learning models, as they are difficult to quantify or directly relate to technical improvements. \newline
 
-To move a project forward, it is essential to find a middle ground, where the ML team stretches toward business-oriented metrics, and the business team compromises toward technical metrics. For instance, improving word-level accuracy may lead to an increase in query-level accuracy, which subsequently enhances search result quality, user engagement, and eventually revenue. This stepwise connection creates a pathway to align both sides on achievable and meaningful metrics. \newline
+To move a project forward, it is essential to find a middle ground: a metric that is technical enough for the ML team to optimize reliably, yet meaningful enough for the business team to see its relevance to broader goals. Rather than simply drawing a path from a low-level technical metric to revenue, the goal is to identify intermediate metrics that both sides can agree upon. For example, improving word-level accuracy might reliably boost query-level accuracy, which in turn has a strong relationship with search quality or user satisfaction—metrics that are easier for business teams to appreciate and endorse. Mapping out these connections helps align expectations, making it possible to set project goals that are both achievable for the ML team and valuable to the organization. \newline
 
-One effective practice to bridge this gap is using back-of-the-envelope calculations, such as Fermi estimates, to roughly relate technical metrics to business metrics. For example, if a 1\% improvement in word-level accuracy results in a 0.8\% improvement in query-level accuracy, this can help both teams align expectations and agree on the project’s value.
+A practical tool for bridging this gap is using back-of-the-envelope calculations, such as Fermi estimates, to approximate how improvements in technical metrics might impact business outcomes. For instance, the team might reason that a 1\% gain in word-level accuracy could translate into a 0.8\% gain in query-level accuracy, which in turn could be estimated to increase user engagement by a certain percentage. Even if these estimates are rough, they help set realistic expectations and provide a logical link between technical progress and business value.
 
 \begin{figure}[H]
     \centering
@@ -628,9 +627,8 @@ As part of assessing the value of a machine learning project, it is essential to
 
 Ethical considerations vary widely by domain, whether in healthcare, finance, or online retail. These considerations include fairness, potential biases, and the broader implications of deploying the technology. For instance, ensuring that a loan approval algorithm is free from discriminatory bias is critical in finance, just as maintaining equitable access to care is essential in healthcare applications. It is highly recommended to consult ethical frameworks specific to your industry to guide these evaluations. \newline
 
-Raising ethical concerns and openly debating them within the team can lead to more informed and thoughtful decisions. If there are doubts about whether a project will truly benefit humanity or align with societal values, discussing these issues collaboratively often helps teams reach a better consensus. As a result, some projects that might seem economically sound on the surface may still be deprioritized if they fail to contribute positively to people's lives. \newline
+Raising ethical considerations early in the project can help teams make more responsible and strategically sound decisions. If there are concerns about whether a project will positively impact customers or align with societal expectations, discussing them openly often leads to a more thoughtful assessment of potential risks and long-term brand reputation. As a result, some projects that may seem economically promising in the short term might be reconsidered or adjusted to better align with customer trust, regulatory expectations, and sustainable business value. \newline
 
-Ultimately, machine learning practitioners should strive to focus their efforts on projects that move humanity forward. By dedicating resources to initiatives that both align with ethical principles and create tangible societal benefits, teams can ensure their work contributes meaningfully to the world. Prioritizing these aspects helps build not only impactful solutions but also a sense of purpose within the project team. \newline
 
 
 \section{Milestones and Resourcing}
@@ -654,6 +652,11 @@ Determining milestones involves specifying the key objectives and metrics that d
 
 If defining these specifications proves challenging, a benchmarking exercise or a proof of concept (POC) can be conducted. A POC helps test the feasibility of certain metrics, such as accuracy or latency, and provides valuable insights to refine milestones and better define the project's scope.
 
+\begin{examplebox}
+A startup developing a real-time fraud detection system initially aimed for ``the highest possible accuracy.'' After running a small proof of concept, they realized that achieving 99\% precision would require models too complex to meet their latency constraint of 50 milliseconds per query. As a result, they refined their milestones: achieving at least 95\% precision while keeping inference time below 50 ms, balancing detection performance with operational feasibility.
+\end{examplebox}
+
+
 \subsection{Resourcing}
 
 Resourcing focuses on identifying and securing the necessary inputs to achieve the milestones within a specified timeline. Key aspects of resourcing include:
@@ -666,7 +669,6 @@ Resourcing focuses on identifying and securing the necessary inputs to achieve t
 
 A clear understanding of resourcing needs not only ensures that the project is achievable but also helps in aligning expectations with stakeholders. In cases where resource requirements are unclear, benchmarking similar projects or completing a POC can provide clarity. This allows teams to more confidently allocate resources and plan for the larger-scale execution of the project. \newline
 
-In summary, milestones and resourcing are essential to define the scope and plan for the successful execution of machine learning projects. These steps transform ideas into actionable plans, aligning technical and business objectives to achieve meaningful results.
 
 
 
@@ -674,22 +676,25 @@ In summary, milestones and resourcing are essential to define the scope and plan
 \part{Data}
 
 
+
+
 \chapter{Collecting Data}
 
 Collecting data with machine learning in mind is not just about quantity—it's about collecting the \textbf{right} data, in the \textbf{right} way. While many projects begin with existing data collected for other purposes, designing your own data collection strategy gives you a strategic advantage: you control what your model will learn, and what it can’t.
 \newline
 
-This chapter provides practical guidelines for designing data collection processes that produce machine learning–ready datasets.
+This chapter provides practical guidelines for designing data collection processes that produce machine learning–ready datasets. \newline
 
 \textbf{Key points:}
 \begin{itemize}
     \item Define the modeling goal before collecting data
     \item Ensure the data reflects real-world deployment conditions
-    \item Label Consistency
-    \item Capture sufficient diversity (but avoid redundancy)
+    \item Label consistency
+    \item Capture sufficient diversity 
     \item Anticipate failure cases and edge conditions
     \item Avoid hidden leakage through metadata or proxies
 \end{itemize}
+
 
 
 \section{Define the Modeling Goal Before Collecting Data}
@@ -713,11 +718,11 @@ A logistics company wanted to “predict delivery problems,” so they collected
 
 \section{Ensure the Data Reflects Real-World Deployment Conditions}
 
-Data collected under ideal, artificial, or controlled conditions often fails in the real world. Your training data must resemble the data the model will see at inference time—not what’s easy to collect.
+Data collected under ideal, artificial, or controlled conditions often fails in the real world. Your training data must resemble the data the model will see at inference time—not what’s easy to collect. \newline
 
-This includes the same input modalities, noise levels, device types, user behavior, and context. If the model will be deployed on mobile devices, don’t train it solely on clean desktop data. If inference happens with missing or delayed inputs, simulate that during collection.
+This includes the same input modalities, noise levels, device types, user behavior, and context. If the model will be deployed on mobile devices, don’t train it solely on clean desktop data. If inference happens with missing or delayed inputs, simulate that during collection. \newline
 
-Also consider **temporal drift**—data collected today may not represent future conditions. In such cases, design continuous data collection pipelines and plan for regular model retraining.
+Also consider \textbf{temporal drift}—data collected today may not represent future conditions. In such cases, design continuous data collection pipelines and plan for regular model retraining. \newline
 
 If your training data is "too clean" or doesn't reflect deployment variability, your model will learn unrealistic patterns and break when exposed to the real world.
 
@@ -733,7 +738,7 @@ A fraud detection system trained on historic bank data failed after deployment b
 annotation disagreement, labeling guidelines
 \end{keywordsbox}
 
-Data quality plays a crucial role in machine learning projects, and ensuring consistent labeling is one of the most important aspects of dataset preparation. Inconsistent labeling can lead to confusion for the learning algorithm and significantly impact model performance. This section explores why defining data consistently is challenging and how inconsistencies arise even when labelers are diligent and well-intentioned. \newline
+Data quality plays a crucial role in machine learning projects, and ensuring consistent labeling is one of the most important aspects of dataset collection. Inconsistent labeling can lead to confusion for the learning algorithm and significantly impact model performance. This section explores why defining data consistently is challenging and how inconsistencies arise even when labelers are diligent and well-intentioned. \newline
 
 To illustrate the problem, consider the example of iguana detection (Figure~\ref{fig:iguana_ambiguous_labeling}). Suppose you collect hundreds of images of iguanas and send them to labelers with the instruction: \textit{Use bounding boxes to indicate the position of iguanas.} Even with the same instruction, different labelers may interpret the task differently:
 \begin{itemize}
@@ -765,7 +770,7 @@ If different labelers use different conventions, the dataset becomes ambiguous, 
     \label{fig:phone_ambiguous_labeling}
 \end{figure}
 
-The key takeaway is that defining clear and consistent labeling guidelines is critical for creating high-quality training data. When labelers follow the same conventions, models are more likely to learn the right patterns. In the following sections, we will explore best practices for defining and organizing data, ensuring consistency in labeling, and improving the overall quality of datasets to set up machine learning models for success.
+The key takeaway is that defining clear and consistent labeling guidelines is critical for collecting high-quality training data. When labelers follow the same conventions, models are more likely to learn the right patterns. In the following sections, we will explore best practices for defining data, ensuring consistency in labeling, and improving the overall quality of datasets to set up machine learning models for success.
 
 \subsection{Label Consistency Across Different Types of Data}
 
@@ -780,6 +785,7 @@ This categorization highlights how best practices for ensuring label consistency
 \begin{table}[H]
     \centering
     \renewcommand{\arraystretch}{1.5}
+    \caption{Labeling challenges for different types and sizes of datasets.}
     \begin{tabular}{|p{3.5cm}|p{5.5cm}|p{5.5cm}|}
         \hline
         \textbf{} & \textbf{Unstructured Data} & \textbf{Structured Data} \\
@@ -789,7 +795,6 @@ This categorization highlights how best practices for ensuring label consistency
         \textbf{Large Data} & Speech recognition with 50 million samples. Humans can label data, data augmentation is helpful. & Online shopping recommendations for 1 million users. Emphasis on data process, harder to obtain more data. \\
         \hline
     \end{tabular}
-    \caption{Labeling challenges for different types and sizes of datasets.}
     \label{tab:label_consistency_framework}
 \end{table}
 
@@ -805,20 +810,20 @@ For large unstructured datasets, such as speech recognition with millions of tra
 In structured data problems with small datasets, such as predicting housing prices based on features from a few dozen properties, label consistency is equally important. Since there are relatively few training examples, each data point carries a high weight in determining model performance. Careful curation and validation of structured attributes, such as ensuring uniformity in feature definitions (e.g., how square footage is recorded), can help maintain consistency.
 
 \subsubsection{Structured Data – Large Datasets}
-For structured data with large datasets, such as online shopping recommendations for millions of users, the emphasis shifts from manual label correction to data process design. With a dataset this large, it is impractical for human annotators to verify each label. Instead, organizations must implement well-defined data pipelines, ensuring that attributes such as user preferences and item metadata are processed and stored consistently. Unlike unstructured data, data augmentation is rarely feasible for structured problems, making high-quality data collection and processing even more critical.
+For structured data with large datasets, such as online shopping recommendations for millions of users, the emphasis shifts from manual label correction to data process design. With a dataset this large, it is impractical for human annotators to verify each label. Instead, organizations must implement well-defined data pipelines, ensuring that attributes such as user preferences and item metadata are processed and stored consistently. Unlike unstructured data, data augmentation is rarely feasible for structured problems, making high-quality data collection and processing even more critical. \newline
 
 Understanding where a given machine learning problem falls within this framework can help practitioners develop appropriate strategies for label consistency, whether through manual correction, automation, or improved data collection processes.
 
 
 \subsection{The Importance of Label Consistency in Small and Large Datasets}
 
-Label consistency is especially critical when working with small datasets. In such cases, even minor inconsistencies in labeling can significantly impact model performance. Conversely, in large datasets, while label consistency remains important, the model may be able to generalize better if sufficient data is available. However, rare events within large datasets often pose similar challenges to small data problems. Figure~\ref{fig:small_data_label_consistency_importance} illustrates these differences.
+Label consistency is especially critical when working with small datasets. In such cases, even minor inconsistencies in labeling can significantly impact model performance. Conversely, in large datasets, while label consistency remains important, the model may be able to generalize better if sufficient data is available. Figure~\ref{fig:label_quality_and_data_quantity} illustrates these differences.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{data_figures/small_data_label_consistency_importance.png}
+    \includegraphics[width=0.9\textwidth]{data_figures/label_quality_and_data_quantity.png}
     \caption{Impact of label consistency on small and large datasets. Noisy labels in small datasets make it difficult to fit a reliable function, whereas with more data, the model can generalize better despite noise. However, clean labels significantly improve performance even in small datasets.}
-    \label{fig:small_data_label_consistency_importance}
+    \label{fig:label_quality_and_data_quantity}
 \end{figure}
 
 \subsubsection{Small Datasets: Why Clean Labels Matter}
@@ -839,11 +844,10 @@ Even in large datasets, small data challenges exist in the form of rare events. 
 
 In such cases, ensuring label consistency for rare events is just as important as for small datasets. If a model encounters inconsistent labeling for rare but critical events, its ability to make reliable predictions suffers. \newline
 
-Ultimately, label consistency is crucial across all dataset sizes. For small datasets, it allows learning algorithms to make accurate predictions with fewer examples. For large datasets, it ensures that rare events, which often carry high importance, are handled correctly.
 
 \subsection{Improving Label Consistency}
 
-Ensuring label consistency is an iterative process that involves refining labeling guidelines, standardizing definitions, and sometimes even modifying the dataset itself. Below, we outline several best practices to systematically improve label consistency in machine learning projects.
+Ensuring label consistency is an iterative process that involves refining labeling guidelines, standardizing definitions, and sometimes even modifying the dataset itself. Below, several best practices to systematically improve label consistency in machine learning projects are outlined.
 
 \subsubsection{Iterative Label Review and Agreement}
 A simple but effective approach to identifying inconsistencies is to have multiple labelers annotate the same set of examples. If significant disagreements arise:
@@ -887,11 +891,11 @@ While these tools are still emerging, improving label consistency through system
 
 
 
-\section{Capture Sufficient Diversity (but Avoid Redundancy)}
+\section{Capture Sufficient Diversity}
 
-A model can only generalize to what it has seen. If the training data lacks diversity, the model will underperform in edge cases or new environments. Diversity should be intentional: include different classes, conditions, users, devices, times of day, geographic regions, or other relevant dimensions.
+A model can only generalize to what it has seen. If the training data lacks diversity, the model will underperform in edge cases or new environments. Diversity should be intentional: include different classes, conditions, users, devices, times of day, geographic regions, or other relevant dimensions. \newline
 
-However, collecting more data is not always better. Redundant data—highly similar or repeated samples—adds cost without adding information. Worse, it can skew the learning process and bias the model toward frequent or easy patterns.
+However, collecting more data is not always better. Redundant data—highly similar or repeated samples—adds cost without adding information. Worse, it can skew the learning process and bias the model toward frequent or easy patterns. \newline
 
 Aim for \textbf{informative coverage}, not brute-force scale. Identify key axes of variation, then ensure your dataset spans them. Stratified sampling can help here. Keep track of where the data came from and how it was selected—metadata matters.
 
@@ -903,11 +907,11 @@ In a wildlife image classification task, over 80\% of the training photos came f
 
 \section{Anticipate Failure Cases and Edge Conditions}
 
-Most models don't fail on the average case—they fail on edge cases. These might be rare classes, atypical input combinations, low-quality samples, or ambiguous scenarios. If these aren't represented in the training data, the model will fail silently when it encounters them.
+Most models don't fail on the average case—they fail on edge cases. These might be rare classes, atypical input combinations, low-quality samples, or ambiguous scenarios. If these aren't represented in the training data, the model will fail silently when it encounters them. \newline
 
-Think ahead: Where could the model break in deployment? What inputs are rare but high-impact? What’s the worst-case scenario for incorrect predictions? Proactively collecting such examples improves robustness and helps define safe operating boundaries.
+Think ahead: Where could the model break in deployment? What inputs are rare but high-impact? What’s the worst-case scenario for incorrect predictions? Proactively collecting such examples improves robustness and helps define safe operating boundaries. \newline
 
-You don’t need large amounts of edge-case data—just enough to test performance and possibly adjust decision thresholds or fallback behavior.
+You don’t need large amounts of edge-case data—just enough to test performance and possibly adjust decision thresholds or fallback behavior. \newline
 
 \textbf{Tip:} When collecting data, don’t just maximize coverage—stress-test it.
 
@@ -944,18 +948,7 @@ form, where each row represents an observation and each column has a
 or \texttt{income}. This is in contrast to unstructured data like images, 
 audio, or free text, where columns may represent pixel intensities, 
 waveform amplitudes, or token embeddings, and are not directly interpretable 
-on their own. \newline
-
-EDA for unstructured data is also possible and equally important, but it 
-requires fundamentally different techniques and tools. Due to these 
-differences, unstructured data will be addressed separately in a dedicated 
-chapter. \newline
-
-A systematic EDA approach ensures a thorough analysis while avoiding 
-unnecessary detours. By systematically exploring the dataset, we gain the 
-insights needed to make informed preprocessing and modeling decisions.
-\newline
-
+on their own. EDA for unstructured data is also possible and equally important, but it requires fundamentally different techniques and tools. Due to these differences, unstructured data will be addressed separately in a dedicated chapter. \newline
 
 \textbf{Key points:}
 \begin{itemize}
