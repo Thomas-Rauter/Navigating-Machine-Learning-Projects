@@ -388,11 +388,11 @@ The challenges of navigating machine learning projects are best addressed by dra
 
 The major sources informing this work include:
 
-\begin{itemize}
-    \item \href{https://www.linkedin.com/in/andrewyng/}{Andrew Ng}
-    \item \href{https://www.plus.ac.at/aihi/der-fachbereich/team/dipl-inform-dr-ing-christian-borgelt/}{Christian Borgelt}
-    \item Practitioner discussions, case studies, and experience reports from platforms such as Medium, Kaggle, and others.
-\end{itemize}
+\begin{itemize} 
+\item Online courses by Andrew Ng, including \href{https://www.coursera.org/learn/introduction-to-machine-learning-in-production}{Introduction to Machine Learning in Production} and \href{https://www.coursera.org/learn/machine-learning-projects}{Structuring Machine Learning Projects}. 
+\item \href{https://link.springer.com/book/10.1007/978-3-030-45574-3}{\textit{Guide to Intelligent Data Science}} (Berthold, Borgelt, Höppner, Klawonn, Silipo, 2020).
+\item \href{https://www.amazon.it/Machine-Learning-Engineering-Andriy-Burkov/dp/1999579577}{\textit{Machine Learning Engineering}} (Andriy Burkov, 2020).
+\item Practitioner experience shared through case studies, articles, and discussions on platforms such as Medium and Kaggle. \end{itemize}
 
 % Introduction to the methods
 This book adopts a structured approach based on dividing the project workflow into distinct but interconnected stages. This structure—originally proposed in various forms by experienced practitioners—helps organize the complex landscape of choices that arise. Each part of the book corresponds to one major stage, providing practical strategies for navigating the specific decisions typical of that phase. \newline
@@ -412,6 +412,8 @@ The major stages are:
 
 
 \part{Scoping}
+
+
 
 \section*{Introduction to the Scoping Stage}
 
@@ -445,7 +447,14 @@ However, not all ideas are equally impactful, and resources are finite. Key ques
 This emphasizes the importance of focusing on the most valuable ideas, as selecting the right project can considerably enhance the impact of your efforts.
 \end{examplebox}
 
+
+
+
 \chapter{Scoping Process}
+
+\begin{summarybox}
+The scoping process provides a structured framework for identifying, evaluating, and planning machine learning projects. It goes from formulating business problems, brainstorming potential AI solutions, to assessing both technical feasibility and business value. Once a viable project is identified, teams define clear milestones and secure appropriate resources to ensure successful execution. 
+\end{summarybox}
 
 The scoping process is a structured framework for identifying and prioritizing machine learning projects, ensuring that efforts are focused on initiatives with the greatest potential impact. It provides a clear sequence of steps that guide teams from understanding business needs to planning actionable solutions, helping to avoid wasted resources on low-impact or infeasible projects. \newline
 
@@ -475,6 +484,7 @@ As illustrated in Figure~\ref{fig:scoping_process}, the process consists of five
 \end{figure}
 
 
+
 \section{Brainstorm Business Problems}
 
 The foundation of any successful machine learning project begins with identifying the key business problems it aims to address. This step focuses on understanding the organization's needs and challenges, rather than diving directly into potential AI solutions.
@@ -493,6 +503,7 @@ For example, in the context of an ecommerce retailer, common business problems m
 This separation between problem identification and solution generation is critical. By clearly articulating the desired outcomes in business terms, teams can ensure alignment with organizational goals. Furthermore, this approach lays a strong foundation for brainstorming AI solutions in the next phase of the scoping process.
 
 
+
 \section{Brainstorm ML Solutions}
 
 After identifying the key business problems, the next step is to explore potential ML solutions that could address these challenges. This phase involves mapping the business objectives to technical possibilities and evaluating whether machine learning can effectively contribute to solving the problem.
@@ -500,12 +511,39 @@ After identifying the key business problems, the next step is to explore potenti
 
 It is important to approach this step collaboratively, working with both technical teams and business stakeholders. Begin by brainstorming various machine learning approaches that align with the identified business problems. For instance:
 \begin{itemize}
-    \item To increase conversion rates, AI solutions could include personalized product recommendation systems or improved search algorithms that enhance user experience.
+    \item To increase conversion rates, ML solutions could include personalized product recommendation systems or improved search algorithms that enhance user experience.
     \item For reducing inventory, demand forecasting models could predict future sales trends, enabling better inventory management.
     \item To boost profit margins, price optimization algorithms or bundling strategies informed by user purchasing behavior could be employed.
 \end{itemize}
 
-Not every business problem will have a feasible ML solution, and that is perfectly acceptable. In cases where machine learning does not present a viable path forward, the focus can shift to non-ML alternatives. However, if ML solutions are identified, it is crucial to assess their alignment with the business goals and their potential for impact.
+Not every business problem will have a feasible ML solution, and that is perfectly acceptable. In cases where machine learning does not present a viable path forward, the focus can shift to non-ML alternatives. However, if ML solutions are identified, it is crucial to assess their alignment with the business goals and their potential for impact. \newline
+
+The following guidelines summarize when machine learning is typically an appropriate choice and when it is better to consider alternative solutions:
+
+\begin{itemize}
+    \item \textbf{Use machine learning when:}
+    \begin{itemize}
+        \item The problem is too complex to hand-code rules effectively.
+        \item The environment or data distribution is expected to change over time.
+        \item The task involves natural perception problems like image, speech, or video recognition.
+        \item The phenomenon to be modeled is observable but poorly understood.
+        \item The objective can be framed simply (e.g., a yes/no decision or a single numeric value).
+        \item The expected value outweighs the cost of collecting data, training the model, and maintaining the system.
+    \end{itemize}
+    
+    \item \textbf{Do not use machine learning when:}
+    \begin{itemize}
+        \item Every action and decision must be fully explainable.
+        \item The cost of errors is prohibitively high.
+        \item You want to get to the market as fast as possible.
+        \item The right data in high-quality is too difficult or expensive to obtain.
+        \item Traditional software or simple heuristics can solve the problem at lower cost and sufficient reliability.
+        \item The system is static and unlikely to require frequent updates.
+        \item An exhaustive lookup table or manual enumeration of outcomes is feasible and cheaper.
+    \end{itemize}
+\end{itemize}
+
+For a more detailed discussion, see \href{https://www.amazon.it/Machine-Learning-Engineering-Andriy-Burkov/dp/1999579577}{\textit{Machine Learning Engineering}} by Andriy Burkov (Section 1.4, \textit{When to Use Machine Learning}). \newline
 
 This phase also benefits from separating the ideation of solutions from the feasibility assessment. By first brainstorming a wide range of possibilities, teams can engage in creative and innovative thinking before narrowing down the options to those that are both impactful and practical. This sets the stage for the subsequent steps of assessing feasibility and determining value.
 
@@ -680,7 +718,11 @@ A clear understanding of resourcing needs not only ensures that the project is a
 
 \chapter{Collecting Data}
 
-Collecting data with machine learning in mind is not just about quantity—it's about collecting the \textbf{right} data, in the \textbf{right} way. While many projects begin with existing data collected for other purposes, designing your own data collection strategy gives you a strategic advantage: you control what your model will learn, and what it can’t.
+\begin{summarybox}
+Collecting data for machine learning is not just about quantity but about capturing the right data in the right way. This chapter emphasizes defining the modeling goal before collection, ensuring that data reflects real-world deployment conditions, maintaining strict label consistency, and capturing sufficient diversity to enable generalization. It highlights the importance of anticipating failure cases and edge conditions early and avoiding hidden data leakage. Strategic data collection improves model robustness, performance, and reliability across realistic operational scenarios.
+\end{summarybox}
+
+While many projects begin with existing data collected for other purposes, designing your own data collection strategy gives you a strategic advantage: you control what your model will learn, and what it can’t.
 \newline
 
 This chapter provides practical guidelines for designing data collection processes that produce machine learning–ready datasets. \newline
@@ -924,6 +966,10 @@ In a facial recognition system, most of the collected images were well-lit, fron
 
 \chapter{EDA for Structured Data}
 
+\begin{summarybox}
+This chapter is about exploratory data analysis (EDA) for structured datasets. It covers understanding variable distributions, detecting outliers and missing values, examining relationships between variables, applying dimensionality reduction techniques like PCA and t-SNE for pattern discovery, and uncovering hidden structures through clustering and association analysis.
+\end{summarybox}
+
 Exploratory Data Analysis (EDA) is a crucial step in any machine learning 
 project. It helps in understanding the dataset, identifying patterns, and 
 detecting potential issues before modeling. \newline
@@ -975,6 +1021,7 @@ on their own. EDA for unstructured data is also possible and equally important, 
 \newline
 
 
+
 \section{Variable Distributions}
 
 \begin{keywordsbox}
@@ -982,6 +1029,7 @@ variable distribution, central tendency, dispersion, histogram, Q-Q plot
 \end{keywordsbox}
 
 Assessing the distribution of each variable is a fundamental step in exploratory data analysis. It provides insights into the data's range, central tendency, dispersion, and overall shape. By thoroughly understanding the distribution of each variable, we can detect data quality issues, recognize patterns, and inform downstream modeling decisions.
+
 
 \subsection{Understanding Central Tendency and Dispersion}
 
@@ -1017,6 +1065,7 @@ Visualizing variable distributions helps detect patterns, skewness, and anomalie
     \label{tab:viz_variable_distributions}
 \end{table}
 
+
 \subsection{Histograms: Examining Continuous Variable Distributions}
 
 Histograms are one of the most effective tools for understanding the distribution of continuous variables. They group data into bins and display the frequency of occurrences, helping answer questions such as:
@@ -1032,12 +1081,14 @@ Key considerations when interpreting histograms:
 
 For skewed distributions, log-transforming the data before visualization can sometimes improve interpretability.
 
+
 \subsection{Q-Q Plots: Assessing Normality}
 
 A quantile-quantile (Q-Q) plot compares the quantiles of a variable’s distribution to the quantiles of a theoretical normal distribution. It helps assess whether the data is normally distributed:
 - If points fall along a straight diagonal line, the distribution is approximately normal.
 - Curvature at the ends suggests skewness.
 - Deviations from the line indicate a non-normal distribution, which may affect statistical assumptions in modeling.
+
 
 \subsection{Assessing Categorical Variables with Frequency Tables and Bar Charts}
 
@@ -1073,6 +1124,7 @@ exploratory data analysis (EDA). These elements can indicate errors,
 inconsistencies, or rare patterns that warrant further investigation. 
 This section focuses on practical methods to identify and visualize them 
 effectively.
+
 
 \subsection{Outliers: Detecting Extreme Values}
 
@@ -1219,6 +1271,7 @@ correlation, visualization, mutual information, variable relationships
 
 Examining relationships between variables is essential for understanding dependencies, correlations, and potential interactions. This step helps detect redundant features, uncover predictive relationships, and guide feature engineering decisions. 
 
+
 \subsection{Numerical Metrics for Variable Comparison}
 
 Before visualizing relationships, computing numerical summaries can provide an initial sense of correlation and dependency between variables.
@@ -1243,6 +1296,7 @@ Before visualizing relationships, computing numerical summaries can provide an i
 - In Python: \texttt{pandas.DataFrame.corr()}, \texttt{scipy.stats.spearmanr()}.
 - In R: \texttt{cor()}, \texttt{cor.test()}, \texttt{chisq.test()}.
 
+
 \subsection{Visualizing Relationships Between Numerical Variables}
 
 \textbf{Scatter Plots:}
@@ -1265,6 +1319,7 @@ Before visualizing relationships, computing numerical summaries can provide an i
 - For large datasets, hexbin plots group scatter points into hexagonal bins, revealing density patterns.
 - Kernel density estimation (KDE) plots help visualize probability distributions between two variables.
 \newline
+
 
 \subsection{Analyzing Relationships Between Categorical Variables}
 
@@ -1293,6 +1348,7 @@ Before visualizing relationships, computing numerical summaries can provide an i
 - In R: \texttt{ggplot2::geom\_bar()}, \texttt{MASS::mosaicplot()}.
 \newline
 
+
 \subsection{Comparing Numerical and Categorical Variables}
 
 \textbf{Box Plots:}
@@ -1309,6 +1365,7 @@ Before visualizing relationships, computing numerical summaries can provide an i
 - Assess whether a numerical variable differs significantly across categories.
 - ANOVA assumes normality, while Kruskal-Wallis is non-parametric.
 \newline
+
 
 \subsection{Mutual Information for Dependency Detection}
 
@@ -1338,7 +1395,6 @@ where \( P(x, y) \) is the joint probability distribution, and \( P(x) \) and \(
 
 
 
-
 \section{Dimensionality Reduction}
 
 \begin{keywordsbox}
@@ -1346,6 +1402,7 @@ pca, tsne, umap, high-dimensional data, visualization
 \end{keywordsbox}
 
 When exploring high-dimensional datasets, it can be challenging to understand relationships between variables or detect meaningful structures. \textbf{Dimensionality reduction} techniques help visualize and summarize complex datasets by reducing the number of features while preserving the most relevant information. In the context of EDA, the goal is not to transform features for modeling but to uncover patterns, groupings, and structures in the data.
+
 
 \subsection{Why Use Dimensionality Reduction in EDA?}
 
@@ -1356,6 +1413,7 @@ Dimensionality reduction is useful in EDA for:
     \item \textbf{Detecting underlying structure} that might not be obvious in raw data.
     \item \textbf{Understanding feature relationships} in a compressed representation.
 \end{itemize}
+
 
 \subsection{Principal Component Analysis (PCA) for Exploration}
 
@@ -1375,6 +1433,7 @@ Dimensionality reduction is useful in EDA for:
     \item Well-separated groups in a PCA plot may suggest distinct subpopulations or clusters in the data.
 \end{itemize}
 
+
 \subsection{t-SNE for Detecting Hidden Structures}
 
 \textbf{t-Distributed Stochastic Neighbor Embedding (t-SNE)} is a non-linear method designed for \textbf{visualizing complex, high-dimensional data} in two or three dimensions. Unlike PCA, it does not preserve global variance but focuses on capturing local relationships.
@@ -1393,6 +1452,7 @@ Dimensionality reduction is useful in EDA for:
     \item t-SNE is computationally expensive and best suited for smaller datasets.
 \end{itemize}
 
+
 \subsection{UMAP for Efficient Visualization}
 
 \textbf{Uniform Manifold Approximation and Projection (UMAP)} is an alternative to t-SNE that provides \textbf{similar high-dimensional visualizations but with better preservation of global structure} and greater efficiency.
@@ -1403,6 +1463,7 @@ Dimensionality reduction is useful in EDA for:
     \item Retains both \textbf{local and global structures} better than t-SNE.
     \item Useful for both cluster detection and general structure analysis.
 \end{itemize}
+
 
 \subsection{Key Takeaways}
 
@@ -1416,7 +1477,6 @@ Dimensionality reduction in EDA helps explore complex datasets by summarizing fe
 
 
 
-
 \section{Pattern Discovery}
 
 \begin{keywordsbox}
@@ -1424,6 +1484,7 @@ clustering, correlation analysis, association rules, time-series patterns
 \end{keywordsbox}
 
 Pattern discovery in exploratory data analysis aims to uncover hidden structures, trends, and regularities within the dataset. Identifying patterns helps in feature engineering, data preprocessing, and understanding the underlying relationships that could impact modeling decisions.
+
 
 \subsection{Types of Patterns in Data}
 
@@ -1434,6 +1495,7 @@ Patterns can manifest in various ways, depending on the nature of the data:
     \item \textbf{Associations}: Relationships between categorical variables, often discovered through correlation analysis or association rule mining.
     \item \textbf{Repetitive Structures}: Recurring sequences or periodic patterns, common in time-series and textual data.
 \end{itemize}
+
 
 \subsection{Clustering for Pattern Discovery}
 
@@ -1449,6 +1511,7 @@ Several clustering algorithms exist, each with different assumptions and strengt
     \item \textbf{Gaussian Mixture Models (GMM)}: A probabilistic approach where each cluster is modeled as a Gaussian distribution.
 \end{itemize}
 
+
 \subsubsection{Evaluating Clustering Results}
 
 Assessing the quality of clustering results is crucial for pattern discovery:
@@ -1458,6 +1521,7 @@ Assessing the quality of clustering results is crucial for pattern discovery:
     \item \textbf{Visualization}: Techniques like t-SNE and PCA allow for 2D representation of clusters to validate separation.
 \end{itemize}
 
+
 \subsection{Correlation and Association Patterns}
 
 Understanding relationships between variables helps in feature selection and predictive modeling. Patterns can be identified using:
@@ -1466,6 +1530,7 @@ Understanding relationships between variables helps in feature selection and pre
     \item \textbf{Association rule mining}: Identifies frequent itemsets and relationships in categorical data. Apriori and FP-Growth algorithms help detect co-occurrence patterns (e.g., "People who buy X often buy Y").
     \item \textbf{Chi-square tests}: Evaluate dependencies between categorical variables, identifying statistically significant relationships.
 \end{itemize}
+
 
 \subsection{Pattern Discovery in Time-Series Data}
 
@@ -1477,6 +1542,7 @@ For datasets involving time-dependent variables, specialized techniques help det
     \item \textbf{Anomaly detection}: Identifies unusual deviations in time-series data using moving averages, isolation forests, or statistical thresholds.
 \end{itemize}
 
+
 \subsection{Visualizing Patterns}
 
 Visualization techniques are crucial in pattern discovery, making hidden structures interpretable:
@@ -1487,6 +1553,7 @@ Visualization techniques are crucial in pattern discovery, making hidden structu
     \item \textbf{Dendrograms}: Used in hierarchical clustering to visualize nested cluster structures.
 \end{itemize}
 
+
 \subsection{Key Takeaways}
 
 Pattern discovery provides valuable insights into data structure and relationships, enabling better feature selection, segmentation, and anomaly detection. By combining clustering techniques, correlation analysis, and time-series methods, hidden patterns can be effectively identified and leveraged for modeling.
@@ -1495,12 +1562,13 @@ Pattern discovery provides valuable insights into data structure and relationshi
 A well-executed pattern discovery process enhances the interpretability of data, ultimately improving the decision-making process in machine learning projects.
 
 
-\section{Summary}
-EDA is not a one-time task but an iterative process. New findings often lead to additional questions and refinements. Continuously revisiting and refining analysis ensures a deeper understanding of the data and better decision-making in subsequent modeling steps.
-
 
 
 \chapter{EDA for Unstructured Data}
+
+\begin{summarybox}
+This chapter explains how to do exploratory data analysis (EDA) for unstructured data. It covers checking raw data quality, calculating simple statistics, looking at sample examples, finding class imbalances and noise, and using embeddings like PCA, t-SNE, and UMAP to reveal hidden patterns. 
+\end{summarybox}
 
 Unstructured data—such as images, audio, and text—presents unique 
 challenges for exploratory data analysis (EDA). Unlike structured datasets 
@@ -1631,8 +1699,12 @@ In a multiclass text classification task, t-SNE on sentence embeddings showed tw
 
 \chapter{Train, Dev, and Test Sets}
 
+\begin{summarybox}
+This chapter explains how to split datasets into train, dev, and test sets to reliably evaluate model performance. It includes default split ratios, a dynamic formula for adaptive splitting, and the importance of maintaining distribution alignment. Balanced splits are especially critical for small datasets. Cross-validation is recommended for limited data or unstable models, with variants like stratified K-fold, group K-fold, and time-series splits. The chapter also covers systematic vs. random errors in labels, and emphasizes revising the dev/test set or metric if they no longer reflect the application’s true goals.
+\end{summarybox}
 
 Splitting data into train, dev, and test sets is essential to objectively measure how well a model generalizes to unseen data.
+
 
 
 \section{Guidelines for Splitting the Data}
@@ -1837,7 +1909,11 @@ Consider a cat image classifier where one model achieves excellent performance o
 
 
 
-\chapter{Data-Centric Model Development}
+\chapter{Data-Centric Modeling}
+
+\begin{summarybox}
+This chapter explains that improving the dataset often brings bigger gains than tuning models. It covers how to clean data, fix missing values and outliers, handle class imbalance, and spot misleading features like colliders and confounders. It shows why balancing dataset size and feature number matters, when to use data augmentation, and when adding more data might hurt. For structured data, collecting new informative features can be very beneficial to improve performance.
+\end{summarybox}
 
 \begin{quote}
     "It's far better to use a wonderful dataset and a fair algorithm than a fair dataset and a wonderful algorithm."
@@ -1854,7 +1930,6 @@ This iterative loop is essential because, in practice, it is extremely difficult
 \newline
 
 This is fully analogous to the traditional model-centric cycle, where hyperparameters are tweaked based on dev set results. The key difference is that here, the dataset—not the model—is the object of iterative improvement. Fixing the data split is essential for meaningful evaluation: it ensures that every iteration is measured against the same standard, enabling reliable comparison and steady progress.
-
 
 \begin{figure}[H]
 \centering
@@ -1889,9 +1964,7 @@ This is fully analogous to the traditional model-centric cycle, where hyperparam
 \label{fig:model-vs-data-centric}
 \end{figure}
 
-
 Figure~\ref{fig:catboost-benchmark} illustrates a benchmark from the CatBoost website, comparing several gradient boosting frameworks across a range of classification tasks. While the original intention was to highlight CatBoost’s superior performance, a secondary takeaway is equally important: in most cases, tuning the hyperparameters led to only marginal improvements over default settings. This underscores a central motivation behind data-centric model development — when model tuning brings limited returns, improving the dataset itself becomes the more promising path forward.
-
 
 \begin{figure}[H]
     \centering
@@ -1901,6 +1974,28 @@ Figure~\ref{fig:catboost-benchmark} illustrates a benchmark from the CatBoost we
     }
     \label{fig:catboost-benchmark}
 \end{figure}
+
+As an additional example, Table~\ref{tab:data-centric-vs-model-centric} illustrates that, in practice, focusing on improving the data yields larger performance improvements than focusing on model hyperparameter tuning.
+
+\begin{table}[H]
+\centering
+\caption{Impact of model-centric vs.\ data-centric approaches on model performance. Data from a case study discussed by Andrew Ng in his \href{https://www.youtube.com/watch?v=06-AZXmwHjo&t=911s}{lecture on data-centric AI}. While tuning the model yields little to no improvement, focusing on improving the data leads to bigger gains across tasks. The baseline represents the lower performance bound for the project.}
+\label{tab:data-centric-vs-model-centric}
+\vspace{0.1cm}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{} & \textbf{Steel defect detection} & \textbf{Solar panel} & \textbf{Surface inspection} \\
+\hline
+Baseline & 76.2\% & 75.68\% & 85.05\% \\
+\hline
+Model-centric & +0\% (76.2\%) & +0.04\% (75.72\%) & +0.00\% (85.05\%) \\
+\hline
+Data-centric & +16.9\% (93.1\%) & +3.06\% (78.74\%) & +0.4\% (85.45\%) \\
+\hline
+\end{tabular}
+\end{table}
+
 
 
 
@@ -2344,8 +2439,11 @@ In a customer churn dataset, the column “customer region” had 99.8\% of entr
 
 
 
-\chapter{Data-Centric Model Development 2: Feature Engineering}
+\chapter{Data-Centric Modeling 2: Feature Engineering}
 
+\begin{summarybox}
+This chapter explains feature engineering for structured data. It covers how to transform numerical features (e.g., scaling, log transforms), encode categorical features (e.g., one-hot, target encoding), and engineer new features by combining, splitting, or clustering existing ones. It discusses polynomial features, binning, feature interactions, dimensionality reduction, and creating indicator features.
+\end{summarybox}
 
 Feature engineering refers to the \textbf{process of creating new features from existing ones} in order to improve the model’s ability to learn relevant patterns. Unlike simply adding more features from external sources, which expands the dataset’s information content, feature engineering involves transforming, combining, or encoding the available data to expose structure that models can exploit more effectively. It is a creative and often domain-informed process that can significantly impact model performance, especially when raw features are noisy, high-cardinality, or only indirectly informative.
 \newline
@@ -2608,15 +2706,11 @@ These features are easy to interpret and can highlight edge cases or exceptional
 
 
 
-
-\section{Conclusion}
-
-Unlike unstructured data, where deep learning models learn features automatically, structured data often benefits from explicitly designed features, especially when dataset sizes are moderate. While large-scale deep learning models may eventually eliminate the need for manual feature engineering, for most real-world structured data applications, adding well-designed features remains a crucial technique for improving model accuracy and robustness.
-
-
-
-
 \chapter{Data Tools}
+
+\begin{summarybox}
+This chapter explains tools for working with data in real-world machine learning projects. It covers storage options (flat files, SQL, NoSQL, warehouses), ways to access data (SQL, APIs, ORMs), transformation tools (Pandas, Spark, dbt), versioning systems (DVC, Delta Lake), and integration platforms (cloud warehouses, BI dashboards). 
+\end{summarybox}
 
 \section{Overview: The Role of Tools in Data-Centric Work}
 
@@ -2838,7 +2932,12 @@ Even if you're not directly building dashboards, understanding the BI stack help
 
 
 
+
 \chapter{Modeling Ordinal Target Variables}
+
+\begin{summarybox}
+This chapter explains strategies for modeling ordinal targets, which have a natural order but unknown distances between classes. Options include treating them as classification (ignoring order), using specialized ordinal models (e.g., proportional odds logistic regression), mapping to integers and regressing, applying ordinal-aware loss functions, or designing deep learning outputs that reflect class order (e.g., CORAL, threshold models). 
+\end{summarybox}
 
 In supervised learning, the nature of the target variable strongly influences
 how a problem should be approached. There are four basic scale types:
@@ -3031,6 +3130,7 @@ Instead of predicting a softmax over 5 pain severity levels, a neural network ou
 
 \chapter{Model, Objective, Optimization, and Evaluation}
 
+\begin{summarybox}
 Most data analysis methods comprise the following four steps:
 \begin{itemize}
     \item \textbf{Select the model class} (e.g. linear regression)
@@ -3038,6 +3138,7 @@ Most data analysis methods comprise the following four steps:
     \item \textbf{Apply the optimizer (optimization algorithm)} (e.g. gradient descent)
     \item \textbf{Validate the results using an evaluation metric} (e.g. $R^2$ score)
 \end{itemize}
+\end{summarybox}
 
 
 
@@ -3533,6 +3634,10 @@ misordering severity.
 
 \chapter{Modeling Time Series Data}
 
+\begin{summarybox}
+In time series modeling, most project failures trace back to conceptual mistakes, not technical ones. Common pitfalls include: (1) ignoring the temporal structure and leaking future information into the training set, (2) misaligning the modeling strategy (e.g., recursive vs. direct) with the real evaluation goal, and (3) choosing models that are too complex for the data volume available. Always define the prediction objective clearly, enforce strict time-based validation splits, and favor simple baselines before reaching for complex architectures.
+\end{summarybox}
+
 Time series tasks differ fundamentally from traditional machine learning due to the temporal structure in the data. This structure breaks key assumptions of standard modeling pipelines—such as the independence of observations—and requires models to explicitly account for the order and spacing of data points. Choosing an appropriate modeling strategy depends on the prediction goal, the data structure, and the trade-off between complexity and interpretability.
 
 
@@ -3785,6 +3890,10 @@ Choose multi-output if you care about the entire future trajectory. Use recursiv
 
 \chapter{Setup Before Model Training}
 
+\begin{examplebox} 
+Before starting model training, it is essential to define a single optimizing metric that clearly guides model improvement, and to specify additional satisficing metrics that must meet minimum thresholds. A strong performance baseline should also be established, representing the simplest solution that any model must beat to be considered useful. Finally, before launching full training runs, basic sanity checks — such as verifying that the model can overfit a tiny dataset — should be performed to catch coding or setup errors early and cheaply. 
+\end{examplebox}
+
 
 
 \section{Optimizing and Satisficing Metrics}
@@ -3848,6 +3957,9 @@ If the model fails to correctly predict on the small dataset, it is likely there
 
 
 \chapter{Overarching Strategies}
+
+\begin{examplebox} Overarching strategies such as transfer learning, multitask learning, and end-to-end learning guide the overall modeling approach in machine learning projects. Transfer learning reuses knowledge from one task to improve performance on a related task with limited data. Multitask learning trains a single model on multiple tasks simultaneously, leveraging shared features to improve generalization. End-to-end learning eliminates intermediate steps by directly mapping inputs to outputs, but requires sufficient data to be effective. Choosing the right strategy depends on data availability, task similarity, and model capacity. 
+\end{examplebox}
 
 This part presents high-level strategies that span the entire modeling stage. Unlike more focused techniques that address specific challenges, these overarching strategies—such as transfer learning, multitask learning, and end-to-end learning—are comprehensive frameworks that guide the overall approach to building and optimizing models. They are typically applied selectively, with one or two strategies often shaping the foundation of a project, depending on its goals, data availability, and complexity.
 
@@ -3962,6 +4074,10 @@ To decide whether to use end-to-end learning, answer the following question: \ne
 
 
 \chapter{Diagnosing and Addressing Error Sources}
+
+\begin{examplebox} This chapter introduced a structured approach to diagnosing and fixing machine learning errors by analyzing gaps between key error metrics. It emphasized the importance of isolating each root cause—such as underfitting, overfitting, data mismatch, dev set overfitting, or shortcut learning—using error analysis, and applying targeted strategies to address the dominant issue. Concepts like Bayes error, sample error, model error, and algorithmic error were discussed to understand limitations. Practical techniques were provided for each error source, helping practitioners iteratively improve model performance with clear, focused interventions. \end{examplebox}
+
+
 
 \section*{Introduction}
 
@@ -4515,6 +4631,10 @@ Shortcut learning refers to the gap between the test set error and the gen set e
 
 \chapter{Performance Auditing}
 
+\begin{examplebox} 
+This chapter outlines a structured framework for auditing model performance before deployment, emphasizing the need to detect hidden failure modes beyond overall metrics like accuracy or F1-score. It describes steps such as brainstorming potential failures, defining evaluation metrics for different data slices, automating audits with MLOps tools, and addressing detected issues. A case study on speech recognition illustrated common problems like demographic bias and offensive mistranscriptions. The chapter also stressed aligning audits with industry-specific fairness standards and using collaborative reviews to catch overlooked risks. 
+\end{examplebox}
+
 Even when a learning algorithm achieves high accuracy, F1-score, or another relevant metric, it is crucial to conduct a final performance audit before deploying it to production. This step can prevent significant post-deployment issues and ensure that the system operates reliably across various conditions. 
 
 
@@ -4584,9 +4704,6 @@ Performance auditing should align with evolving industry standards. The definiti
     \item Conduct audits collaboratively to avoid individual bias in identifying potential failures.
     \item Seek external advisors for additional perspectives on high-stakes applications.
 \end{itemize}
-
-\section{Conclusion}
-By proactively auditing performance, teams can deploy machine learning models with greater confidence. A well-audited system reduces the risk of unintended consequences, ensuring robustness, fairness, and reliability in production environments.
 
 
 
@@ -5265,6 +5382,10 @@ Poor performance is not just an inconvenience—it’s a red flag that the model
 
 \chapter{Deployment Patterns}
 
+\begin{examplebox} 
+This chapter outlined key strategies for safely deploying machine learning models, including shadow mode deployment, canary deployment, and blue-green deployment. It emphasized gradual ramp-up, monitoring, and rollback mechanisms to minimize risk. The chapter also discussed choosing the right degree of automation, noting that many industrial applications benefit from partial automation with human oversight rather than full AI-driven decision-making. Selecting the appropriate deployment pattern ensures a controlled transition from development to production while safeguarding operational reliability. 
+\end{examplebox}
+
 Deploying a machine learning model is not simply a matter of turning it on and hoping for the best. There are several strategies to ensure a smooth deployment while minimizing risks. In general, deployment scenarios fall into three broad categories:
 
 \begin{itemize}
@@ -5273,7 +5394,15 @@ Deploying a machine learning model is not simply a matter of turning it on and h
     \item Updating an existing machine learning system with an improved version.
 \end{itemize}
 
-In all these cases, a gradual ramp-up with monitoring is advisable. This allows for performance validation before full-scale deployment. Additionally, rollback mechanisms should be in place in case the new model does not perform as expected.
+In all these cases, a gradual ramp-up with monitoring is advisable. This allows for performance validation before full-scale deployment. Additionally, rollback mechanisms should be in place in case the new model does not perform as expected. \newline
+
+Several deployment patterns can be used based on the context and risk tolerance:
+
+\begin{itemize}
+    \item \textbf{Shadow mode deployment:} AI runs in parallel with human or existing model-based decisions.
+    \item \textbf{Canary deployment:} AI is deployed to a small percentage of cases before scaling up.
+    \item \textbf{Blue-green deployment:} AI replaces an older model while keeping rollback options available.
+\end{itemize}
 
 
 
@@ -5332,23 +5461,14 @@ Many industrial applications benefit from human-in-the-loop approaches rather th
 
 
 
-\section{Summary}
-
-Several deployment patterns can be used based on the context and risk tolerance:
-
-\begin{itemize}
-    \item \textbf{Shadow mode deployment:} AI runs in parallel with human or existing model-based decisions.
-    \item \textbf{Canary deployment:} AI is deployed to a small percentage of cases before scaling up.
-    \item \textbf{Blue-green deployment:} AI replaces an older model while keeping rollback options available.
-    \item \textbf{Automation spectrum:} AI’s role can range from pure assistance to full automation.
-\end{itemize}
-
-Choosing the right deployment pattern can ensure a smooth transition and minimize the risks associated with deploying a new machine learning system.
-
 
 
 
 \chapter{Monitoring}
+
+\begin{examplebox} 
+This chapter presents best practices for monitoring deployed machine learning systems to ensure long-term performance. It covers how to track software, input, and output metrics through dashboards, set alert thresholds, and adapt monitoring strategies over time. It also explains how to monitor full pipelines rather than just single models, helping to detect cascading failures early. Finally, it addresses how to handle different data change rates to maintain model reliability in dynamic environments. 
+\end{examplebox}
 
 Deploying a machine learning model is only the beginning—monitoring is essential to ensure that the system continues to perform as expected. Over time, models may degrade due to changes in data, unexpected software behavior, or external shifts in user behavior. A robust monitoring system helps detect these issues early and allows for timely intervention.
 
@@ -5470,7 +5590,20 @@ By continuously refining monitoring processes, machine learning teams can detect
 
 \chapter{Data and Concept Drift}
 
-Deploying a machine learning system is an exciting milestone, but it also introduces a new set of challenges that extend far beyond model training. One of the most significant issues that arise after deployment is the risk of \textbf{data drift} and \textbf{concept drift}. Those are situations where the data distribution or the target relationships shift over time. Addressing these drifts is crucial to maintaining model performance and reliability in real-world applications.
+\begin{examplebox} 
+This chapter explains how machine learning systems face data drift and concept drift after deployment, leading to performance degradation. It presents how to detect drift through statistical tests, performance monitoring, and shadow models, and discusses strategies to mitigate drift, including regular retraining, adaptive learning, feature engineering adjustments, and hybrid deployments. By applying these techniques, deployed models can remain robust even as their environment changes over time. 
+\end{examplebox}
+
+Deploying a machine learning system is an exciting milestone, but it also introduces a new set of challenges that extend far beyond model training. One of the most significant issues that arise after deployment is the risk of \textbf{data drift} and \textbf{concept drift}. Those are situations where the data distribution or the target relationships shift over time. Addressing these drifts is crucial to maintaining model performance and reliability in real-world applications. \newline
+
+Key takeaways are:
+
+\begin{itemize}
+    \item Data and concept drift are inevitable in most real-world machine learning applications.
+    \item Continuous monitoring and statistical methods are essential for detecting drift early.
+    \item Effective mitigation strategies include retraining, adaptive learning, and deploying hybrid models.
+    \item Proactive drift management helps maintain model reliability and long-term success.
+\end{itemize}
 
 
 
@@ -5557,14 +5690,6 @@ Deploying multiple models—such as an ensemble of older and newer models—can 
 
 
 
-\section{Key Takeaways}
-
-\begin{itemize}
-    \item Data and concept drift are inevitable in most real-world machine learning applications.
-    \item Continuous monitoring and statistical methods are essential for detecting drift early.
-    \item Effective mitigation strategies include retraining, adaptive learning, and deploying hybrid models.
-    \item Proactive drift management helps maintain model reliability and long-term success.
-\end{itemize}
 
 
 
