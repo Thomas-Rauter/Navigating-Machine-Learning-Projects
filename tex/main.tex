@@ -1,4 +1,4 @@
-\documentclass[12pt,openany, draft]{book}
+\documentclass[12pt,openany]{book}
 
 % Packages
 \usepackage{amsmath} % For advanced math formatting (e.g., \max, \min, and align environments)
@@ -298,7 +298,7 @@
     
     \vspace{0.5cm}
     \large{\textcolor{darknavy}{Version 0.2.1}} \\
-    \large{\textcolor{darknavy}{15.04.2025}} \\
+    \large{\textcolor{darknavy}{\today}} \\
     
     \vspace{1.5cm}
     \includegraphics[width=0.7\textwidth]{general_figures/ml_compass.png} \\
@@ -545,7 +545,66 @@ The following guidelines summarize when machine learning is typically an appropr
 
 For a more detailed discussion, see \href{https://www.amazon.it/Machine-Learning-Engineering-Andriy-Burkov/dp/1999579577}{\textit{Machine Learning Engineering}} by Andriy Burkov (Section 1.4, \textit{When to Use Machine Learning}). \newline
 
-This phase also benefits from separating the ideation of solutions from the feasibility assessment. By first brainstorming a wide range of possibilities, teams can engage in creative and innovative thinking before narrowing down the options to those that are both impactful and practical. This sets the stage for the subsequent steps of assessing feasibility and determining value.
+This phase also benefits from separating the ideation of solutions from the feasibility assessment. By first brainstorming a wide range of possibilities, teams can engage in creative and innovative thinking before narrowing down the options to those that are both impactful and practical. This sets the stage for the subsequent steps of assessing feasibility and determining value. \newline
+
+The subsections below list more concrete real-world use cases of models. Those can be used to identify if an ML model can be useful in the specific business context.
+
+
+\subsection{What Deployed Model Can Do}
+
+Once potential machine learning solutions have been brainstormed, it's crucial to clearly understand the different ways a trained model can be embedded into a broader system to drive business impact. \newline
+
+The following are common roles that machine learning models can fulfill in production systems:
+
+\begin{itemize}
+    \item \textbf{Automate:} Perform actions on the user's behalf or trigger events automatically (e.g., flagging fraudulent transactions or controlling server activity).
+    
+    \item \textbf{Alert or Prompt:} Notify users or system administrators when certain patterns are detected (e.g., unusual login behavior).
+    
+    \item \textbf{Organize:} Sort or rank content to improve user experience (e.g., personalized search results or document similarity sorting).
+    
+    \item \textbf{Annotate:} Add useful labels or highlights to data (e.g., identifying key phrases in a legal document or labeling images).
+    
+    \item \textbf{Extract:} Pull out specific information from raw inputs (e.g., named entity recognition in unstructured text).
+    
+    \item \textbf{Recommend:} Suggest relevant items based on user preferences or historical data (e.g., movie recommendations or next-best-offer systems).
+    
+    \item \textbf{Classify:} Assign inputs to predefined categories (e.g., spam detection, sentiment classification, defect type in manufacturing).
+    
+    \item \textbf{Quantify:} Produce numerical outputs such as scores or predictions (e.g., price estimation, credit risk scoring).
+    
+    \item \textbf{Synthesize:} Generate new content that mimics a training distribution (e.g., text summarization, image generation, synthetic speech).
+    
+    \item \textbf{Answer Questions:} Respond to specific queries based on inputs (e.g., “Is this tumor malignant?” or “Do these images depict the same object?”).
+    
+    \item \textbf{Transform Inputs:} Convert or adapt inputs into more useful representations (e.g., dimensionality reduction, text translation, image enhancement).
+    
+    \item \textbf{Detect Novelty or Anomaly:} Identify unusual patterns or outliers in the data (e.g., security breach detection or equipment failure prediction).
+\end{itemize}
+
+Almost every real-world use case of machine learning can be described by one or more of these roles. If a business challenge doesn’t naturally map to any of the above, it’s likely a poor candidate for deploying a machine learning model.
+
+
+\subsection{Using ML Models for Insights}
+
+Not all business problems require deploying a model. In many cases, the primary value of machine learning lies in its ability to help understand complex patterns, relationships, and trends within the data. \newline
+
+Instead of creating a system that makes decisions or performs actions, ML techniques can be used to:
+
+\begin{itemize}
+    \item \textbf{Explore Hidden Structures:} Unsupervised methods such as clustering or dimensionality reduction can reveal natural groupings or low-dimensional patterns in the data that aren’t immediately obvious.
+    
+    \item \textbf{Understand Feature Importance:} Techniques like tree-based models or permutation importance can highlight which inputs are most predictive of a target outcome — even if you don’t deploy the model.
+    
+    \item \textbf{Visualize Complex Data:} Algorithms like t-SNE or UMAP can help visualize high-dimensional data in two or three dimensions, facilitating qualitative insight and stakeholder communication.
+    
+    \item \textbf{Test Hypotheses:} Predictive models can serve as tools for *falsifying* or supporting domain-specific hypotheses (e.g., “Is this variable actually useful for predicting churn?”).
+    
+    \item \textbf{Identify Data Gaps:} Trying to train a model can often reveal where your data is incomplete, biased, or noisy — an insight that’s valuable even if the model is never deployed.
+    
+    \item \textbf{Benchmark Human Heuristics:} ML models can be used to simulate expert decision-making and identify whether existing rules-of-thumb are justified or improvable.
+\end{itemize}
+
 
 
 \section{Diligence on Feasibility}
@@ -2465,6 +2524,19 @@ Some examples for feature engineering:
     \item \textbf{Customer Churn Prediction:} Metrics like "number of support tickets in the last month" or "days since last login" provide strong signals about potential customer churn.
 \end{itemize}
 
+Good features typically have the following properties:
+
+\begin{itemize}
+    \item \textbf{High predictive power:} The feature is strongly relevant to the target variable and improves the model's ability to make accurate predictions.
+    \item \textbf{Fast computability:} The feature can be computed quickly and efficiently, enabling timely predictions, especially in real-time or production systems.
+    \item \textbf{Reliability:} The feature is consistently available and complete at inference time, without relying on unstable or unpredictable external sources.
+    \item \textbf{Low correlation with other features:} Features should be as uncorrelated as possible to reduce redundancy and make the model more robust to shifts in data properties.
+    \item \textbf{Stable distribution:} The feature's value distribution in production should match its distribution during training, minimizing the risk of out-of-distribution errors.
+    \item \textbf{Unitary and understandable:} Features should represent clear, simple quantities that are easy to interpret, maintain, and validate independently.
+\end{itemize}
+
+For a detailed discussion of these principles, see \href{https://www.amazon.it/Machine-Learning-Engineering-Andriy-Burkov/dp/1999579577}{\textit{Machine Learning Engineering}} by Andriy Burkov (Section 4.4, \textit{Properties of Good Features}).
+
 
 
 \section{Transforming and Encoding Features}
@@ -3191,6 +3263,8 @@ Supervised learning models are trained on labeled data, mapping inputs to known 
         \textbf{Model Type} & \textbf{R} & \textbf{C} & \textbf{When to Use} & \textbf{Advantages} & \textbf{Disadvantages} & \shortstack{\textbf{Training} \\ \textbf{Speed}} \\
         \hline
         Linear Regression & \cmark & \xmark & When interpretability is very important and there is a linear relationship & Fast, interpretable, low variance & Assumes linearity, no interaction modeling unless manually added & \speedfast \\
+        \hline
+        Poisson Regression & \cmark & \cmark & Count data modeling where the mean equals the variance (e.g., number of events per unit) & Models count data directly, interpretable coefficients, handles non-negative integer outcomes & Assumes equidispersion (mean = variance), poor performance with overdispersion or zero-inflation & \speedfast \\
         \hline
         Linear Discriminant Analysis (LDA) & \xmark & \cmark & When you need a fast, interpretable classifier that works well on small datasets with linearly separable classes & Captures some interactions via shared covariance, probabilistic output & Assumes normality and equal covariance across classes, linear only & \speedfast \\
         \hline
@@ -4480,7 +4554,7 @@ Once error analysis has identified the sources of the gaps between error numbers
 \hyperref[subsec:underfitting]{Underfitting} refers to the gap between the proxy for Bayes error and the train set error. Reducing this gap improves the model’s ability to fit the training data. Strategies to address avoidable bias include:
 
 \begin{itemize}
-    \item \textbf{Increase model capacity:} Use a larger or more complex model, such as increasing the amount of layers in a neural network or transitioning from linear to polynomial regression.
+    \item \textbf{Increase model capacity:} Use a larger or more complex model, such as increasing the amount of layers in a neural network or transitioning from linear to polynomial regression. Using an ensemble of models or stacking models is also a way of increasing the complexity.
     \item \textbf{Train for longer:} Extend training time by increasing epochs or iterations to ensure the model learns adequately and converges properly.
     \item \textbf{Improve features or representations:} Engage in feature engineering by adding relevant features or deriving new ones to better capture data intricacies. Alternatively, use pretrained embeddings for a richer representation of the data.
     \item \textbf{Reduce regularization:} For example, lower the strength of L1 or L2 penalties to allow the model greater flexibility to fit the training data.
